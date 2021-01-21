@@ -1,5 +1,5 @@
 use yew::prelude::*;
-use yewprint::H1;
+use yewprint::{Button, IconName, InputGroup, Text, H1};
 
 pub struct App {}
 
@@ -22,7 +22,22 @@ impl Component for App {
     fn view(&self) -> Html {
         html! {
             <div class="app-root bp3-dark">
-                <H1>{"Welcome on Recruit-Rust.dev!"}</H1>
+                <div class="search-field">
+                    <InputGroup
+                        round=true
+                        placeholder="Search..."
+                        right_element=html! {
+                            <Button
+                                icon=IconName::Search
+                                minimal=true
+                            />
+                        }
+                    />
+                </div>
+                <div class="app-header">
+                    <H1>{"Welcome on Recruit-Rust.dev!"}</H1>
+                    <Text>{"The place to be hired as an awesome Rustacean"}</Text>
+                </div>
                 <div class="app-content" role="main">
                 </div>
             </div>
