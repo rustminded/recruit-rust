@@ -4,7 +4,7 @@ use std::time::Instant;
 pub fn candidate() -> Candidate {
     Candidate {
         name: "Yohan Boogaert".to_string(),
-        bio: "Former ambulance driver,
+        bio: "Former ambulance driver, \
             I begin to learn about programming and Rust"
             .to_string(),
         email: "yozhgoor@outlook.com".to_string(),
@@ -37,14 +37,14 @@ pub fn candidate() -> Candidate {
                 company: "CJP Ambulances du centre".to_string(),
                 website: "".to_string(),
                 description: "As an ambulance driver".to_string(),
-                tech: vec!["".to_string()],
+                tech: vec![],
                 period: "2018".to_string(),
             },
             Job {
                 company: "Charly's Company".to_string(),
                 website: "https://charlyscompany.be".to_string(),
                 description: "as a LMV (Light Medical Vehicle) driver".to_string(),
-                tech: vec!["".to_string()],
+                tech: vec![],
                 period: "2019".to_string(),
             },
         ],
@@ -60,22 +60,15 @@ pub fn candidate() -> Candidate {
                     "Embedded".to_string(),
                     "PWA".to_string(),
                 ],
-                description: "Third-I, the only camera that replicates your hearing
+                description: "Third-I, the only camera that replicates your hearing \
                     and your point of view in the first person."
                     .to_string(),
             },
             Contribution {
-                project: "Wasm-run".to_string(),
+                project: "wasm-run".to_string(),
                 website: "https://crates.io/crates/wasm-run".to_string(),
-                tech: vec![
-                    "Rust".to_string(),
-                    "Wasm".to_string(),
-                    "CLI".to_string(),
-                    "Library".to_string(),
-                    "Script".to_string(),
-                ],
-                description: "Build tool that replaces cargo run to build WASM projects.
-                    Just like webpack, wasm-run offers a great deal of customization."
+                tech: vec!["Rust".to_string(), "WASM".to_string()],
+                description: "Build tool that replaces cargo run to build WASM projects."
                     .to_string(),
             },
             Contribution {
@@ -83,12 +76,9 @@ pub fn candidate() -> Candidate {
                 website: "https://yewprint.rm.rs/".to_string(),
                 tech: vec![
                     "Rust".to_string(),
-                    "Wasm".to_string(),
+                    "WASM".to_string(),
                     "Yew".to_string(),
-                    "Library".to_string(),
-                    "HTML".to_string(),
-                    "CSS".to_string(),
-                    "Script".to_string(),
+                    "Netlify".to_string(),
                 ],
                 description: "Port of blueprintjs to yew".to_string(),
             },
@@ -99,46 +89,23 @@ pub fn candidate() -> Candidate {
                 website: "https://github.com/yozhgoor/yewprint-playground".to_string(),
                 tech: vec![
                     "Rust".to_string(),
-                    "Wasm".to_string(),
+                    "WASM".to_string(),
                     "Yew".to_string(),
-                    "HTML".to_string(),
                     "CSS".to_string(),
-                    "Netlify".to_string(),
                 ],
                 description: "a Yew and yewprint playground using wasm-run".to_string(),
             },
             Contribution {
                 project: "Rusty-snake".to_string(),
                 website: "https://github.com/yozhgoor/rusty-snake".to_string(),
-                tech: vec![
-                    "Rust".to_string(),
-                    "CLI".to_string(),
-                    "Game".to_string(),
-                    "Design".to_string(),
-                ],
-                description: "Snake, the game in your terminal".to_string(),
-            },
-            Contribution {
-                project: "Rusty-snake".to_string(),
-                website: "https://github.com/yozhgoor/rusty-snake".to_string(),
-                tech: vec![
-                    "Rust".to_string(),
-                    "CLI".to_string(),
-                    "Game".to_string(),
-                    "Design".to_string(),
-                ],
+                tech: vec!["Rust".to_string()],
                 description: "Snake, the game in your terminal".to_string(),
             },
             Contribution {
                 project: "Introduction à Rust".to_string(),
                 website: "https://intro-to-rust.netlify.app".to_string(),
-                tech: vec![
-                    "Rust".to_string(),
-                    "MdBook".to_string(),
-                    "Tutorial".to_string(),
-                    "Netlify".to_string(),
-                ],
-                description: "My vision of the Rust Programming Language,
+                tech: vec!["Rust".to_string()],
+                description: "My vision of the Rust Programming Language, \
                     as an introduction to Rust"
                     .to_string(),
             },
