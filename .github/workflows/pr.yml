@@ -14,17 +14,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v2
 
-      - name: Cache target
-        id: cache-target
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.rustup
-            ~/.cargo/registry
-            ~/.cargo/bin
-            target
-          key: ${{ github.event.issue.number }}-${{ runner.os }}-pr
-          restore-keys: main
+      - uses: Swatinem/checkout@v2
 
       - name: cargo test
         uses: actions-rs/cargo@v1
