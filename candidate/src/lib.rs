@@ -4,7 +4,7 @@ pub struct Candidate {
     pub bio: String,
     pub email: String,
     pub pronouns: Vec<String>,
-    pub technologies: Vec<String>,
+    pub tech: Vec<String>,
     pub urls: Vec<(String, String)>,
     pub jobs: Vec<Job>,
     pub contributions: Vec<Contribution>,
@@ -20,7 +20,7 @@ pub struct Job {
     pub company: String,
     pub website: String,
     pub description: String,
-    pub technologies: Vec<String>,
+    pub tech: Vec<String>,
     pub period: String,
 }
 
@@ -28,7 +28,7 @@ pub struct Job {
 pub struct Contribution {
     pub project: String,
     pub website: String,
-    pub technologies: Vec<String>,
+    pub tech: Vec<String>,
     pub description: String,
 }
 

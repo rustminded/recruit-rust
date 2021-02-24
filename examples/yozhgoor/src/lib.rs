@@ -9,7 +9,7 @@ pub fn candidate() -> Candidate {
             .to_string(),
         email: "yozhgoor@outlook.com".to_string(),
         pronouns: vec!["he".to_string(), "him".to_string()],
-        technologies: vec![
+        tech: vec![
             "Rust".to_string(),
             "Markdown".to_string(),
             "HTML".to_string(),
@@ -37,14 +37,14 @@ pub fn candidate() -> Candidate {
                 company: "CJP Ambulances du centre".to_string(),
                 website: "".to_string(),
                 description: "As an ambulance driver".to_string(),
-                technologies: vec!["".to_string()],
+                tech: vec!["".to_string()],
                 period: "2018".to_string(),
             },
             Job {
                 company: "Charly's Company".to_string(),
                 website: "https://charlyscompany.be".to_string(),
                 description: "as a LMV (Light Medical Vehicle) driver".to_string(),
-                technologies: vec!["".to_string()],
+                tech: vec!["".to_string()],
                 period: "2019".to_string(),
             },
         ],
@@ -52,7 +52,7 @@ pub fn candidate() -> Candidate {
             Contribution {
                 project: "Third-I by Big Boy System".to_string(),
                 website: "http://bigboysystems.com".to_string(),
-                technologies: vec![
+                tech: vec![
                     "TypeScript".to_string(),
                     "React".to_string(),
                     "HTML".to_string(),
@@ -67,7 +67,7 @@ pub fn candidate() -> Candidate {
             Contribution {
                 project: "Wasm-run".to_string(),
                 website: "https://crates.io/crates/wasm-run".to_string(),
-                technologies: vec![
+                tech: vec![
                     "Rust".to_string(),
                     "Wasm".to_string(),
                     "CLI".to_string(),
@@ -81,7 +81,7 @@ pub fn candidate() -> Candidate {
             Contribution {
                 project: "Yewprint".to_string(),
                 website: "https://yewprint.rm.rs/".to_string(),
-                technologies: vec![
+                tech: vec![
                     "Rust".to_string(),
                     "Wasm".to_string(),
                     "Yew".to_string(),
@@ -97,7 +97,7 @@ pub fn candidate() -> Candidate {
             Contribution {
                 project: "Yewprint-playground".to_string(),
                 website: "https://github.com/yozhgoor/yewprint-playground".to_string(),
-                technologies: vec![
+                tech: vec![
                     "Rust".to_string(),
                     "Wasm".to_string(),
                     "Yew".to_string(),
@@ -110,7 +110,7 @@ pub fn candidate() -> Candidate {
             Contribution {
                 project: "Rusty-snake".to_string(),
                 website: "https://github.com/yozhgoor/rusty-snake".to_string(),
-                technologies: vec![
+                tech: vec![
                     "Rust".to_string(),
                     "CLI".to_string(),
                     "Game".to_string(),
@@ -121,7 +121,7 @@ pub fn candidate() -> Candidate {
             Contribution {
                 project: "Rusty-snake".to_string(),
                 website: "https://github.com/yozhgoor/rusty-snake".to_string(),
-                technologies: vec![
+                tech: vec![
                     "Rust".to_string(),
                     "CLI".to_string(),
                     "Game".to_string(),
@@ -132,7 +132,7 @@ pub fn candidate() -> Candidate {
             Contribution {
                 project: "Introduction à Rust".to_string(),
                 website: "https://intro-to-rust.netlify.app".to_string(),
-                technologies: vec![
+                tech: vec![
                     "Rust".to_string(),
                     "MdBook".to_string(),
                     "Tutorial".to_string(),
