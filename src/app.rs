@@ -1,14 +1,19 @@
+use candidate::Candidate;
 use yew::prelude::*;
 use yewprint::{Button, IconName, InputGroup, Text, H1};
 
-pub struct App {}
+pub struct App {
+    candidates: Vec<Candidate>,
+}
 
 impl Component for App {
     type Message = ();
     type Properties = ();
 
     fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        App {}
+        let candidates = vec![yozhgoor::candidate()];
+        crate::log!("{:?}", candidates);
+        App { candidates }
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {

@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Candidate {
     pub name: String,
     pub bio: String,
@@ -7,13 +8,14 @@ pub struct Candidate {
     pub urls: Vec<(String, String)>,
     pub jobs: Vec<Job>,
     pub contributions: Vec<Contribution>,
-    pub personnal_project: Vec<Contribution>,
+    pub personnal_projects: Vec<Contribution>,
     pub contract_type: ContractType,
     pub availability: Availability,
     pub joined_date: std::time::Instant,
-    pub certifications: Vec<String>,
+    pub certifications: Option<Vec<String>>,
 }
 
+#[derive(Debug)]
 pub struct Job {
     pub company: String,
     pub website: String,
@@ -22,6 +24,7 @@ pub struct Job {
     pub period: String,
 }
 
+#[derive(Debug)]
 pub struct Contribution {
     pub project: String,
     pub website: String,
@@ -29,12 +32,14 @@ pub struct Contribution {
     pub description: String,
 }
 
+#[derive(Debug)]
 pub enum ContractType {
     Contractor,
     Employee,
     Any,
 }
 
+#[derive(Debug)]
 pub enum Availability {
     FullTime,
     PartTime,

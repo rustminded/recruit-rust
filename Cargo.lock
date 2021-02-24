@@ -1863,6 +1863,7 @@ dependencies = [
 name = "recruit-rust"
 version = "0.1.0"
 dependencies = [
+ "candidate",
  "console_error_panic_hook",
  "structopt",
  "wasm-bindgen",
@@ -1872,6 +1873,7 @@ dependencies = [
  "wee_alloc",
  "yew",
  "yewprint",
+ "yozhgoor",
 ]
 
 [[package]]
@@ -3023,6 +3025,13 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "yozhgoor"
+version = "0.1.0"
+dependencies = [
+ "candidate",
 ]
 
 [[package]]

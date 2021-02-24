@@ -14,6 +14,8 @@ wasm-bindgen = "0.2"
 web-sys = "0.3"
 yew = { git = "https://github.com/yewstack/yew.git", rev = "db3170f629f" }
 yewprint = { git = "https://github.com/cecton/yewprint.git", branch = "main" }
+yozhgoor = { path = "examples/yozhgoor" }
+candidate = { path = "candidate" }
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
@@ -40,4 +42,7 @@ wasm-bindgen-test = "0.3"
 opt-level = "s"
 
 [workspace]
-members = ["candidate"]
+members = [
+    "candidate",
+    "examples/yozhgoor",
+]
