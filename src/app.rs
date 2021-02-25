@@ -3,7 +3,7 @@ use yew::prelude::*;
 use yewprint::{Button, IconName, InputGroup, Text, H1};
 
 pub struct App {
-    candidates: Vec<Candidate>,
+    candidates: Vec<&'static Candidate>,
 }
 
 impl Component for App {

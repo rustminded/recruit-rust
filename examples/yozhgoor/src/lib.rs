@@ -1,7 +1,7 @@
 use candidate::*;
 
-pub fn candidate() -> Candidate {
-    Candidate {
+pub fn candidate() -> &'static Candidate {
+    &Candidate {
         name: "Yohan Boogaert",
         bio: "Former ambulance driver, \
             I'm starting to learn about programming and Rust",
