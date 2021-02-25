@@ -1,6 +1,6 @@
 use candidate::Candidate;
 use yew::prelude::*;
-use yewprint::Card;
+use yewprint::{Card, Tag, Text, H1};
 
 pub struct Profile {
     props: Props,
@@ -28,10 +28,29 @@ impl Component for Profile {
     }
 
     fn view(&self) -> Html {
+        let tags = self
+            .props
+            .candidate
+            .asked_tech
+            .iter()
+            .map(|x| {
+                html! {
+                    <Tag>
+                        {x}
+                    </Tag>
+                }
+            })
+            .collect::<Html>();
         html! {
             <div class="candidate">
                 <Card>
-                    <p>{self.props.candidate.name}</p>
+                    <div class="header">
+                        <H1>{self.props.candidate.name}</H1>
+                        <Text>{self.props.candidate.bio}</Text>
+                    </div>
+                    <div class="tag">
+                        {tags}
+                    </div>
                 </Card>
             </div>
         }
