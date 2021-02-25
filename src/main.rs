@@ -1,3 +1,5 @@
+#![allow(clippy::unnecessary_wraps)]
+
 use anyhow::Result;
 use std::process::Command;
 use structopt::StructOpt;
