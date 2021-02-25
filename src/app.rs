@@ -1,3 +1,4 @@
+use crate::candidate::CandidateComponent;
 use candidate::Candidate;
 use yew::prelude::*;
 use yewprint::{Button, IconName, InputGroup, Text, H1};
@@ -25,6 +26,16 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
+        let list = self
+            .candidates
+            .iter()
+            .map(|x| {
+                html! {
+                    <CandidateComponent candidate={x} />
+                }
+            })
+            .collect::<Html>();
+
         html! {
             <div class="app-root bp3-dark">
                 <div class="search-field">
