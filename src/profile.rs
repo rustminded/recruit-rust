@@ -55,7 +55,7 @@ impl Component for Profile {
 
         html! {
             <div class="candidate">
-                <Card>
+                <Card interactive=true>
                     <div class="candidate-header">
                         <div class="candidate-tag">
                             {tags}
