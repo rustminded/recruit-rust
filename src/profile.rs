@@ -1,4 +1,4 @@
-use candidate::{Candidate, ContractType};
+use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
 use yewprint::{Card, Tag, Text, H1};
 
@@ -47,19 +47,31 @@ impl Component for Profile {
             ContractType::Employee => "Employee",
             ContractType::Any => "Any",
         };
+        let availability = match self.props.candidate.availability {
+            Availability::FullTime => "Full time",
+            Availability::PartTime => "Part time",
+            Availability::NotAvailable => "Not available",
+        };
 
         html! {
             <div class="candidate">
                 <Card>
-                    <div class="header">
-                        <H1>{self.props.candidate.name}</H1>
-                        <Text>{self.props.candidate.bio}</Text>
+                    <div class="candidate-header">
+                        <div class="candidate-tag">
+                            {tags}
+                        </div>
+                        <div class="candidate-bio">
+                            <Text>{self.props.candidate.bio}</Text>
+                        </div>
                     </div>
-                    <div class="tag">
-                        {tags}
-                    </div>
-                    <div class="footer">
-                        <Text>{contract}</Text>
+                    <div class="candidate-footer">
+                        <div class="candidate-name">
+                            <H1>{self.props.candidate.name}</H1>
+                        </div>
+                        <div class="candidate-info">
+                            <Text>{contract}</Text>
+                            <Text>{availability}</Text>
+                        </div>
                     </div>
                 </Card>
             </div>
