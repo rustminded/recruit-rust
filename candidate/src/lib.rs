@@ -4,7 +4,7 @@ pub struct Candidate {
     pub bio: String,
     pub email: String,
     pub pronouns: Vec<String>,
-    pub tech: Vec<String>,
+    pub asked_tech: Vec<String>,
     pub urls: Vec<(String, String)>,
     pub jobs: Vec<Job>,
     pub contributions: Vec<Contribution>,

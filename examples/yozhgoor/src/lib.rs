@@ -9,11 +9,7 @@ pub fn candidate() -> Candidate {
             .to_string(),
         email: "yozhgoor@outlook.com".to_string(),
         pronouns: vec!["he".to_string(), "him".to_string()],
-        tech: vec![
-            "Rust".to_string(),
-            "Markdown".to_string(),
-            "HTML".to_string(),
-        ],
+        asked_tech: vec!["Rust".to_string(), "WASM".to_string(), "PWA".to_string()],
         urls: vec![
             (
                 "GitHub".to_string(),
@@ -50,7 +46,6 @@ pub fn candidate() -> Candidate {
                     "React".to_string(),
                     "HTML".to_string(),
                     "CSS".to_string(),
-                    "Embedded".to_string(),
                     "PWA".to_string(),
                 ],
                 description: "Third-I, the only camera that replicates your hearing \
