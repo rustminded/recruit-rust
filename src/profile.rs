@@ -1,4 +1,4 @@
-use candidate::Candidate;
+use candidate::{Candidate, ContractType};
 use yew::prelude::*;
 use yewprint::{Card, Tag, Text, H1};
 
@@ -41,6 +41,13 @@ impl Component for Profile {
                 }
             })
             .collect::<Html>();
+
+        let contract = match self.props.candidate.contract_type {
+            ContractType::Contractor => "Contractor",
+            ContractType::Employee => "Employee",
+            ContractType::Any => "Any",
+        };
+
         html! {
             <div class="candidate">
                 <Card>
@@ -50,6 +57,9 @@ impl Component for Profile {
                     </div>
                     <div class="tag">
                         {tags}
+                    </div>
+                    <div class="footer">
+                        <Text>{contract}</Text>
                     </div>
                 </Card>
             </div>
