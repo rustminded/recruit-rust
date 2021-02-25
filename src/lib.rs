@@ -1,7 +1,7 @@
 #![cfg(target_arch = "wasm32")]
 
 mod app;
-mod candidate;
+mod profile;
 
 pub use app::*;
 use wasm_bindgen::prelude::*;

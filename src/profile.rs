@@ -1,7 +1,7 @@
 use candidate::Candidate;
 use yew::prelude::*;
 
-pub struct CandidateComponent {
+pub struct Profile {
     props: Props,
 }
 
@@ -10,12 +10,12 @@ pub struct Props {
     pub candidate: Candidate,
 }
 
-impl Component for CandidateComponent {
+impl Component for Profile {
     type Message = ();
     type Properties = Props;
 
     fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        CandidateComponent { props }
+        Profile { props }
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {

@@ -1,4 +1,4 @@
-use crate::candidate::CandidateComponent;
+use crate::profile::Profile;
 use candidate::Candidate;
 use yew::prelude::*;
 use yewprint::{Button, IconName, InputGroup, Text, H1};
@@ -26,12 +26,12 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
-        let list = self
+        let profile_list = self
             .candidates
             .iter()
             .map(|x| {
                 html! {
-                    <CandidateComponent candidate={x} />
+                    <Profile candidate={x} />
                 }
             })
             .collect::<Html>();
@@ -55,7 +55,7 @@ impl Component for App {
                     <Text>{"The place to be hired as an awesome Rustacean"}</Text>
                 </div>
                 <div class="app-content" role="main">
-                    {list}
+                    {profile_list}
                 </div>
             </div>
         }
