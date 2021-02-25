@@ -1,5 +1,4 @@
 use candidate::*;
-use std::time::Instant;
 
 pub fn candidate() -> Candidate {
     Candidate {
@@ -67,7 +66,6 @@ pub fn candidate() -> Candidate {
         ],
         contract_type: ContractType::Contractor,
         availability: Availability::NotAvailable,
-        joined_date: Instant::now(),
         certifications: vec![],
     }
 }

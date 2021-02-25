@@ -1,6 +1,7 @@
 use candidate::Candidate;
 use yew::prelude::*;
 use yewprint::{Button, IconName, InputGroup, Text, H1};
+use crate::candidate::CandidateComponent;
 
 pub struct App {
     candidates: Vec<Candidate>,
@@ -25,6 +26,12 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
+        let list = self.candidates.iter()
+            .map(|x| html! {
+                <CandidateComponent candidate={x} />
+            })
+            .collect::<Html>();
+
         html! {
             <div class="app-root bp3-dark">
                 <div class="search-field">
@@ -44,6 +51,7 @@ impl Component for App {
                     <Text>{"The place to be hired as an awesome Rustacean"}</Text>
                 </div>
                 <div class="app-content" role="main">
+                    {list}
                 </div>
             </div>
         }
