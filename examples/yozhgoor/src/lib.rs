@@ -32,22 +32,15 @@ pub fn candidate() -> Candidate {
                 "https://www.reddit.com/user/yozhgoor".to_string(),
             ),
         ],
-        jobs: vec![
-            Job {
-                company: "CJP Ambulances du centre".to_string(),
-                website: "".to_string(),
-                description: "As an ambulance driver".to_string(),
-                tech: vec![],
-                period: "2018".to_string(),
-            },
-            Job {
-                company: "Charly's Company".to_string(),
-                website: "https://charlyscompany.be".to_string(),
-                description: "as a LMV (Light Medical Vehicle) driver".to_string(),
-                tech: vec![],
-                period: "2019".to_string(),
-            },
-        ],
+        jobs: vec![Job {
+            company: "RustMinded".to_string(),
+            website: "https://github.com/rustminded".to_string(),
+            description: "Learn programming and Rust \
+                    as a Junior Consultant Developper"
+                .to_string(),
+            tech: vec!["Rust".to_string()],
+            period: "2021".to_string(),
+        }],
         contributions: vec![
             Contribution {
                 project: "Third-I by Big Boy System".to_string(),
