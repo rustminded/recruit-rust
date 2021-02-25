@@ -3,99 +3,66 @@ use std::time::Instant;
 
 pub fn candidate() -> Candidate {
     Candidate {
-        name: "Yohan Boogaert".to_string(),
+        name: "Yohan Boogaert",
         bio: "Former ambulance driver, \
-            I begin to learn about programming and Rust"
-            .to_string(),
-        email: "yozhgoor@outlook.com".to_string(),
-        pronouns: vec!["he".to_string(), "him".to_string()],
-        asked_tech: vec!["Rust".to_string(), "WASM".to_string(), "PWA".to_string()],
+            I begin to learn about programming and Rust",
+        email: "yozhgoor@outlook.com",
+        pronouns: vec!["he", "him"],
+        asked_tech: vec!["Rust", "WASM", "PWA"],
         urls: vec![
-            (
-                "GitHub".to_string(),
-                "https://github.com/Yozhgoor".to_string(),
-            ),
-            (
-                "Twitter".to_string(),
-                "https://twitter.com/yozhgoor".to_string(),
-            ),
-            (
-                "StackOverflow".to_string(),
-                "https://stackoverflow.com/users/14050514".to_string(),
-            ),
-            (
-                "Reddit".to_string(),
-                "https://www.reddit.com/user/yozhgoor".to_string(),
-            ),
+            ("GitHub", "https://github.com/Yozhgoor"),
+            ("Twitter", "https://twitter.com/yozhgoor"),
+            ("StackOverflow", "https://stackoverflow.com/users/14050514"),
+            ("Reddit", "https://www.reddit.com/user/yozhgoor"),
         ],
         jobs: vec![Job {
-            company: "RustMinded".to_string(),
-            website: "https://github.com/rustminded".to_string(),
+            company: "RustMinded",
+            website: "https://github.com/rustminded",
             description: "Learn programming and Rust \
-                    as a Junior Consultant Developper"
-                .to_string(),
-            tech: vec!["Rust".to_string()],
-            period: "2021".to_string(),
+                    as a Junior Consultant Developper",
+            tech: vec!["Rust"],
+            period: "2021",
         }],
         contributions: vec![
             Contribution {
-                project: "Third-I by Big Boy System".to_string(),
-                website: "http://bigboysystems.com".to_string(),
-                tech: vec![
-                    "TypeScript".to_string(),
-                    "React".to_string(),
-                    "HTML".to_string(),
-                    "CSS".to_string(),
-                    "PWA".to_string(),
-                ],
+                project: "Third-I by Big Boy System",
+                website: "http://bigboysystems.com",
+                tech: vec!["TypeScript", "React", "HTML", "CSS", "PWA"],
                 description: "Third-I, the only camera that replicates your hearing \
-                    and your point of view in the first person."
-                    .to_string(),
+                    and your point of view in the first person.",
             },
             Contribution {
-                project: "wasm-run".to_string(),
-                website: "https://crates.io/crates/wasm-run".to_string(),
-                tech: vec!["Rust".to_string(), "WASM".to_string()],
-                description: "Build tool that replaces cargo run to build WASM projects."
-                    .to_string(),
+                project: "wasm-run",
+                website: "https://crates.io/crates/wasm-run",
+                tech: vec!["Rust", "WASM"],
+                description: "Build tool that replaces cargo run to build WASM projects.",
             },
             Contribution {
-                project: "Yewprint".to_string(),
-                website: "https://yewprint.rm.rs/".to_string(),
-                tech: vec![
-                    "Rust".to_string(),
-                    "WASM".to_string(),
-                    "Yew".to_string(),
-                    "Netlify".to_string(),
-                ],
-                description: "Port of blueprintjs to yew".to_string(),
+                project: "Yewprint",
+                website: "https://yewprint.rm.rs/",
+                tech: vec!["Rust", "WASM", "Yew", "Netlify"],
+                description: "Port of blueprintjs to yew",
             },
         ],
         personnal_projects: vec![
             Contribution {
-                project: "Yewprint-playground".to_string(),
-                website: "https://github.com/yozhgoor/yewprint-playground".to_string(),
-                tech: vec![
-                    "Rust".to_string(),
-                    "WASM".to_string(),
-                    "Yew".to_string(),
-                    "CSS".to_string(),
-                ],
-                description: "a Yew and yewprint playground using wasm-run".to_string(),
+                project: "Yewprint-playground",
+                website: "https://github.com/yozhgoor/yewprint-playground",
+                tech: vec!["Rust", "WASM", "Yew", "CSS"],
+                description: "a Yew and yewprint playground using wasm-run",
             },
             Contribution {
-                project: "Rusty-snake".to_string(),
-                website: "https://github.com/yozhgoor/rusty-snake".to_string(),
-                tech: vec!["Rust".to_string()],
-                description: "Snake, the game in your terminal".to_string(),
+                project: "Rusty-snake",
+                website: "https://github.com/yozhgoor/rusty-snake",
+                tech: vec!["Rust"],
+                description: "Snake, the game in your terminal",
             },
             Contribution {
-                project: "Introduction à Rust".to_string(),
-                website: "https://intro-to-rust.netlify.app".to_string(),
-                tech: vec!["Rust".to_string()],
+                project: "Introduction à Rust",
+                website: "https://intro-to-rust.netlify.app",
+                tech: vec!["Rust"],
                 description: "My vision of the Rust Programming Language, \
-                    as an introduction to Rust"
-                    .to_string(),
+                    as an introduction to Rust",
             },
         ],
         contract_type: ContractType::Contractor,

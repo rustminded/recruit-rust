@@ -1,35 +1,35 @@
 #[derive(Debug)]
 pub struct Candidate {
-    pub name: String,
-    pub bio: String,
-    pub email: String,
-    pub pronouns: Vec<String>,
-    pub asked_tech: Vec<String>,
-    pub urls: Vec<(String, String)>,
+    pub name: &'static str,
+    pub bio: &'static str,
+    pub email: &'static str,
+    pub pronouns: Vec<&'static str>,
+    pub asked_tech: Vec<&'static str>,
+    pub urls: Vec<(&'static str, &'static str)>,
     pub jobs: Vec<Job>,
     pub contributions: Vec<Contribution>,
     pub personnal_projects: Vec<Contribution>,
     pub contract_type: ContractType,
     pub availability: Availability,
     pub joined_date: std::time::Instant,
-    pub certifications: Vec<String>,
+    pub certifications: Vec<&'static str>,
 }
 
 #[derive(Debug)]
 pub struct Job {
-    pub company: String,
-    pub website: String,
-    pub description: String,
-    pub tech: Vec<String>,
-    pub period: String,
+    pub company: &'static str,
+    pub website: &'static str,
+    pub description: &'static str,
+    pub tech: Vec<&'static str>,
+    pub period: &'static str,
 }
 
 #[derive(Debug)]
 pub struct Contribution {
-    pub project: String,
-    pub website: String,
-    pub tech: Vec<String>,
-    pub description: String,
+    pub project: &'static str,
+    pub website: &'static str,
+    pub tech: Vec<&'static str>,
+    pub description: &'static str,
 }
 
 #[derive(Debug)]
