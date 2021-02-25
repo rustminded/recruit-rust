@@ -8,3 +8,30 @@ body{
     margin-top: 15px;
     margin-bottom: 5px;
 }
+
+.candidate{
+    margin-top: 10px;
+    margin-left: 10px;
+    max-width: 30%;
+}
+
+.candidate-header{
+    display: flex;
+    justify-content: space-between;
+}
+.candidate-footer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.candidate-bio{
+    max-width: 50%
+}
+
+.candidate-name{
+    max-width: 50%;
+}
+
+.candidate-info{
+    align-self: flex-end;
+}
