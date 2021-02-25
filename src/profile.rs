@@ -8,7 +8,7 @@ pub struct Profile {
 
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct Props {
-    pub candidate: Candidate,
+    pub candidate: &'static Candidate,
 }
 
 impl Component for Profile {
