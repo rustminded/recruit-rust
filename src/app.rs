@@ -1,7 +1,7 @@
 use crate::profile::Profile;
 use candidate::Candidate;
 use yew::prelude::*;
-use yewprint::{Button, IconName, InputGroup, Text, H1};
+use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 
 pub struct App {
     candidates: Vec<&'static Candidate>,
@@ -38,24 +38,31 @@ impl Component for App {
 
         html! {
             <div class="app-root bp3-dark">
-                <div class="search-field">
-                    <InputGroup
-                        round=true
-                        placeholder="Search..."
-                        right_element=html! {
-                            <Button
-                                icon=IconName::Search
-                                minimal=true
-                            />
-                        }
-                    />
-                </div>
                 <div class="app-header">
+                    <div class="app-title">
                     <H1>{"Welcome on Recruit-Rust.dev!"}</H1>
+                    </div>
+                    <div class="app-search-field">
+                        <InputGroup
+                            round=true
+                            placeholder="Search..."
+                            right_element=html! {
+                                <Button
+                                    icon=IconName::Search
+                                    minimal=true
+                                />
+                            }
+                        />
+                    </div>
+                </div>
+                <div class="app-intro">
                     <Text>{"The place to be hired as an awesome Rustacean"}</Text>
                 </div>
                 <div class="app-content" role="main">
-                    {profile_list}
+                    <div class="profile-list">
+                        <H2>{"Discover the community"}</H2>
+                        {profile_list}
+                    </div>
                 </div>
             </div>
         }
