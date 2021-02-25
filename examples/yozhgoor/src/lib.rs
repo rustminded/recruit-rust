@@ -5,7 +5,7 @@ pub fn candidate() -> Candidate {
     Candidate {
         name: "Yohan Boogaert",
         bio: "Former ambulance driver, \
-            I begin to learn about programming and Rust",
+            I'm starting to learn about programming and Rust",
         email: "yozhgoor@outlook.com",
         pronouns: vec!["he", "him"],
         asked_tech: vec!["Rust", "WASM", "PWA"],
