@@ -11,7 +11,7 @@ pub struct Candidate {
     pub personnal_projects: Vec<Contribution>,
     pub contract_type: ContractType,
     pub availability: Availability,
-    pub joined_date: std::time::Instant,
+    pub joined_date: &'static str,
     pub certifications: Vec<&'static str>,
 }
 
