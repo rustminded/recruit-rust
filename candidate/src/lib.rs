@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Candidate {
     pub name: &'static str,
     pub bio: &'static str,
@@ -14,7 +14,7 @@ pub struct Candidate {
     pub certifications: &'static [&'static str],
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Job {
     pub company: &'static str,
     pub website: &'static str,
@@ -23,7 +23,7 @@ pub struct Job {
     pub period: &'static str,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Contribution {
     pub project: &'static str,
     pub website: &'static str,
@@ -31,14 +31,14 @@ pub struct Contribution {
     pub description: &'static str,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum ContractType {
     Contractor,
     Employee,
     Any,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Availability {
     FullTime,
     PartTime,
