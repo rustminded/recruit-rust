@@ -12,7 +12,7 @@ pub struct Candidate {
     pub contract_type: ContractType,
     pub availability: Availability,
     pub joined_date: std::time::Instant,
-    pub certifications: Option<Vec<String>>,
+    pub certifications: Vec<String>,
 }
 
 #[derive(Debug)]

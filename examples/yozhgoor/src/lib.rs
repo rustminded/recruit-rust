@@ -101,6 +101,6 @@ pub fn candidate() -> Candidate {
         contract_type: ContractType::Contractor,
         availability: Availability::NotAvailable,
         joined_date: Instant::now(),
-        certifications: None,
+        certifications: vec![],
     }
 }
