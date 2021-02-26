@@ -1,3 +1,4 @@
+use crate::jobs::Jobs;
 use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
 use yewprint::{Card, Tag, Text, H1};
@@ -64,6 +65,17 @@ impl Component for Profile {
                 }
             })
             .collect::<Html>();
+        let jobs_list = self
+            .props
+            .candidate
+            .jobs
+            .iter()
+            .map(|x| {
+                html! {
+                    <Jobs candidate_jobs={x} />
+                }
+            })
+            .collect::<Html>();
 
         html! {
             <div class="candidate">
@@ -85,6 +97,9 @@ impl Component for Profile {
                     <div class="candidate-info">
                         <Text>{contract}</Text>
                         <Text>{availability}</Text>
+                    </div>
+                    <div class="candidate-jobs">
+                        {jobs_list}
                     </div>
                 </Card>
             </div>
