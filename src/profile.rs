@@ -41,7 +41,6 @@ impl Component for Profile {
                 }
             })
             .collect::<Html>();
-
         let contract = match self.props.candidate.contract_type {
             ContractType::Contractor => "Contractor",
             ContractType::Employee => "Employee",
@@ -52,26 +51,40 @@ impl Component for Profile {
             Availability::PartTime => "Part time",
             Availability::NotAvailable => "Not available",
         };
+        let urls = self
+            .props
+            .candidate
+            .urls
+            .iter()
+            .map(|(x, y)| {
+                html! {
+                    <li>
+                        <a href={y}>{x}</a>
+                    </li>
+                }
+            })
+            .collect::<Html>();
 
         html! {
             <div class="candidate">
                 <Card interactive=true>
-                    <div class="candidate-header">
-                        <div class="candidate-tag">
-                            {tags}
-                        </div>
-                        <div class="candidate-bio">
-                            <Text>{self.props.candidate.bio}</Text>
-                        </div>
+                    <div class="candidate-tag">
+                        {tags}
                     </div>
-                    <div class="candidate-footer">
-                        <div class="candidate-name">
-                            <H1>{self.props.candidate.name}</H1>
-                        </div>
-                        <div class="candidate-info">
-                            <Text>{contract}</Text>
-                            <Text>{availability}</Text>
-                        </div>
+                    <div class="candidate-name">
+                        <H1>{self.props.candidate.name}</H1>
+                    </div>
+                    <div class="candidate-urls">
+                        <ul>
+                            {urls}
+                        </ul>
+                    </div>
+                    <div class="candidate-bio">
+                        <Text>{self.props.candidate.bio}</Text>
+                    </div>
+                    <div class="candidate-info">
+                        <Text>{contract}</Text>
+                        <Text>{availability}</Text>
                     </div>
                 </Card>
             </div>
