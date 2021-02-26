@@ -1,5 +1,6 @@
 use candidate::Contribution;
 use yew::prelude::*;
+use yewprint::{Tag, Text};
 
 pub struct Contributions {
     props: Props,
@@ -27,9 +28,30 @@ impl Component for Contributions {
     }
 
     fn view(&self) -> Html {
+        let contrib_tags = self
+            .props
+            .contributions
+            .tech
+            .iter()
+            .map(|x| {
+                html! {
+                    <Tag>
+                        {x}
+                    </Tag>
+                }
+            })
+            .collect::<Html>();
+
         html! {
             <div>
-                <p>{"Hello, world!"}</p>
+                <Text>{self.props.contributions.project}</Text>
+                <Text>{self.props.contributions.description}</Text>
+                <a href={self.props.contributions.website}>
+                    {"Website"}
+                </a>
+                <div>
+                    {contrib_tags}
+                </div>
             </div>
         }
     }

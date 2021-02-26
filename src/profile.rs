@@ -1,3 +1,4 @@
+use crate::contributions::Contributions;
 use crate::jobs::Jobs;
 use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
@@ -76,6 +77,28 @@ impl Component for Profile {
                 }
             })
             .collect::<Html>();
+        let contrib_list = self
+            .props
+            .candidate
+            .contributions
+            .iter()
+            .map(|x| {
+                html! {
+                    <Contributions contributions={x} />
+                }
+            })
+            .collect::<Html>();
+        let personnal_list = self
+            .props
+            .candidate
+            .personnal_projects
+            .iter()
+            .map(|x| {
+                html! {
+                    <Contributions contributions={x} />
+                }
+            })
+            .collect::<Html>();
 
         html! {
             <div class="candidate">
@@ -100,6 +123,12 @@ impl Component for Profile {
                     </div>
                     <div class="candidate-jobs">
                         {jobs_list}
+                    </div>
+                    <div class="candidate-contributions">
+                        {contrib_list}
+                    </div>
+                    <div class="candidate-personnal">
+                        {personnal_list}
                     </div>
                 </Card>
             </div>
