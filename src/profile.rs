@@ -2,7 +2,7 @@ use crate::contributions::Contributions;
 use crate::jobs::Jobs;
 use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
-use yewprint::{Card, Tag, Text, H1};
+use yewprint::{Card, Tag, Text, H1, H2};
 
 pub struct Profile {
     props: Props,
@@ -37,9 +37,11 @@ impl Component for Profile {
             .iter()
             .map(|x| {
                 html! {
-                    <Tag>
-                        {x}
-                    </Tag>
+                    <div class="tag">
+                        <Tag>
+                            {x}
+                        </Tag>
+                    </div>
                 }
             })
             .collect::<Html>();
@@ -60,9 +62,10 @@ impl Component for Profile {
             .iter()
             .map(|(x, y)| {
                 html! {
-                    <li>
+                    <div class="url">
                         <a href={y}>{x}</a>
-                    </li>
+                        {" | "}
+                    </div>
                 }
             })
             .collect::<Html>();
@@ -103,31 +106,36 @@ impl Component for Profile {
         html! {
             <div class="candidate">
                 <Card interactive=true>
-                    <div class="candidate-tag">
-                        {tags}
+                    <div class="candidate-header-top">
+                        <div class="candidate-tag">
+                            {tags}
+                        </div>
+                        <div class="candidate-bio">
+                            <Text>{self.props.candidate.bio}</Text>
+                        </div>
                     </div>
-                    <div class="candidate-name">
-                        <H1>{self.props.candidate.name}</H1>
-                    </div>
-                    <div class="candidate-urls">
-                        <ul>
+                    <div class="candidate-header-bottom">
+                        <div class="candidate-name">
+                            <H1>{self.props.candidate.name}</H1>
+                        </div>
+                        <div class="candidate-urls">
                             {urls}
-                        </ul>
-                    </div>
-                    <div class="candidate-bio">
-                        <Text>{self.props.candidate.bio}</Text>
+                        </div>
                     </div>
                     <div class="candidate-info">
                         <Text>{contract}</Text>
                         <Text>{availability}</Text>
                     </div>
                     <div class="candidate-jobs">
+                        <H2>{"Jobs"}</H2>
                         {jobs_list}
                     </div>
                     <div class="candidate-contributions">
+                        <H2>{"Contribution"}</H2>
                         {contrib_list}
                     </div>
                     <div class="candidate-personnal">
+                        <H2>{"Personnal projects"}</H2>
                         {personnal_list}
                     </div>
                 </Card>

@@ -35,24 +35,38 @@ impl Component for Jobs {
             .iter()
             .map(|x| {
                 html! {
-                    <Tag>
-                        {x}
-                    </Tag>
+                    <div class="tag">
+                        <Tag>
+                            {x}
+                        </Tag>
+                    </div>
                 }
             })
             .collect::<Html>();
 
         html! {
-            <div>
-                <Text>{self.props.jobs.company}</Text>
-                <a href={self.props.jobs.website}>
-                    {"Website"}
-                </a>
-                <Text>{self.props.jobs.description}</Text>
-                <div>
+            <div class="candidate-alone-job">
+                <div class="candidate-tag">
                     {jobs_tags}
                 </div>
-                <Text>{self.props.jobs.period}</Text>
+                <div class="jobs-header">
+                    <div class="jobs-header-link">
+                        <a href={self.props.jobs.website}>
+                            {self.props.jobs.company}
+                        </a>
+                    </div>
+                    <div class="jobs-header-separator">
+                        <Text>{"|"}</Text>
+                    </div>
+                    <div class="jobs-header-period">
+                        <Text>{self.props.jobs.period}</Text>
+                    </div>
+                </div>
+                <div class="jobs-description">
+                    <Text>{self.props.jobs.description}</Text>
+                </div>
+                <div class="separator">
+                </div>
             </div>
         }
     }

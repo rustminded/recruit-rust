@@ -35,22 +35,29 @@ impl Component for Contributions {
             .iter()
             .map(|x| {
                 html! {
-                    <Tag>
-                        {x}
-                    </Tag>
+                    <div class="tag">
+                        <Tag>
+                            {x}
+                        </Tag>
+                    </div>
                 }
             })
             .collect::<Html>();
 
         html! {
-            <div>
-                <Text>{self.props.contributions.project}</Text>
-                <Text>{self.props.contributions.description}</Text>
-                <a href={self.props.contributions.website}>
-                    {"Website"}
-                </a>
-                <div>
+            <div class="candidate-alone-contribution">
+                <div class="candidate-tag">
                     {contrib_tags}
+                </div>
+                <div class="contribution-link">
+                    <a href={self.props.contributions.website}>
+                        {self.props.contributions.project}
+                    </a>
+                </div>
+                <div class="contribution-description">
+                    <Text>{self.props.contributions.description}</Text>
+                </div>
+                <div class="separator">
                 </div>
             </div>
         }
