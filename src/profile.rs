@@ -72,7 +72,7 @@ impl Component for Profile {
             .iter()
             .map(|x| {
                 html! {
-                    <Jobs candidate_jobs={x} />
+                    <Jobs jobs={x} />
                 }
             })
             .collect::<Html>();

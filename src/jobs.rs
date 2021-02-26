@@ -8,7 +8,7 @@ pub struct Jobs {
 
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct Props {
-    pub candidate_jobs: &'static Job,
+    pub jobs: &'static Job,
 }
 
 impl Component for Jobs {
@@ -30,7 +30,7 @@ impl Component for Jobs {
     fn view(&self) -> Html {
         let jobs_tags = self
             .props
-            .candidate_jobs
+            .jobs
             .tech
             .iter()
             .map(|x| {
@@ -44,15 +44,15 @@ impl Component for Jobs {
 
         html! {
             <div>
-                <Text>{self.props.candidate_jobs.company}</Text>
-                <a href={self.props.candidate_jobs.website}>
+                <Text>{self.props.jobs.company}</Text>
+                <a href={self.props.jobs.website}>
                     {"Website"}
                 </a>
-                <Text>{self.props.candidate_jobs.description}</Text>
+                <Text>{self.props.jobs.description}</Text>
                 <div>
                     {jobs_tags}
                 </div>
-                <Text>{self.props.candidate_jobs.period}</Text>
+                <Text>{self.props.jobs.period}</Text>
             </div>
         }
     }
