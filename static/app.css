@@ -58,14 +58,6 @@ body{
     margin-left: 3px;
 }
 
-.candidate-info{
-    display: flex;
-}
-
-.candidate-info div{
-    margin-left: 5px;
-}
-
 .candidate h2{
     margin-top: 15px;
 }
