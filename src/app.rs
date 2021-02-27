@@ -39,9 +39,7 @@ impl Component for App {
         html! {
             <div class="app-root bp3-dark">
                 <div class="app-header">
-                    <div class="app-title">
-                    <H1>{"Welcome on Recruit-Rust.dev!"}</H1>
-                    </div>
+                    <H1 class=classes!("app-title")>{"Welcome on Recruit-Rust.dev!"}</H1>
                     <div class="app-search-field">
                         <InputGroup
                             round=true
@@ -55,9 +53,9 @@ impl Component for App {
                         />
                     </div>
                 </div>
-                <div class="app-intro">
-                    <Text>{"The place to be hired as an awesome Rustacean"}</Text>
-                </div>
+                <Text class=classes!("app-intro")>
+                    {"The place to be hired as an awesome Rustacean"}
+                </Text>
                 <div class="app-content" role="main">
                     <div class="profile-list">
                         <H2>{"Discover the community"}</H2>
