@@ -47,14 +47,10 @@ impl Component for Contributions {
                 <div class="candidate-tag">
                     {contrib_tags}
                 </div>
-                <div class="contribution-link">
-                    <a href={self.props.contributions.website}>
+                    <a class="contribution-link" href={self.props.contributions.website}>
                         {self.props.contributions.project}
                     </a>
-                </div>
-                <div class="contribution-description">
-                    <Text>{self.props.contributions.description}</Text>
-                </div>
+                    <Text class=classes!("contribution-description")>{self.props.contributions.description}</Text>
                 <div class="separator">
                 </div>
             </div>
