@@ -1,6 +1,7 @@
 use crate::contributions::Contributions;
 use crate::jobs::Jobs;
 use candidate::{Availability, Candidate, ContractType};
+use itertools::Itertools;
 use yew::prelude::*;
 use yewprint::{Card, Tag, Text, H1, H2};
 
