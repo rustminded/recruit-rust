@@ -106,43 +106,40 @@ impl Component for Profile {
             .collect::<Html>();
 
         html! {
-            <div class="candidate">
-                <Card interactive=true>
-                    <div class="candidate-header-top">
-                        <div class="candidate-tag">
-                            {tags}
-                        </div>
-                        <div class="candidate-bio">
-                            <Text>{self.props.candidate.bio}</Text>
-                        </div>
+            <Card
+                class=classes!("candidate")
+                interactive=true
+            >
+                <div class="candidate-header-top">
+                    <div class="candidate-tag">
+                        {tags}
                     </div>
-                    <div class="candidate-header-bottom">
-                        <div class="candidate-name">
-                            <H1>{self.props.candidate.name}</H1>
-                            <Text class=classes!("candidate-pronouns")>{"("}{pronouns}{")"}</Text>
-                        </div>
-                        <div class="candidate-urls">
-                            {urls}
-                        </div>
+                    <Text class=classes!("candidate-bio")>{self.props.candidate.bio}</Text>
+                </div>
+                <div class="candidate-header-bottom">
+                    <div class="candidate-name">
+                        <H1>{self.props.candidate.name}</H1>
+                        <Text class=classes!("candidate-pronouns")>{"("}{pronouns}{")"}</Text>
                     </div>
-                    <div class="candidate-info">
-                        <Text>{contract}</Text>
-                        <Text>{availability}</Text>
+                    <div class="candidate-urls">
+                        {urls}
                     </div>
-                    <div class="candidate-jobs">
-                        <H2>{"Jobs"}</H2>
-                        {jobs_list}
-                    </div>
-                    <div class="candidate-contributions">
-                        <H2>{"Contribution"}</H2>
-                        {contrib_list}
-                    </div>
-                    <div class="candidate-personnal">
-                        <H2>{"Personnal projects"}</H2>
-                        {personnal_list}
-                    </div>
-                </Card>
-            </div>
+                </div>
+                <Text>{contract}</Text>
+                <Text>{availability}</Text>
+                <div class="candidate-jobs">
+                    <H2>{"Jobs"}</H2>
+                    {jobs_list}
+                </div>
+                <div class="candidate-contributions">
+                    <H2>{"Contribution"}</H2>
+                    {contrib_list}
+                </div>
+                <div class="candidate-personnal">
+                    <H2>{"Personnal projects"}</H2>
+                    {personnal_list}
+                </div>
+            </Card>
         }
     }
 }
