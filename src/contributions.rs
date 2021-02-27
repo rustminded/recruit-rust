@@ -35,11 +35,9 @@ impl Component for Contributions {
             .iter()
             .map(|x| {
                 html! {
-                    <div class="tag">
-                        <Tag>
-                            {x}
-                        </Tag>
-                    </div>
+                    <Tag class=classes!("tag")>
+                        {x}
+                    </Tag>
                 }
             })
             .collect::<Html>();
