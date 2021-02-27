@@ -46,7 +46,6 @@ impl Component for Profile {
             .collect::<Html>();
 
         let pronouns = self.props.candidate.pronouns.iter().join("/");
-
         let urls = self
             .props
             .candidate
@@ -61,7 +60,6 @@ impl Component for Profile {
                 }
             })
             .collect::<Html>();
-
         let contract = match self.props.candidate.contract_type {
             ContractType::Contractor => "Contractor",
             ContractType::Employee => "Employee",
