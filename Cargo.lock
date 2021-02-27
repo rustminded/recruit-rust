@@ -3059,9 +3059,8 @@ dependencies = [
 [[package]]
 name = "yewprint"
 version = "0.1.0"
-source = "git+https://github.com/cecton/yewprint.git?branch=main#29c685cfe2bb69b32e5e0761c68aa9076f7b3f64"
+source = "git+https://github.com/cecton/yewprint.git?branch=main#904715797a0568176191e2413836f2bc6aaf640f"
 dependencies = [
- "boolinator",
  "heck",
  "id_tree",
  "regex",
