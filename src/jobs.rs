@@ -51,10 +51,16 @@ impl Component for Jobs {
                     <a class="jobs-header-link" href={self.props.jobs.website}>
                         {self.props.jobs.company}
                     </a>
-                    <Text class=classes!("jobs-header-separator")>{"|"}</Text>
-                    <Text class=classes!("jobs-header-period")>{self.props.jobs.period}</Text>
+                    <Text class=classes!("jobs-header-separator")>
+                        {"|"}
+                    </Text>
+                    <Text class=classes!("jobs-header-period")>
+                        {self.props.jobs.period}
+                    </Text>
                 </div>
-                <Text class=classes!("jobs-description")>{self.props.jobs.description}</Text>
+                <Text class=classes!("jobs-description")>
+                    {self.props.jobs.description}
+                </Text>
                 <div class="separator">
                 </div>
             </div>

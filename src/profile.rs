@@ -47,16 +47,6 @@ impl Component for Profile {
 
         let pronouns = self.props.candidate.pronouns.iter().join("/");
 
-        let contract = match self.props.candidate.contract_type {
-            ContractType::Contractor => "Contractor",
-            ContractType::Employee => "Employee",
-            ContractType::Any => "Any",
-        };
-        let availability = match self.props.candidate.availability {
-            Availability::FullTime => "Full time",
-            Availability::PartTime => "Part time",
-            Availability::NotAvailable => "Not available",
-        };
         let urls = self
             .props
             .candidate
@@ -71,6 +61,17 @@ impl Component for Profile {
                 }
             })
             .collect::<Html>();
+
+        let contract = match self.props.candidate.contract_type {
+            ContractType::Contractor => "Contractor",
+            ContractType::Employee => "Employee",
+            ContractType::Any => "Any",
+        };
+        let availability = match self.props.candidate.availability {
+            Availability::FullTime => "Full time",
+            Availability::PartTime => "Part time",
+            Availability::NotAvailable => "Not available",
+        };
         let jobs_list = self
             .props
             .candidate

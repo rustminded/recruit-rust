@@ -50,7 +50,9 @@ impl Component for Contributions {
                     <a class="contribution-link" href={self.props.contributions.website}>
                         {self.props.contributions.project}
                     </a>
-                    <Text class=classes!("contribution-description")>{self.props.contributions.description}</Text>
+                    <Text class=classes!("contribution-description")>
+                        {self.props.contributions.description}
+                    </Text>
                 <div class="separator">
                 </div>
             </div>

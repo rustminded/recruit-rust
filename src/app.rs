@@ -39,7 +39,9 @@ impl Component for App {
         html! {
             <div class="app-root bp3-dark">
                 <div class="app-header">
-                    <H1 class=classes!("app-title")>{"Welcome on Recruit-Rust.dev!"}</H1>
+                    <H1 class=classes!("app-title")>
+                        {"Welcome on Recruit-Rust.dev!"}
+                    </H1>
                     <div class="app-search-field">
                         <InputGroup
                             round=true
