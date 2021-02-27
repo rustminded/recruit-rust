@@ -44,6 +44,9 @@ impl Component for Profile {
                 }
             })
             .collect::<Html>();
+
+        let pronouns = self.props.candidate.pronouns.iter().join("/");
+
         let contract = match self.props.candidate.contract_type {
             ContractType::Contractor => "Contractor",
             ContractType::Employee => "Employee",
@@ -116,6 +119,7 @@ impl Component for Profile {
                     <div class="candidate-header-bottom">
                         <div class="candidate-name">
                             <H1>{self.props.candidate.name}</H1>
+                            <Text class=classes!("candidate-pronouns")>{"("}{pronouns}{")"}</Text>
                         </div>
                         <div class="candidate-urls">
                             {urls}

@@ -102,3 +102,12 @@ body{
     width: 25px;
     border-bottom: 3px white Solid;
 }
+
+.candidate-name{
+    display: flex;
+    align-items: baseline;
+}
+
+.candidate-pronouns{
+    margin-left: 10px;
+}
