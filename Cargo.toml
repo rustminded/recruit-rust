@@ -14,6 +14,7 @@ wasm-bindgen = "0.2"
 web-sys = "0.3"
 yew = { git = "https://github.com/yewstack/yew.git", rev = "db3170f629f" }
 yewprint = { git = "https://github.com/cecton/yewprint.git", branch = "main" }
+itertools = "0.10.0"
 yozhgoor = { path = "examples/yozhgoor" }
 candidate = { path = "candidate" }
 

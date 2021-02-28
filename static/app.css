@@ -4,7 +4,102 @@ body{
     padding: 0;
 }
 
-.search-field{
+.app-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.app-title{
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 50%;
+}
+
+.app-search-field{
+    margin-top: 20px;
+    margin-right: 20px;
+    width: 50%;
+}
+
+.app-intro{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-list{
+    margin-left: 20px;
+    max-width: 50%;
+}
+
+.candidate-tag{
+    display: flex;
+}
+
+.tag{
+    margin-left: 3px;
+}
+
+.candidate-header-top{
+    display: flex;
+    justify-content: space-between;
+}
+
+.candidate-header-bottom{
+    display: flex;
+    justify-content: space-between;
+}
+
+.candidate-urls{
+    display: flex;
+}
+
+.url{
+    margin-left: 3px;
+}
+
+.candidate h2{
     margin-top: 15px;
+}
+
+.jobs-header{
+    display: flex;
+}
+
+.jobs-header-link{
+    margin-right: 3px;
+}
+
+.jobs-header-separator{
+    margin-right: 3px;
+}
+
+.candidate-alone-job{
+    margin-bottom: 15px;
+}
+
+.candidate-alone-contribution{
+    margin-bottom: 15px;
+}
+
+.jobs-description{
     margin-bottom: 5px;
+}
+
+.contribution-description{
+    margin-bottom: 5px;
+}
+
+.separator{
+    width: 25px;
+    border-bottom: 3px white Solid;
+}
+
+.candidate-name{
+    display: flex;
+    align-items: baseline;
+}
+
+.candidate-pronouns{
+    margin-left: 10px;
 }
