@@ -1,6 +1,11 @@
 use crate::profile::Profile;
 use candidate::Candidate;
 use yew::prelude::*;
+use yew_router::{
+    agent::{RouteAgentDispatcher, RouteRequest},
+    router::Router,
+    Switch,
+};
 use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 
 pub struct App {
@@ -59,6 +64,16 @@ impl Component for App {
                     {"The place to be hired as an awesome Rustacean"}
                 </Text>
                 <div class="app-content" role="main">
+                <Router<AppRoute, ()>
+                    render = Router::render(|switch: AppRoute| {
+                        match switch {
+                            AppRoute::Home => html! (<App />),
+                            AppRoute::Profile(Candidate) => html! (
+                                <Profile />
+                            )
+                        }
+                   })
+                />
                     <div class="profile-list">
                         <H2>{"Discover the community"}</H2>
                         {profile_list}
@@ -67,4 +82,12 @@ impl Component for App {
             </div>
         }
     }
+}
+
+#[derive(Switch, Debug, Clone)]
+pub enum AppRoute {
+    #[to = "/profile"]
+    Profile,
+    #[to = "/"]
+    Home,
 }
