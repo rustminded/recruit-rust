@@ -19,6 +19,7 @@ impl Component for Profile {
     type Properties = Props;
 
     fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
+        let candidate = vec![yozhgoor::candidate()];
         Profile { props }
     }
 

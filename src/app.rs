@@ -68,8 +68,8 @@ impl Component for App {
                     render = Router::render(|switch: AppRoute| {
                         match switch {
                             AppRoute::Home => html! (<App />),
-                            AppRoute::Profile(Candidate) => html! (
-                                <Profile />
+                            AppRoute::Profile(profile_list) => html! (
+                                <Profile candidate={profile_list}/>
                             )
                         }
                    })
@@ -86,8 +86,8 @@ impl Component for App {
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoute {
-    #[to = "/profile"]
-    Profile,
+    #[to = "/profile/{profile_list}"]
+    Profile(&'static Candidate),
     #[to = "/"]
     Home,
 }
