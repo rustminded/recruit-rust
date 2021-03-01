@@ -1,15 +1,11 @@
 use crate::profile::Profile;
 use candidate::Candidate;
 use yew::prelude::*;
-use yew_router::{
-    agent::{RouteAgentDispatcher, RouteRequest},
-    router::Router,
-    Switch,
-};
+use yew_router::{router::Router, Switch};
 use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 
 pub struct App {
-    candidates: Vec<&'static Candidate>,
+    candidates: Vec<(&'static str, &'static Candidate)>,
 }
 
 impl Component for App {
@@ -31,15 +27,21 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
-        let profile_list = self
+        let candidate_profile = self
             .candidates
             .iter()
-            .map(|x| {
+            .map(|(x, y)| y)
+            .map(|y| {
                 html! {
-                    <Profile candidate={x} />
+                    <Profile candidate={y} />
                 }
             })
             .collect::<Html>();
+        let candidate_slug = self
+            .candidates
+            .iter()
+            .map(|(x, y)| x.to_string())
+            .collect::<String>();
 
         html! {
             <div class="app-root bp3-dark">
@@ -68,15 +70,15 @@ impl Component for App {
                     render = Router::render(|switch: AppRoute| {
                         match switch {
                             AppRoute::Home => html! (<App />),
-                            AppRoute::Profile(profile_list) => html! (
-                                <Profile candidate={profile_list}/>
+                            AppRoute::Profile(slug) => html! (
+                                <Profile />
                             )
                         }
                    })
                 />
                     <div class="profile-list">
                         <H2>{"Discover the community"}</H2>
-                        {profile_list}
+                        {candidate_profile}
                     </div>
                 </div>
             </div>
@@ -86,8 +88,8 @@ impl Component for App {
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoute {
-    #[to = "/profile/{profile_list}"]
-    Profile(&'static Candidate),
+    #[to = "/profile/{slug}"]
+    Profile(String),
     #[to = "/"]
     Home,
 }
