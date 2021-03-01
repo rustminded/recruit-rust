@@ -25,6 +25,8 @@ jobs:
           args: --workspace
 
 site:
+  - name: Build (Release)
+    run: "cargo run -- build"
   - name: Deploy to Netlify
       uses: nwtgck/actions-netlify@v1.1
       with:
