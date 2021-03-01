@@ -70,8 +70,8 @@ impl Component for App {
                     render = Router::render(|switch: AppRoute| {
                         match switch {
                             AppRoute::Home => html! (<App />),
-                            AppRoute::Profile(slug) => html! (
-                                <Profile />
+                            AppRoute::Profile(candidate_slug) => html! (
+                                {candidate_profile}
                             )
                         }
                    })
