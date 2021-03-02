@@ -3,8 +3,8 @@
 mod app;
 mod contributions;
 mod jobs;
+mod list_item;
 mod profile;
-mod profile_list;
 
 pub use app::*;
 use wasm_bindgen::prelude::*;

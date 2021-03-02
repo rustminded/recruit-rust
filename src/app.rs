@@ -1,5 +1,5 @@
+use crate::list_item::ListItem;
 use crate::profile::Profile;
-use crate::profile_list::ProfileList;
 use candidate::Candidate;
 use std::collections::HashMap;
 use yew::prelude::*;
@@ -32,35 +32,9 @@ impl Component for App {
 
     fn view(&self) -> Html {
         let candidates = self.candidates.clone();
-        let profile_list = self
-            .candidates
-            .iter()
-            .map(|(_x, y)| y)
-            .map(|y| {
-                html! {
-                    <ProfileList candidate={y} />
-                }
-            })
-            .collect::<Html>();
 
         html! {
             <div class="app-root bp3-dark">
-                <div>
-                    <Router<AppRoute, ()>
-                        render=Router::render(move |switch: AppRoute| {
-                            match switch {
-                                AppRoute::Home => html!(),
-                                AppRoute::Profile(candidate_slug) => html! {
-                                    <Profile
-                                        candidate=candidates
-                                            .get(&candidate_slug.as_str())
-                                            .unwrap()
-                                    />
-                                },
-                            }
-                        })
-                    />
-                </div>
                 <div class="app-header">
                     <H1 class=classes!("app-title")>
                         {"Welcome on Recruit-Rust.dev!"}
@@ -84,9 +58,30 @@ impl Component for App {
                 <div class="app-content" role="main">
                     <div class="profile-list-component">
                         <H2>{"Discover the community"}</H2>
-                        {profile_list}
                     </div>
-
+                    <div>
+                        <Router<AppRoute, ()>
+                            render=Router::render(move |switch: AppRoute| {
+                                match switch {
+                                    AppRoute::Home | AppRoute::ListItem => candidates
+                                        .values()
+                                        .map(|x| {
+                                            html! {
+                                                <ListItem candidate={x} />
+                                            }
+                                        })
+                                        .collect::<Html>(),
+                                    AppRoute::Profile(candidate_slug) => html! {
+                                        <Profile
+                                            candidate=candidates
+                                                .get(&candidate_slug.as_str())
+                                                .unwrap()
+                                        />
+                                    },
+                                }
+                            })
+                        />
+                    </div>
                 </div>
             </div>
         }
@@ -97,6 +92,8 @@ impl Component for App {
 pub enum AppRoute {
     #[to = "/profile/{candidate_slug}"]
     Profile(String),
+    #[to = "/profile"]
+    ListItem,
     #[to = "/"]
     Home,
 }
