@@ -35,7 +35,7 @@ impl Component for App {
         let profile_list = self
             .candidates
             .iter()
-            .map(|(x, y)| y)
+            .map(|(_x, y)| y)
             .map(|y| {
                 html! {
                     <ProfileList candidate={y} />
@@ -45,6 +45,22 @@ impl Component for App {
 
         html! {
             <div class="app-root bp3-dark">
+                <div>
+                    <Router<AppRoute, ()>
+                        render=Router::render(move |switch: AppRoute| {
+                            match switch {
+                                AppRoute::Home => html!(),
+                                AppRoute::Profile(candidate_slug) => html! {
+                                    <Profile
+                                        candidate=candidates
+                                            .get(&candidate_slug.as_str())
+                                            .unwrap()
+                                    />
+                                },
+                            }
+                        })
+                    />
+                </div>
                 <div class="app-header">
                     <H1 class=classes!("app-title")>
                         {"Welcome on Recruit-Rust.dev!"}
@@ -66,26 +82,11 @@ impl Component for App {
                     {"The place to be hired as an awesome Rustacean"}
                 </Text>
                 <div class="app-content" role="main">
-                    <div class="profile-list">
+                    <div class="profile-list-component">
                         <H2>{"Discover the community"}</H2>
                         {profile_list}
                     </div>
-                    <div>
-                        <Router<AppRoute, ()>
-                            render=Router::render(move |switch: AppRoute| {
-                                match switch {
-                                    AppRoute::Home => html!(),
-                                    AppRoute::Profile(candidate_slug) => html! {
-                                        <Profile
-                                            candidate=candidates
-                                                .get(&candidate_slug.as_str())
-                                                .unwrap()
-                                        />
-                                    },
-                                }
-                            })
-                        />
-                    </div>
+
                 </div>
             </div>
         }
