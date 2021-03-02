@@ -55,7 +55,7 @@ impl Component for ListCandidate {
         html! {
             <Card class=classes!("profile-list")>
                 <div class="profile-list-header">
-                    <a href=format!("/profile/{}", self.props.candidate.slug)>
+                    <a href=format!("/{}", self.props.candidate.slug)>
                         {self.props.candidate.name}
                     </a>
                     <Text>{availability}</Text>
