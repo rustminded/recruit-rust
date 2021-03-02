@@ -90,7 +90,7 @@ impl Component for App {
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoute {
-    #[to = "/profile/{candidate_slug}"]
+    #[to = "/{candidate_slug}"]
     Profile(String),
     #[to = "/"]
     ListCandidate,
