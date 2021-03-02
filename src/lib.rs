@@ -3,7 +3,7 @@
 mod app;
 mod contributions;
 mod jobs;
-mod list_item;
+mod list_candidate;
 mod profile;
 
 pub use app::*;

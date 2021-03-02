@@ -1,4 +1,4 @@
-use crate::list_item::ListItem;
+use crate::list_candidate::ListCandidate;
 use crate::profile::Profile;
 use candidate::Candidate;
 use std::collections::HashMap;
@@ -63,11 +63,11 @@ impl Component for App {
                         <Router<AppRoute, ()>
                             render=Router::render(move |switch: AppRoute| {
                                 match switch {
-                                    AppRoute::Home | AppRoute::ListItem => candidates
+                                    AppRoute::Home | AppRoute::ListCandidate => candidates
                                         .values()
                                         .map(|x| {
                                             html! {
-                                                <ListItem candidate={x} />
+                                                <ListCandidate candidate={x} />
                                             }
                                         })
                                         .collect::<Html>(),
@@ -93,7 +93,7 @@ pub enum AppRoute {
     #[to = "/profile/{candidate_slug}"]
     Profile(String),
     #[to = "/profile"]
-    ListItem,
+    ListCandidate,
     #[to = "/"]
     Home,
 }
