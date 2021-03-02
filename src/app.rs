@@ -1,11 +1,12 @@
 use crate::profile::Profile;
 use candidate::Candidate;
+use std::collections::HashMap;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
 use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 
 pub struct App {
-    candidates: Vec<(&'static str, &'static Candidate)>,
+    candidates: HashMap<&'static str, &'static Candidate>,
 }
 
 impl Component for App {
@@ -13,7 +14,9 @@ impl Component for App {
     type Properties = ();
 
     fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        let candidates = vec![yozhgoor::candidate()];
+        let mut candidates = HashMap::new();
+        let (x, y) = yozhgoor::candidate();
+        candidates.insert(x, y);
         crate::log!("{:?}", candidates);
         App { candidates }
     }
@@ -27,7 +30,8 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
-        let candidate_profile = self
+        let candidates = self.candidates.clone();
+        /* let candidate_profile = self
             .candidates
             .iter()
             .map(|(x, y)| y)
@@ -37,11 +41,7 @@ impl Component for App {
                 }
             })
             .collect::<Html>();
-        let candidate_slug = self
-            .candidates
-            .iter()
-            .map(|(x, y)| x.to_string())
-            .collect::<String>();
+        */
 
         html! {
             <div class="app-root bp3-dark">
@@ -66,19 +66,25 @@ impl Component for App {
                     {"The place to be hired as an awesome Rustacean"}
                 </Text>
                 <div class="app-content" role="main">
-                <Router<AppRoute, ()>
-                    render = Router::render(|switch: AppRoute| {
-                        match switch {
-                            AppRoute::Home => html! (<App />),
-                            AppRoute::Profile(candidate_slug) => html! (
-                                {candidate_profile}
-                            )
-                        }
-                   })
-                />
                     <div class="profile-list">
                         <H2>{"Discover the community"}</H2>
-                        {candidate_profile}
+                    </div>
+                    <div>
+                        <Router<AppRoute, ()>
+                            render = Router::render(move |switch: AppRoute| {
+                                match switch {
+                                    AppRoute::Home => html!(),
+                                    AppRoute::Profile(candidate_slug) =>
+                                    html! (
+                                            <Profile
+                                                candidate = candidates
+                                                    .get(&candidate_slug.as_str())
+                                                    .unwrap()
+                                            />
+                                    ),
+                                }
+                            })
+                        />
                     </div>
                 </div>
             </div>
@@ -88,7 +94,7 @@ impl Component for App {
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoute {
-    #[to = "/profile/{slug}"]
+    #[to = "/profile/{candidate_slug}"]
     Profile(String),
     #[to = "/"]
     Home,
