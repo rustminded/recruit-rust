@@ -92,7 +92,7 @@ impl Component for App {
 pub enum AppRoute {
     #[to = "/profile/{candidate_slug}"]
     Profile(String),
-    #[to = "/profile"]
+    #[to = "/"]
     ListCandidate,
     #[to = "/"]
     Home,
