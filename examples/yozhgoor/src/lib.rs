@@ -4,7 +4,7 @@ pub fn candidate() -> &'static Candidate {
     &Candidate {
         name: "Yohan Boogaert",
         bio: "Former ambulance driver, \
-            I'm starting to learn about programming and Rust",
+            I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
         pronouns: &["he", "him"],
         asked_tech: &["Rust", "WASM", "PWA"],

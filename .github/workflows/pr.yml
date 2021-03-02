@@ -22,6 +22,19 @@ jobs:
           command: test
           args: --workspace
 
+      - name: Build (Release)
+        run: "cargo run -- build"
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.1
+        with:
+          publish-dir: './build'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: ${{ github.event.pull_request.title }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
+
       - name: rustfmt
         uses: actions-rs/cargo@v1
         with:
