@@ -78,7 +78,7 @@ impl Component for App {
                                         <Profile
                                             candidate=candidates
                                                 .get(&candidate_slug.as_str())
-                                                .unwrap())
+                                                .unwrap()
                                         />
                                     },
                                 }
