@@ -55,16 +55,14 @@ impl Component for ProfileList {
         html! {
             <Card class=classes!("profile-list")>
                 <div class="profile-list-header">
-                    <div class="profile-list-tag">
-                        {tags}
-                    </div>
                     <a href=format!("/profile/{}", self.props.candidate.slug)>
                         {self.props.candidate.name}
                     </a>
-                </div>
-                <div class="profile_list_footer">
                     <Text>{availability}</Text>
                     <Text>{contract}</Text>
+                </div>
+                <div class="profile-list-footer">
+                    {tags}
                 </div>
             </Card>
         }
