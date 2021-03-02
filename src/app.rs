@@ -15,7 +15,7 @@ impl Component for App {
 
     fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
         let mut candidates = HashMap::new();
-        let (x, y) = yozhgoor::candidate();
+        let (x, y) = (yozhgoor::candidate().slug, yozhgoor::candidate());
         candidates.insert(x, y);
         crate::log!("{:?}", candidates);
         App { candidates }

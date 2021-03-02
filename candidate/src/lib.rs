@@ -1,5 +1,6 @@
 #[derive(Debug, Clone, PartialEq)]
 pub struct Candidate {
+    pub slug: &'static str,
     pub name: &'static str,
     pub bio: &'static str,
     pub email: &'static str,
