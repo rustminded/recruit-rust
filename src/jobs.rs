@@ -3,17 +3,17 @@ use yew::prelude::*;
 use yewprint::{Tag, Text};
 
 pub struct Jobs {
-    props: Props,
+    props: JobsProps,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
-pub struct Props {
+pub struct JobsProps {
     pub jobs: &'static Job,
 }
 
 impl Component for Jobs {
     type Message = ();
-    type Properties = Props;
+    type Properties = JobsProps;
 
     fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
         Jobs { props }

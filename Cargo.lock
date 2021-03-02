@@ -1454,6 +1454,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3576a87f2ba00f6f106fdfcd16db1d698d648a26ad8e0573cad8537c3c362d2a"
 
 [[package]]
+name = "lexical-core"
+version = "0.7.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "21f866863575d0e1d654fbeeabdc927292fdf862873dc3c96c6f753357e13374"
+dependencies = [
+ "arrayvec",
+ "bitflags",
+ "cfg-if 1.0.0",
+ "ryu",
+ "static_assertions",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.86"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1597,6 +1610,17 @@ dependencies = [
  "cfg-if 0.1.10",
  "libc",
  "winapi 0.3.9",
+]
+
+[[package]]
+name = "nom"
+version = "5.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ffb4262d26ed83a1c0a33a38fe2bb15797329c85770da05e6b828ddb782627af"
+dependencies = [
+ "lexical-core",
+ "memchr",
+ "version_check",
 ]
 
 [[package]]
@@ -1933,6 +1957,7 @@ dependencies = [
  "web-sys",
  "wee_alloc",
  "yew",
+ "yew-router",
  "yewprint",
  "yozhgoor",
 ]
@@ -2242,6 +2267,12 @@ checksum = "a2beb4d1860a61f571530b3f855a1b538d0200f7871c63331ecd6f17b1f014f8"
 dependencies = [
  "version_check",
 ]
+
+[[package]]
+name = "static_assertions"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 
 [[package]]
 name = "stdweb"
@@ -3070,6 +3101,45 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "yew-router"
+version = "0.14.0"
+source = "git+https://github.com/yewstack/yew.git?rev=db3170f629f#db3170f629fc91b15c68b12d4204d6f1394520f4"
+dependencies = [
+ "cfg-if 1.0.0",
+ "cfg-match",
+ "gloo",
+ "js-sys",
+ "log",
+ "nom",
+ "serde",
+ "serde_json",
+ "wasm-bindgen",
+ "web-sys",
+ "yew",
+ "yew-router-macro",
+ "yew-router-route-parser",
+]
+
+[[package]]
+name = "yew-router-macro"
+version = "0.14.0"
+source = "git+https://github.com/yewstack/yew.git?rev=db3170f629f#db3170f629fc91b15c68b12d4204d6f1394520f4"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+ "yew-router-route-parser",
+]
+
+[[package]]
+name = "yew-router-route-parser"
+version = "0.14.0"
+source = "git+https://github.com/yewstack/yew.git?rev=db3170f629f#db3170f629fc91b15c68b12d4204d6f1394520f4"
+dependencies = [
+ "nom",
 ]
 
 [[package]]

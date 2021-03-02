@@ -6,17 +6,17 @@ use yew::prelude::*;
 use yewprint::{Card, Tag, Text, H1, H2};
 
 pub struct Profile {
-    props: Props,
+    props: ProfileProps,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
-pub struct Props {
+pub struct ProfileProps {
     pub candidate: &'static Candidate,
 }
 
 impl Component for Profile {
     type Message = ();
-    type Properties = Props;
+    type Properties = ProfileProps;
 
     fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
         Profile { props }

@@ -2,6 +2,7 @@ use candidate::*;
 
 pub fn candidate() -> &'static Candidate {
     &Candidate {
+        slug: "yozhgoor",
         name: "Yohan Boogaert",
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
