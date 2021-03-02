@@ -28,14 +28,14 @@ site:
   - name: Build (Release)
     run: "cargo run -- build"
   - name: Deploy to Netlify
-      uses: nwtgck/actions-netlify@v1.1.13
-      with:
-        publish-dir: './build'
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        deploy-message: ${{ github.event.head_commit.message }}
-        production-deploy: true
-        production-branch: main
-      env:
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      timeout-minutes: 5
+    uses: nwtgck/actions-netlify@v1.1.13
+    with:
+      publish-dir: './build'
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+      deploy-message: ${{ github.event.head_commit.message }}
+      production-deploy: true
+      production-branch: main
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    timeout-minutes: 5
