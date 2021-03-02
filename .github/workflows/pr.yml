@@ -25,7 +25,7 @@ jobs:
       - name: Build (Release)
         run: "cargo run -- build"
       - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.1
+        uses: nwtgck/actions-netlify@v1.1.13
         with:
           publish-dir: './build'
           github-token: ${{ secrets.GITHUB_TOKEN }}
