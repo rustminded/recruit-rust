@@ -71,7 +71,7 @@ impl Component for App {
                     </div>
                     <div>
                         <Router<AppRoute, ()>
-                            render = Router::render(move |switch: AppRoute| {
+                            render=Router::render(move |switch: AppRoute| {
                                 match switch {
                                     AppRoute::Home => html!(),
                                     AppRoute::Profile(candidate_slug) => html! {
