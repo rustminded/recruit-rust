@@ -74,8 +74,7 @@ impl Component for App {
                             render = Router::render(move |switch: AppRoute| {
                                 match switch {
                                     AppRoute::Home => html!(),
-                                    AppRoute::Profile(candidate_slug) =>
-                                    html! (
+                                    AppRoute::Profile(candidate_slug) => html! (
                                             <Profile
                                                 candidate = candidates
                                                     .get(&candidate_slug.as_str())
