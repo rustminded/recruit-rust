@@ -1,4 +1,5 @@
 use crate::profile::Profile;
+use crate::profile_list::ProfileList;
 use candidate::Candidate;
 use std::collections::HashMap;
 use yew::prelude::*;
@@ -31,17 +32,16 @@ impl Component for App {
 
     fn view(&self) -> Html {
         let candidates = self.candidates.clone();
-        /* let candidate_profile = self
+        let profile_list = self
             .candidates
             .iter()
             .map(|(x, y)| y)
             .map(|y| {
                 html! {
-                    <Profile candidate={y} />
+                    <ProfileList candidate={y} />
                 }
             })
             .collect::<Html>();
-        */
 
         html! {
             <div class="app-root bp3-dark">
@@ -68,6 +68,7 @@ impl Component for App {
                 <div class="app-content" role="main">
                     <div class="profile-list">
                         <H2>{"Discover the community"}</H2>
+                        {profile_list}
                     </div>
                     <div>
                         <Router<AppRoute, ()>
