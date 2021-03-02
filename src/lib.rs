@@ -4,6 +4,7 @@ mod app;
 mod contributions;
 mod jobs;
 mod profile;
+mod profile_list;
 
 pub use app::*;
 use wasm_bindgen::prelude::*;

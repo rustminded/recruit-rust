@@ -1,3 +1,4 @@
+use candidate::Candidate;
 use yew::prelude::*;
 
 pub struct ProfileList {
@@ -5,7 +6,7 @@ pub struct ProfileList {
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
-pub struct ProfileProps {
+pub struct ProfileListProps {
     pub candidate: &'static Candidate,
 }
 
