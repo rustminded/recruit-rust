@@ -63,27 +63,23 @@ impl Component for ProfileListItem {
         for s in personnal_list {
             tech_list.extend(s.iter());
         }
-
-        crate::log!("{:?}", tech_list);
-
-        let tags = self
-            .props
-            .candidate
-            .asked_tech
+        let tech_list = tech_list
             .iter()
             .map(|x| {
                 html! {
-                    <Tag class=classes!("tag")>
+                    <Tag>
                         {x}
                     </Tag>
                 }
             })
             .collect::<Html>();
+
         let contract = match self.props.candidate.contract_type {
             ContractType::Contractor => "Contractor",
             ContractType::Employee => "Employee",
             ContractType::Any => "Any",
         };
+
         let availability = match self.props.candidate.availability {
             Availability::FullTime => "Full time",
             Availability::PartTime => "Part time",
@@ -100,7 +96,7 @@ impl Component for ProfileListItem {
                     <Text>{contract}</Text>
                 </div>
                 <div class="profile-list-footer">
-                    {tags}
+                    {tech_list}
                 </div>
             </Card>
         }
