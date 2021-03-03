@@ -37,16 +37,22 @@ impl Component for ProfileListItem {
             .iter()
             .map(|x| x.tech)
             .collect::<Vec<&[&str]>>();
+        for s in jobs_list.iter() {
+            tech_list.extend(s.iter());
+        }
 
-        let contribs_list = self
+        /* let mut contribs_list = self
             .props
             .candidate
             .contributions
             .iter()
-            .map(|x| x.tech)
+            .map(|x| x.contri)
             .collect::<Vec<&[&str]>>();
-
-        crate::log!("{:?} | {:?} | {:?}", tech_list, jobs_list, contribs_list);
+            for s in jobs_list.iter() {
+                tech_list.extend(s.iter());
+            }
+        */
+        crate::log!("{:?} | {:?}", tech_list, jobs_list);
 
         let tags = self
             .props
