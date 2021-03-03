@@ -2,21 +2,21 @@ use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
 use yewprint::{Card, Tag, Text};
 
-pub struct ListCandidate {
-    props: ListCandidateProps,
+pub struct ProfileListItem {
+    props: ProfileListItemProps,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
-pub struct ListCandidateProps {
+pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
 }
 
-impl Component for ListCandidate {
+impl Component for ProfileListItem {
     type Message = ();
-    type Properties = ListCandidateProps;
+    type Properties = ProfileListItemProps;
 
     fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        ListCandidate { props }
+        ProfileListItem { props }
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
