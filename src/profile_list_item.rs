@@ -28,6 +28,26 @@ impl Component for ProfileListItem {
     }
 
     fn view(&self) -> Html {
+        let mut tech_list: Vec<&str> = Vec::new();
+        tech_list.extend(self.props.candidate.asked_tech);
+        let jobs_list = self
+            .props
+            .candidate
+            .jobs
+            .iter()
+            .map(|x| x.tech)
+            .collect::<Vec<&[&str]>>();
+
+        let contribs_list = self
+            .props
+            .candidate
+            .contributions
+            .iter()
+            .map(|x| x.tech)
+            .collect::<Vec<&[&str]>>();
+
+        crate::log!("{:?} | {:?} | {:?}", tech_list, jobs_list, contribs_list);
+
         let tags = self
             .props
             .candidate
