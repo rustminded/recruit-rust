@@ -1,4 +1,5 @@
 use candidate::{Availability, Candidate, ContractType};
+use std::collections::HashSet;
 use yew::prelude::*;
 use yewprint::{Card, Tag, Text};
 
@@ -28,7 +29,7 @@ impl Component for ProfileListItem {
     }
 
     fn view(&self) -> Html {
-        let mut tech_list: Vec<&str> = Vec::new();
+        let mut tech_list: HashSet<&str> = HashSet::new();
         tech_list.extend(self.props.candidate.asked_tech);
         let jobs_list = self
             .props
@@ -36,7 +37,7 @@ impl Component for ProfileListItem {
             .jobs
             .iter()
             .map(|x| x.tech)
-            .collect::<Vec<&[&str]>>();
+            .collect::<HashSet<&[&str]>>();
         for s in jobs_list.iter() {
             tech_list.extend(s.iter());
         }
@@ -47,8 +48,8 @@ impl Component for ProfileListItem {
             .contributions
             .iter()
             .map(|x| x.tech)
-            .collect::<Vec<&[&str]>>();
-        for s in contribs_list.iter() {
+            .collect::<HashSet<&[&str]>>();
+        for s in contribs_list {
             tech_list.extend(s.iter());
         }
 
@@ -58,8 +59,8 @@ impl Component for ProfileListItem {
             .personnal_projects
             .iter()
             .map(|x| x.tech)
-            .collect::<Vec<&[&str]>>();
-        for s in personnal_list.iter() {
+            .collect::<HashSet<&[&str]>>();
+        for s in personnal_list {
             tech_list.extend(s.iter());
         }
 
