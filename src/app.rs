@@ -63,7 +63,7 @@ impl Component for App {
                         <Router<AppRoute, ()>
                             render=Router::render(move |switch: AppRoute| {
                                 match switch {
-                                    AppRoute::Home | AppRoute::ProfileList => candidates
+                                    AppRoute::Home => candidates
                                         .values()
                                         .map(|x| {
                                             html! {
@@ -92,8 +92,6 @@ impl Component for App {
 pub enum AppRoute {
     #[to = "/{candidate_slug}"]
     Profile(String),
-    #[to = "/#profile"]
-    ProfileList,
     #[to = "/"]
     Home,
 }
