@@ -1,4 +1,5 @@
 use crate::profile::Profile;
+use crate::profile_list_item::ProfileListItem;
 use candidate::Candidate;
 use std::collections::HashMap;
 use yew::prelude::*;
@@ -31,17 +32,6 @@ impl Component for App {
 
     fn view(&self) -> Html {
         let candidates = self.candidates.clone();
-        /* let candidate_profile = self
-            .candidates
-            .iter()
-            .map(|(x, y)| y)
-            .map(|y| {
-                html! {
-                    <Profile candidate={y} />
-                }
-            })
-            .collect::<Html>();
-        */
 
         html! {
             <div class="app-root bp3-dark">
@@ -66,14 +56,21 @@ impl Component for App {
                     {"The place to be hired as an awesome Rustacean"}
                 </Text>
                 <div class="app-content" role="main">
-                    <div class="profile-list">
+                    <div class="profile-list-component">
                         <H2>{"Discover the community"}</H2>
                     </div>
                     <div>
                         <Router<AppRoute, ()>
                             render=Router::render(move |switch: AppRoute| {
                                 match switch {
-                                    AppRoute::Home => html!(),
+                                    AppRoute::Home => candidates
+                                        .values()
+                                        .map(|x| {
+                                            html! {
+                                                <ProfileListItem candidate={x} />
+                                            }
+                                        })
+                                        .collect::<Html>(),
                                     AppRoute::Profile(candidate_slug) => html! {
                                         <Profile
                                             candidate=candidates
@@ -93,7 +90,7 @@ impl Component for App {
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoute {
-    #[to = "/profile/{candidate_slug}"]
+    #[to = "/{candidate_slug}"]
     Profile(String),
     #[to = "/"]
     Home,

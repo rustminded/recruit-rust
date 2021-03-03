@@ -27,11 +27,6 @@ body{
     margin-bottom: 20px;
 }
 
-.profile-list{
-    margin-left: 20px;
-    max-width: 50%;
-}
-
 .candidate-tag{
     display: flex;
 }
@@ -102,4 +97,15 @@ body{
 
 .candidate-pronouns{
     margin-left: 10px;
+}
+
+.profile-list-component{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.profile-list{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
