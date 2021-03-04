@@ -2,9 +2,10 @@ use crate::profile::Profile;
 use crate::profile_list_item::ProfileListItem;
 use candidate::Candidate;
 use std::collections::HashMap;
+use std::collections::HashSet;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
-use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
+use yewprint::{Button, IconName, InputGroup, Tag, Text, H1, H2};
 
 pub struct App {
     candidates: HashMap<&'static str, &'static Candidate>,
@@ -19,6 +20,44 @@ impl Component for App {
         let candidate = yozhgoor::candidate();
         candidates.insert(candidate.slug, candidate);
         crate::log!("{:?}", candidates);
+        let mut tech_list: HashSet<&str> = HashSet::new();
+        tech_list.extend(candidate.asked_techs);
+        let jobs_list = candidate
+            .jobs
+            .iter()
+            .map(|x| x.techs)
+            .collect::<HashSet<&[&str]>>();
+        for s in jobs_list.iter() {
+            tech_list.extend(s.iter());
+        }
+
+        let contribs_list = candidate
+            .contributions
+            .iter()
+            .map(|x| x.techs)
+            .collect::<HashSet<&[&str]>>();
+        for s in contribs_list {
+            tech_list.extend(s.iter());
+        }
+
+        let personal_list = candidate
+            .personal_projects
+            .iter()
+            .map(|x| x.techs)
+            .collect::<HashSet<&[&str]>>();
+        for s in personal_list {
+            tech_list.extend(s.iter());
+        }
+        let tech_list = tech_list
+            .iter()
+            .map(|x| {
+                html! {
+                    <Tag>
+                        {x}
+                    </Tag>
+                }
+            })
+            .collect::<Html>();
         App { candidates }
     }
 

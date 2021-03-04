@@ -29,51 +29,6 @@ impl Component for ProfileListItem {
     }
 
     fn view(&self) -> Html {
-        let mut tech_list: HashSet<&str> = HashSet::new();
-        tech_list.extend(self.props.candidate.asked_techs);
-        let jobs_list = self
-            .props
-            .candidate
-            .jobs
-            .iter()
-            .map(|x| x.techs)
-            .collect::<HashSet<&[&str]>>();
-        for s in jobs_list.iter() {
-            tech_list.extend(s.iter());
-        }
-
-        let contribs_list = self
-            .props
-            .candidate
-            .contributions
-            .iter()
-            .map(|x| x.techs)
-            .collect::<HashSet<&[&str]>>();
-        for s in contribs_list {
-            tech_list.extend(s.iter());
-        }
-
-        let personal_list = self
-            .props
-            .candidate
-            .personal_projects
-            .iter()
-            .map(|x| x.techs)
-            .collect::<HashSet<&[&str]>>();
-        for s in personal_list {
-            tech_list.extend(s.iter());
-        }
-        let tech_list = tech_list
-            .iter()
-            .map(|x| {
-                html! {
-                    <Tag>
-                        {x}
-                    </Tag>
-                }
-            })
-            .collect::<Html>();
-
         let contract = match self.props.candidate.contract_type {
             ContractType::Contractor => "Contractor",
             ContractType::Employee => "Employee",
