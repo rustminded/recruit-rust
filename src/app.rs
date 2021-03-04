@@ -62,7 +62,7 @@ impl Component for App {
 
         App {
             candidates,
-            tech_list,
+            tech_list: tech_list,
         }
     }
 
@@ -76,6 +76,7 @@ impl Component for App {
 
     fn view(&self) -> Html {
         let candidates = self.candidates.clone();
+        let tech_list = self.tech_list.clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -113,7 +114,7 @@ impl Component for App {
                                             html! {
                                                 <ProfileListItem
                                                     candidate={x}
-                                                    tech_list=self.tech_list
+                                                    tech_list=&tech_list
                                                 />
                                             }
                                         })

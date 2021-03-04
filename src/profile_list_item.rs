@@ -1,7 +1,6 @@
 use candidate::{Availability, Candidate, ContractType};
-use std::collections::HashSet;
 use yew::{prelude::*, virtual_dom::VNode};
-use yewprint::{Card, Tag, Text};
+use yewprint::{Card, Text};
 
 pub struct ProfileListItem {
     props: ProfileListItemProps,
@@ -52,7 +51,7 @@ impl Component for ProfileListItem {
                     <Text>{contract}</Text>
                 </div>
                 <div class="profile-list-footer">
-                    {self.props.tech_list}
+                    {self.props.tech_list.clone()}
                 </div>
             </Card>
         }
