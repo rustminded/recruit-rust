@@ -11,7 +11,7 @@ pub struct App {
     candidates: HashMap<&'static str, CandidateInfo>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct CandidateInfo {
     candidate: &'static Candidate,
     techs: HashSet<&'static str>,
@@ -102,11 +102,11 @@ impl Component for App {
                                 match switch {
                                     AppRoute::Home => candidates
                                         .values()
-                                        .map(|(x, y)| {
+                                        .map(|x| {
                                             html! {
                                                 <ProfileListItem
-                                                    candidate={x}
-                                                    tech={y}
+                                                    candidate={x.candidate}
+                                                    tech={&x.techs}
                                                 />
                                             }
                                         })
@@ -116,7 +116,7 @@ impl Component for App {
                                             candidate=candidates
                                                 .get(&candidate_slug.as_str())
                                                 .unwrap()
-                                                .0
+                                                .candidate
                                         />
                                     },
                                 }
