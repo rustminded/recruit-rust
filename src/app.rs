@@ -23,15 +23,15 @@ impl Component for App {
     fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
         let mut candidates = HashMap::new();
         let candidate = yozhgoor::candidate();
-        let mut tech_list: HashSet<&str> = HashSet::new();
-        tech_list.extend(candidate.asked_techs);
+        let mut techs: HashSet<&str> = HashSet::new();
+        techs.extend(candidate.asked_techs);
         let jobs_list = candidate
             .jobs
             .iter()
             .map(|x| x.techs)
             .collect::<HashSet<&[&str]>>();
         for s in jobs_list.iter() {
-            tech_list.extend(s.iter());
+            techs.extend(s.iter());
         }
 
         let contribs_list = candidate
@@ -40,7 +40,7 @@ impl Component for App {
             .map(|x| x.techs)
             .collect::<HashSet<&[&str]>>();
         for s in contribs_list {
-            tech_list.extend(s.iter());
+            techs.extend(s.iter());
         }
 
         let personal_list = candidate
@@ -49,9 +49,10 @@ impl Component for App {
             .map(|x| x.techs)
             .collect::<HashSet<&[&str]>>();
         for s in personal_list {
-            tech_list.extend(s.iter());
+            techs.extend(s.iter());
         }
-        candidates.insert(candidate.slug, (candidate, tech_list));
+        let candidate_info = CandidateInfo { candidate, techs };
+        candidates.insert(candidate.slug, candidate_info);
         crate::log!("{:?}", candidates);
 
         App { candidates }
