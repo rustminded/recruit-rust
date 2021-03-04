@@ -9,7 +9,8 @@ pub struct ProfileListItem {
 
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileListItemProps {
-    pub candidate: (&'static Candidate, HashSet<&'static str>),
+    pub candidate: &'static Candidate,
+    pub tech: HashSet<&'static str>,
 }
 
 impl Component for ProfileListItem {
@@ -29,9 +30,9 @@ impl Component for ProfileListItem {
     }
 
     fn view(&self) -> Html {
-        let candidate_info = self.props.candidate.0;
-        let candidate_tech = &self.props.candidate.1;
-        let candidate_tech = candidate_tech
+        let candidate_tech = self
+            .props
+            .tech
             .iter()
             .map(|x| {
                 html! {
@@ -41,13 +42,13 @@ impl Component for ProfileListItem {
                 }
             })
             .collect::<Html>();
-        let contract = match candidate_info.contract_type {
+        let contract = match self.props.candidate.contract_type {
             ContractType::Contractor => "Contractor",
             ContractType::Employee => "Employee",
             ContractType::Any => "Any",
         };
 
-        let availability = match candidate_info.availability {
+        let availability = match self.props.candidate.availability {
             Availability::FullTime => "Full time",
             Availability::PartTime => "Part time",
             Availability::NotAvailable => "Not available",
@@ -56,8 +57,8 @@ impl Component for ProfileListItem {
         html! {
             <Card class=classes!("profile-list")>
                 <div class="profile-list-header">
-                    <a href=format!("/{}", candidate_info.slug)>
-                        {candidate_info.name}
+                    <a href=format!("/{}", self.props.candidate.slug)>
+                        {self.props.candidate.name}
                     </a>
                     <Text>{availability}</Text>
                     <Text>{contract}</Text>

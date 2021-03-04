@@ -95,10 +95,11 @@ impl Component for App {
                                 match switch {
                                     AppRoute::Home => candidates
                                         .values()
-                                        .map(|x| {
+                                        .map(|(x, y)| {
                                             html! {
                                                 <ProfileListItem
                                                     candidate={x}
+                                                    tech={y}
                                                 />
                                             }
                                         })
