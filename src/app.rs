@@ -8,7 +8,12 @@ use yew_router::{router::Router, Switch};
 use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 
 pub struct App {
-    candidates: HashMap<&'static str, (&'static Candidate, HashSet<&'static str>)>,
+    candidates: HashMap<&'static str, CandidateInfo>,
+}
+
+pub struct CandidateInfo {
+    candidate: &'static Candidate,
+    techs: HashSet<&'static str>,
 }
 
 impl Component for App {
