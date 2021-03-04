@@ -31,7 +31,7 @@ impl Component for Jobs {
         let jobs_tags = self
             .props
             .jobs
-            .tech
+            .techs
             .iter()
             .map(|x| {
                 html! {

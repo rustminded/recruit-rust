@@ -31,7 +31,7 @@ impl Component for Contributions {
         let contrib_tags = self
             .props
             .contributions
-            .tech
+            .techs
             .iter()
             .map(|x| {
                 html! {

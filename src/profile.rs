@@ -34,7 +34,7 @@ impl Component for Profile {
         let tags = self
             .props
             .candidate
-            .asked_tech
+            .asked_techs
             .iter()
             .map(|x| {
                 html! {
@@ -92,10 +92,10 @@ impl Component for Profile {
                 }
             })
             .collect::<Html>();
-        let personnal_list = self
+        let personal_list = self
             .props
             .candidate
-            .personnal_projects
+            .personal_projects
             .iter()
             .map(|x| {
                 html! {
@@ -134,9 +134,9 @@ impl Component for Profile {
                     <H2>{"Contribution"}</H2>
                     {contrib_list}
                 </div>
-                <div class="candidate-personnal">
-                    <H2>{"Personnal projects"}</H2>
-                    {personnal_list}
+                <div class="candidate-personal">
+                    <H2>{"Personal projects"}</H2>
+                    {personal_list}
                 </div>
             </Card>
         }
