@@ -1,4 +1,5 @@
 use candidate::{Availability, Candidate, ContractType};
+use std::collections::HashSet;
 use yew::{prelude::*, virtual_dom::VNode};
 use yewprint::{Card, Text};
 
@@ -8,7 +9,7 @@ pub struct ProfileListItem {
 
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileListItemProps {
-    pub candidate: (&'static Candidate, HashSet<&str>)>,
+    pub candidate: (&'static Candidate, HashSet<&'static str>),
 }
 
 impl Component for ProfileListItem {

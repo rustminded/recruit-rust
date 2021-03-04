@@ -8,7 +8,7 @@ use yew_router::{router::Router, Switch};
 use yewprint::{Button, IconName, InputGroup, Tag, Text, H1, H2};
 
 pub struct App {
-    candidates: HashMap<&'static str, (&'static Candidate, HashSet<&str>)>,
+    candidates: HashMap<&'static str, (&'static Candidate, HashSet<&'static str>)>,
 }
 
 impl Component for App {
@@ -99,7 +99,6 @@ impl Component for App {
                                             html! {
                                                 <ProfileListItem
                                                     candidate={x}
-                                                    tech_list=&tech_list
                                                 />
                                             }
                                         })
@@ -109,6 +108,7 @@ impl Component for App {
                                             candidate=candidates
                                                 .get(&candidate_slug.as_str())
                                                 .unwrap()
+                                                .0
                                         />
                                     },
                                 }
