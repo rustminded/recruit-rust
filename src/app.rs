@@ -3,9 +3,9 @@ use crate::profile_list_item::ProfileListItem;
 use candidate::Candidate;
 use std::collections::HashMap;
 use std::collections::HashSet;
-use yew::{prelude::*, virtual_dom::VNode};
+use yew::prelude::*;
 use yew_router::{router::Router, Switch};
-use yewprint::{Button, IconName, InputGroup, Tag, Text, H1, H2};
+use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 
 pub struct App {
     candidates: HashMap<&'static str, (&'static Candidate, HashSet<&'static str>)>,

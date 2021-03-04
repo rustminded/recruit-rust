@@ -1,7 +1,7 @@
 use candidate::{Availability, Candidate, ContractType};
 use std::collections::HashSet;
-use yew::{prelude::*, virtual_dom::VNode};
-use yewprint::{Card, Text};
+use yew::prelude::*;
+use yewprint::{Card, Tag, Text};
 
 pub struct ProfileListItem {
     props: ProfileListItemProps,
@@ -29,13 +29,25 @@ impl Component for ProfileListItem {
     }
 
     fn view(&self) -> Html {
-        let contract = match self.props.candidate.contract_type {
+        let candidate_info = self.props.candidate.0;
+        let candidate_tech = &self.props.candidate.1;
+        let candidate_tech = candidate_tech
+            .iter()
+            .map(|x| {
+                html! {
+                    <Tag>
+                        {x}
+                    </Tag>
+                }
+            })
+            .collect::<Html>();
+        let contract = match candidate_info.contract_type {
             ContractType::Contractor => "Contractor",
             ContractType::Employee => "Employee",
             ContractType::Any => "Any",
         };
 
-        let availability = match self.props.candidate.availability {
+        let availability = match candidate_info.availability {
             Availability::FullTime => "Full time",
             Availability::PartTime => "Part time",
             Availability::NotAvailable => "Not available",
@@ -44,14 +56,14 @@ impl Component for ProfileListItem {
         html! {
             <Card class=classes!("profile-list")>
                 <div class="profile-list-header">
-                    <a href=format!("/{}", self.props.candidate.slug)>
-                        {self.props.candidate.name}
+                    <a href=format!("/{}", candidate_info.slug)>
+                        {candidate_info.name}
                     </a>
                     <Text>{availability}</Text>
                     <Text>{contract}</Text>
                 </div>
                 <div class="profile-list-footer">
-                    {self.props.tech_list.clone()}
+                    {candidate_tech}
                 </div>
             </Card>
         }
