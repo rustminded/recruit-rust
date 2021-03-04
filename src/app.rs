@@ -11,6 +11,7 @@ pub struct App {
     candidates: HashMap<&'static str, CandidateInfo>,
 }
 
+#[derive(Debug, Clone)]
 pub struct CandidateInfo {
     candidate: &'static Candidate,
     techs: HashSet<&'static str>,
