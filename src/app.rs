@@ -57,16 +57,16 @@ impl Component for App {
     fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
         let mut candidates = HashMap::new();
         let candidate = yozhgoor::candidate();
-        let candidate_2 = yozhgoor::candidate();
+        let candidate_2 = yozhgoor::candidate().clone();
+
+        let candidate_2_slug = "yozhgoor2";
+        let candidate_slug = candidate.slug;
 
         let candidate_info = CandidateInfo::from_candidate(candidate);
-        let candidate_2_info = CandidateInfo::from_candidate(candidate_2);
+        let candidate_2_info = CandidateInfo::from_candidate(&candidate_2);
 
-        let candidate_2_slug = candidate_2.slug;
-        let candidate_2_slug: &'static str = "yozgoor2";
-
-        candidates.insert(candidate.slug, candidate_info);
-        candidates.insert(candidate_2_slug, candidate_2_info);
+        candidates.insert(candidate_slug, candidate_info);
+        candidates.insert(&candidate_2_slug, candidate_2_info);
         crate::log!("{:?}", candidates);
 
         App { candidates }
@@ -118,6 +118,7 @@ impl Component for App {
                                         .map(|x| {
                                             html! {
                                                 <ProfileListItem
+                                                    candidates={candidates.clone()}
                                                     candidate={x.candidate}
                                                     tech={&x.techs}
                                                 />

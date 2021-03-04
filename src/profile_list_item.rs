@@ -1,4 +1,6 @@
+use crate::CandidateInfo;
 use candidate::{Availability, Candidate, ContractType};
+use std::collections::HashMap;
 use std::collections::HashSet;
 use yew::prelude::*;
 use yewprint::{Card, Tag, Text};
@@ -9,6 +11,7 @@ pub struct ProfileListItem {
 
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileListItemProps {
+    pub candidates: HashMap<&'static str, CandidateInfo>,
     pub candidate: &'static Candidate,
     pub tech: HashSet<&'static str>,
 }
@@ -57,7 +60,7 @@ impl Component for ProfileListItem {
         html! {
             <Card class=classes!("profile-list")>
                 <div class="profile-list-header">
-                    <a href=format!("/{}", self.props.candidate.slug)>
+                    <a href=format!("/{}", keys)>
                         {self.props.candidate.name}
                     </a>
                     <Text>{availability}</Text>
