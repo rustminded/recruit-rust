@@ -17,6 +17,39 @@ pub struct CandidateInfo {
     techs: HashSet<&'static str>,
 }
 
+impl CandidateInfo {
+    fn from_candidate(candidate: &'static Candidate) -> CandidateInfo {
+        let candidate = candidate;
+        let mut techs: HashSet<&str> = HashSet::new();
+        techs.extend(candidate.asked_techs);
+        let jobs_techs = candidate
+            .jobs
+            .iter()
+            .map(|x| x.techs)
+            .collect::<HashSet<&[&str]>>();
+        for s in jobs_techs.iter() {
+            techs.extend(s.iter());
+        }
+        let contribs_techs = candidate
+            .contributions
+            .iter()
+            .map(|x| x.techs)
+            .collect::<HashSet<&[&str]>>();
+        for s in contribs_techs {
+            techs.extend(s.iter());
+        }
+        let personal_techs = candidate
+            .personal_projects
+            .iter()
+            .map(|x| x.techs)
+            .collect::<HashSet<&[&str]>>();
+        for s in personal_techs {
+            techs.extend(s.iter());
+        }
+        CandidateInfo { candidate, techs }
+    }
+}
+
 impl Component for App {
     type Message = ();
     type Properties = ();
@@ -24,35 +57,7 @@ impl Component for App {
     fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
         let mut candidates = HashMap::new();
         let candidate = yozhgoor::candidate();
-        let mut techs: HashSet<&str> = HashSet::new();
-        techs.extend(candidate.asked_techs);
-        let jobs_list = candidate
-            .jobs
-            .iter()
-            .map(|x| x.techs)
-            .collect::<HashSet<&[&str]>>();
-        for s in jobs_list.iter() {
-            techs.extend(s.iter());
-        }
-
-        let contribs_list = candidate
-            .contributions
-            .iter()
-            .map(|x| x.techs)
-            .collect::<HashSet<&[&str]>>();
-        for s in contribs_list {
-            techs.extend(s.iter());
-        }
-
-        let personal_list = candidate
-            .personal_projects
-            .iter()
-            .map(|x| x.techs)
-            .collect::<HashSet<&[&str]>>();
-        for s in personal_list {
-            techs.extend(s.iter());
-        }
-        let candidate_info = CandidateInfo { candidate, techs };
+        let candidate_info = CandidateInfo::from_candidate(candidate);
         candidates.insert(candidate.slug, candidate_info);
         crate::log!("{:?}", candidates);
 
