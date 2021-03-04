@@ -21,6 +21,7 @@ pub struct CandidateInfo {
 impl CandidateInfo {
     fn from_candidate(candidate_info: &'static Candidate, url: &'static str) -> CandidateInfo {
         let candidate = candidate_info;
+        let url = url;
         let mut techs: HashSet<&str> = HashSet::new();
         techs.extend(candidate.asked_techs);
         let jobs_techs = candidate
@@ -61,14 +62,15 @@ impl Component for App {
 
     fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
         let mut candidates = HashMap::new();
-        let candidate = yozhgoor::candidate();
-        let candidate_2 = yozhgoor::candidate();
+        let candidate = (yozhgoor::candidate(), yozhgoor::candidate());
+        let candidate_1 = candidate.0;
+        let candidate_2 = candidate.1;
 
-        let candidate_info = CandidateInfo::from_candidate(candidate, "yozhgoor");
+        let candidate_1_info = CandidateInfo::from_candidate(candidate_1, "yozhgoor");
         let candidate_2_info = CandidateInfo::from_candidate(candidate_2, "yozhgoor2");
 
-        candidates.insert(candidate.slug, candidate_info);
-        candidates.insert(candidate_2.slug, candidate_2_info);
+        candidates.insert(candidate_1.slug, candidate_1_info);
+        candidates.insert(candidate_2_info.url, candidate_2_info);
         crate::log!("{:?}", candidates);
 
         App { candidates }
