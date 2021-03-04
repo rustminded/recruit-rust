@@ -15,10 +15,11 @@ pub struct App {
 pub struct CandidateInfo {
     candidate: &'static Candidate,
     techs: HashSet<&'static str>,
+    url: &'static str,
 }
 
 impl CandidateInfo {
-    fn from_candidate(candidate_info: &'static Candidate) -> CandidateInfo {
+    fn from_candidate(candidate_info: &'static Candidate, url: &'static str) -> CandidateInfo {
         let candidate = candidate_info;
         let mut techs: HashSet<&str> = HashSet::new();
         techs.extend(candidate.asked_techs);
@@ -46,7 +47,11 @@ impl CandidateInfo {
         for s in personal_techs {
             techs.extend(s.iter());
         }
-        CandidateInfo { candidate, techs }
+        CandidateInfo {
+            candidate,
+            techs,
+            url,
+        }
     }
 }
 
@@ -59,8 +64,8 @@ impl Component for App {
         let candidate = yozhgoor::candidate();
         let candidate_2 = yozhgoor::candidate();
 
-        let candidate_info = CandidateInfo::from_candidate(candidate);
-        let candidate_2_info = CandidateInfo::from_candidate(candidate_2);
+        let candidate_info = CandidateInfo::from_candidate(candidate, "yozhgoor");
+        let candidate_2_info = CandidateInfo::from_candidate(candidate_2, "yozhgoor2");
 
         candidates.insert(candidate.slug, candidate_info);
         candidates.insert(candidate_2.slug, candidate_2_info);
@@ -117,6 +122,7 @@ impl Component for App {
                                                 <ProfileListItem
                                                     candidate={x.candidate}
                                                     tech={&x.techs}
+                                                    url={x.url}
                                                 />
                                             }
                                         })

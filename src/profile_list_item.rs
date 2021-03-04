@@ -11,6 +11,7 @@ pub struct ProfileListItem {
 pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
     pub tech: HashSet<&'static str>,
+    pub url: &'static str,
 }
 
 impl Component for ProfileListItem {
@@ -57,7 +58,7 @@ impl Component for ProfileListItem {
         html! {
             <Card class=classes!("profile-list")>
                 <div class="profile-list-header">
-                    <a href=format!("/{}", self.props.candidate.slug)>
+                    <a href=format!("/{}", self.props.url)>
                         {self.props.candidate.name}
                     </a>
                     <Text>{availability}</Text>
