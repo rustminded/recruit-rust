@@ -18,8 +18,8 @@ pub struct CandidateInfo {
 }
 
 impl CandidateInfo {
-    fn from_candidate(candidate: &'static Candidate) -> CandidateInfo {
-        let candidate = candidate;
+    fn from_candidate(candidate_info: &'static Candidate) -> CandidateInfo {
+        let candidate = candidate_info;
         let mut techs: HashSet<&str> = HashSet::new();
         techs.extend(candidate.asked_techs);
         let jobs_techs = candidate
