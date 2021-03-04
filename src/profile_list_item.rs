@@ -8,8 +8,7 @@ pub struct ProfileListItem {
 
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileListItemProps {
-    pub candidate: &'static Candidate,
-    pub tech_list: VNode,
+    pub candidate: (&'static Candidate, HashSet<&str>)>,
 }
 
 impl Component for ProfileListItem {

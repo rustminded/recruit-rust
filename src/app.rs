@@ -8,8 +8,7 @@ use yew_router::{router::Router, Switch};
 use yewprint::{Button, IconName, InputGroup, Tag, Text, H1, H2};
 
 pub struct App {
-    candidates: HashMap<&'static str, &'static Candidate>,
-    tech_list: VNode,
+    candidates: HashMap<&'static str, (&'static Candidate, HashSet<&str>)>,
 }
 
 impl Component for App {
@@ -19,8 +18,6 @@ impl Component for App {
     fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
         let mut candidates = HashMap::new();
         let candidate = yozhgoor::candidate();
-        candidates.insert(candidate.slug, candidate);
-        crate::log!("{:?}", candidates);
         let mut tech_list: HashSet<&str> = HashSet::new();
         tech_list.extend(candidate.asked_techs);
         let jobs_list = candidate
@@ -49,21 +46,10 @@ impl Component for App {
         for s in personal_list {
             tech_list.extend(s.iter());
         }
-        let tech_list = tech_list
-            .iter()
-            .map(|x| {
-                html! {
-                    <Tag>
-                        {x}
-                    </Tag>
-                }
-            })
-            .collect::<Html>();
+        candidates.insert(candidate.slug, (candidate, tech_list));
+        crate::log!("{:?}", candidates);
 
-        App {
-            candidates,
-            tech_list: tech_list,
-        }
+        App { candidates }
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
@@ -76,7 +62,6 @@ impl Component for App {
 
     fn view(&self) -> Html {
         let candidates = self.candidates.clone();
-        let tech_list = self.tech_list.clone();
 
         html! {
             <div class="app-root bp3-dark">
