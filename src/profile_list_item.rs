@@ -1,6 +1,6 @@
 use candidate::{Availability, Candidate, ContractType};
 use std::collections::HashSet;
-use yew::prelude::*;
+use yew::{prelude::*, virtual_dom::VNode};
 use yewprint::{Card, Tag, Text};
 
 pub struct ProfileListItem {
@@ -10,6 +10,7 @@ pub struct ProfileListItem {
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
+    pub tech_list: VNode,
 }
 
 impl Component for ProfileListItem {
@@ -51,7 +52,7 @@ impl Component for ProfileListItem {
                     <Text>{contract}</Text>
                 </div>
                 <div class="profile-list-footer">
-                    {tech_list}
+                    {self.props.tech_list}
                 </div>
             </Card>
         }

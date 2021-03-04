@@ -3,12 +3,13 @@ use crate::profile_list_item::ProfileListItem;
 use candidate::Candidate;
 use std::collections::HashMap;
 use std::collections::HashSet;
-use yew::prelude::*;
+use yew::{prelude::*, virtual_dom::VNode};
 use yew_router::{router::Router, Switch};
 use yewprint::{Button, IconName, InputGroup, Tag, Text, H1, H2};
 
 pub struct App {
     candidates: HashMap<&'static str, &'static Candidate>,
+    tech_list: VNode,
 }
 
 impl Component for App {
@@ -58,7 +59,11 @@ impl Component for App {
                 }
             })
             .collect::<Html>();
-        App { candidates }
+
+        App {
+            candidates,
+            tech_list,
+        }
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
@@ -106,7 +111,10 @@ impl Component for App {
                                         .values()
                                         .map(|x| {
                                             html! {
-                                                <ProfileListItem candidate={x} />
+                                                <ProfileListItem
+                                                    candidate={x}
+                                                    tech_list=self.tech_list
+                                                />
                                             }
                                         })
                                         .collect::<Html>(),
