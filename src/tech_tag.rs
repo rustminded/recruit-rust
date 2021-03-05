@@ -31,8 +31,8 @@ impl Component for TechTag {
         if self.props.tech.professional == true && self.props.tech.public == false {
             html! {
                 <Tag
-                    large=true
-                    icon=IconName::Office
+                    class=classes!("pro-tag")
+                    intent=Intent::Success
                 >
                     {self.props.tech.name}
                 </Tag>
@@ -40,8 +40,8 @@ impl Component for TechTag {
         } else if self.props.tech.professional == false && self.props.tech.public == true {
             html! {
                 <Tag
-                    large=true
-                    right_icon=IconName::GitPush
+                    class=classes!("pub-tag")
+                    right_icon=IconName::People
                 >
                     {self.props.tech.name}
                 </Tag>
@@ -49,9 +49,9 @@ impl Component for TechTag {
         } else if self.props.tech.professional == true && self.props.tech.public == true {
             html! {
                 <Tag
-                    large=true
-                    icon=IconName::Office
-                    right_icon=IconName::GitPush
+                    class=classes!("both-flag-tag")
+                    intent=Intent::Success
+                    right_icon=IconName::People
                 >
                     {self.props.tech.name}
                 </Tag>
@@ -59,7 +59,7 @@ impl Component for TechTag {
         } else {
             html! {
                 <Tag
-                    large=true
+                    class=classes!("no-flag-tag")
                     intent=Intent::Primary
                 >
                     {self.props.tech.name}

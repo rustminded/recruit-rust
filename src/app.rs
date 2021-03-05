@@ -93,7 +93,7 @@ impl CandidateInfo {
         for s in contribs_techs {
             for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
                 if let Some(mut v) = techs.take(&v) {
-                    v.professional = true;
+                    v.public = true;
                     techs.insert(v);
                 } else {
                     techs.insert(v);
@@ -105,7 +105,7 @@ impl CandidateInfo {
         for s in personal_techs {
             for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
                 if let Some(mut v) = techs.take(&v) {
-                    v.professional = true;
+                    v.public = true;
                     techs.insert(v);
                 } else {
                     techs.insert(v);
