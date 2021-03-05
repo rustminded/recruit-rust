@@ -1,3 +1,4 @@
+use crate::Tech;
 use candidate::{Availability, Candidate, ContractType};
 use std::collections::HashSet;
 use yew::prelude::*;
@@ -10,7 +11,7 @@ pub struct ProfileListItem {
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
-    pub tech: HashSet<&'static str>,
+    pub tech: HashSet<Tech>,
     pub url: &'static str,
 }
 
@@ -38,7 +39,7 @@ impl Component for ProfileListItem {
             .map(|x| {
                 html! {
                     <Tag>
-                        {x}
+                        {x.tech}
                     </Tag>
                 }
             })

@@ -11,17 +11,31 @@ pub struct App {
     candidates: HashMap<&'static str, CandidateInfo>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct Tech {
+    pub tech: &'static str,
+    pub professional: bool,
+    pub public: bool,
+}
+
+impl Tech {
+    fn from_str(techs: &'static str) -> Tech {
+        let tech = techs;
+        let professional = false;
+        let public = false;
+        Tech {
+            tech,
+            professional,
+            public,
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct CandidateInfo {
     candidate: &'static Candidate,
     techs: HashSet<Tech>,
     url: &'static str,
-}
-
-pub struct Tech {
-    tech: &'static str,
-    professional: bool,
-    public: bool,
 }
 
 impl CandidateInfo {
@@ -34,8 +48,14 @@ impl CandidateInfo {
         let mut techs: HashSet<Tech> = HashSet::new();
 
         // Convert the asked_techs in type Tech
+        let candidate_asked_techs = candidate
+            .asked_techs
+            .iter()
+            .map(|x| Tech::from_str(x))
+            .collect::<HashSet<Tech>>();
 
-        techs.extend(candidate.asked_techs);
+        techs.extend(candidate_asked_techs);
+        /*
         let jobs_techs = candidate
             .jobs
             .iter()
@@ -69,6 +89,7 @@ impl CandidateInfo {
         for s in personal_techs {
             techs.extend(s.iter());
         }
+        */
         CandidateInfo {
             candidate,
             techs,
