@@ -19,8 +19,8 @@ pub struct Tech {
 }
 
 impl Tech {
-    fn into_tech(techs: &'static str) -> Tech {
-        let tech = techs;
+    fn from_tech(candidate_tech: &'static str) -> Tech {
+        let tech = candidate_tech;
         let professional = false;
         let public = false;
         Tech {
@@ -29,8 +29,8 @@ impl Tech {
             public,
         }
     }
-    fn into_pro_tech(techs: &'static str) -> Tech {
-        let tech = techs;
+    fn from_pro_tech(candidate_tech: &'static str) -> Tech {
+        let tech = candidate_tech;
         let professional = true;
         let public = false;
         Tech {
@@ -39,8 +39,8 @@ impl Tech {
             public,
         }
     }
-    fn into_pub_tech(techs: &'static str) -> Tech {
-        let tech = techs;
+    fn from_pub_tech(candidate_tech: &'static str) -> Tech {
+        let tech = candidate_tech;
         let professional = false;
         let public = true;
         Tech {
@@ -67,37 +67,24 @@ impl CandidateInfo {
         let url = candidate_url;
         let mut techs: HashSet<Tech> = HashSet::new();
 
-        let candidate_asked_techs = candidate.asked_techs.iter().map(|x| Tech::into_tech(x));
+        let candidate_asked_techs = candidate.asked_techs.iter().map(|x| Tech::from_tech(x));
         techs.extend(candidate_asked_techs);
 
-        let jobs_techs = candidate
-            .jobs
-            .iter()
-            .map(|x| x.techs)
-            .collect::<HashSet<&[&str]>>();
-        for s in jobs_techs.iter() {
-            let candidate_jobs_techs = s.iter().map(|x| Tech::into_pro_tech(x));
+        let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
+        for s in jobs_techs {
+            let candidate_jobs_techs = s.iter().map(|x| Tech::from_pro_tech(x));
             techs.extend(candidate_jobs_techs);
         }
 
-        let contribs_techs = candidate
-            .contributions
-            .iter()
-            .map(|x| x.techs)
-            .collect::<HashSet<&[&str]>>();
-        for s in contribs_techs.iter() {
-            let candidate_contribs_techs = s.iter().map(|x| Tech::into_pub_tech(x));
+        let contribs_techs = candidate.contributions.iter().map(|x| x.techs);
+        for s in contribs_techs {
+            let candidate_contribs_techs = s.iter().map(|x| Tech::from_pub_tech(x));
             techs.extend(candidate_contribs_techs);
         }
 
-        let personal_techs = candidate
-            .personal_projects
-            .iter()
-            .map(|x| x.techs)
-            .collect::<HashSet<&[&str]>>();
-
-        for s in personal_techs.iter() {
-            let candidate_personal_techs = s.iter().map(|x| Tech::into_pub_tech(x));
+        let personal_techs = candidate.personal_projects.iter().map(|x| x.techs);
+        for s in personal_techs {
+            let candidate_personal_techs = s.iter().map(|x| Tech::from_pub_tech(x));
             techs.extend(candidate_personal_techs);
         }
 
