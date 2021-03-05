@@ -3,6 +3,7 @@ use crate::profile_list_item::ProfileListItem;
 use candidate::Candidate;
 use std::collections::HashMap;
 use std::collections::HashSet;
+use std::hash::{Hash, Hasher};
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
 use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
@@ -11,7 +12,7 @@ pub struct App {
     candidates: HashMap<&'static str, CandidateInfo>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone)]
 pub struct Tech {
     pub name: &'static str,
     pub professional: bool,
@@ -41,6 +42,20 @@ impl Tech {
             professional: false,
             public: true,
         }
+    }
+}
+
+impl Hash for Tech {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.name.hash(state);
+    }
+}
+
+impl Eq for Tech {}
+
+impl PartialEq for Tech {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
     }
 }
 
