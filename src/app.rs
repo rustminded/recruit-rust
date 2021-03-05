@@ -25,69 +25,61 @@ pub struct Tech {
 }
 
 impl Tech {
-    fn from_candidate(candidate: &'static Candidate) -> Tech {
-        pub struct Tech {
-            tech: &'static str,
-            professional: bool,
-            public: bool,
-        }
+    impl Tech {
+        fn from_candidate(candidate: &'static Candidate) -> HashSet<Tech> {
+            // Create the HashSet who collect the techs
+            let mut techs: HashSet<Tech> = HashSet::new();
 
-        impl Tech {
-            fn from_candidate(candidate: &'static Candidate) -> HashSet<Tech> {
-                // Create the HashSet who collect the techs
-                let mut techs: HashSet<Tech> = HashSet::new();
+            // Convert the asked_techs (&str) in type Tech
 
-                // Convert the asked_techs (&str) in type Tech
+            // put the asked_techs in the techs HashSet
+            techs.extend(candidate.asked_techs);
 
-                // put the asked_techs in the techs HashSet
-                techs.extend(candidate.asked_techs);
+            /*
+            // Collect the jobs_techs
+            let jobs_techs = candidate
+                .jobs
+                .iter()
+                .map(|x| x.techs)
+                .collect::<HashSet<&[&str]>>();
 
-                /*
-                // Collect the jobs_techs
-                let jobs_techs = candidate
-                    .jobs
-                    .iter()
-                    .map(|x| x.techs)
-                    .collect::<HashSet<&[&str]>>();
+            // Convert the jobs_techs (&[&str]) in type Tech
 
-                // Convert the jobs_techs (&[&str]) in type Tech
-
-                // Put jobs_techs in the techs HashSet
-                for s in jobs_techs.iter() {
-                    techs.extend(s.iter());
-                }
-
-                // Collect the contribs_techs
-                let contribs_techs = candidate
-                    .contributions
-                    .iter()
-                    .map(|x| x.techs)
-                    .collect::<HashSet<&[&str]>>();
-
-                // Convert the contribs_techs (&[&str]) in type Tech
-
-                // Put the contribs_techs in the techs HashSet
-                for s in contribs_techs {
-                    techs.extend(s.iter());
-                }
-
-                // Collect the personal_techs
-                let personal_techs = candidate
-                    .personal_projects
-                    .iter()
-                    .map(|x| x.techs)
-                    .collect::<HashSet<&[&str]>>();
-
-                // Convert the personal_techs (&[&str]) in type Tech
-
-                // Put the personal_techs in the techs HashSet
-                for s in personal_techs {
-                    techs.extend(s.iter());
-                }
-                */
-
-                HashSet<Tech>
+            // Put jobs_techs in the techs HashSet
+            for s in jobs_techs.iter() {
+                techs.extend(s.iter());
             }
+
+            // Collect the contribs_techs
+            let contribs_techs = candidate
+                .contributions
+                .iter()
+                .map(|x| x.techs)
+                .collect::<HashSet<&[&str]>>();
+
+            // Convert the contribs_techs (&[&str]) in type Tech
+
+            // Put the contribs_techs in the techs HashSet
+            for s in contribs_techs {
+                techs.extend(s.iter());
+            }
+
+            // Collect the personal_techs
+            let personal_techs = candidate
+                .personal_projects
+                .iter()
+                .map(|x| x.techs)
+                .collect::<HashSet<&[&str]>>();
+
+            // Convert the personal_techs (&[&str]) in type Tech
+
+            // Put the personal_techs in the techs HashSet
+            for s in personal_techs {
+                techs.extend(s.iter());
+            }
+            */
+
+            HashSet<Tech>
         }
     }
 }
