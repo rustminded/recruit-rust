@@ -19,9 +19,19 @@ pub struct Tech {
 }
 
 impl Tech {
-    fn from_str(techs: &'static str) -> Tech {
+    fn into_tech(techs: &'static str) -> Tech {
         let tech = techs;
         let professional = false;
+        let public = false;
+        Tech {
+            tech,
+            professional,
+            public,
+        }
+    }
+    fn into_pro_tech(techs: &'static str) -> Tech {
+        let tech = techs;
+        let professional = true;
         let public = false;
         Tech {
             tech,
@@ -48,14 +58,8 @@ impl CandidateInfo {
         let mut techs: HashSet<Tech> = HashSet::new();
 
         // Convert the asked_techs in type Tech
-        let candidate_asked_techs = candidate
-            .asked_techs
-            .iter()
-            .map(|x| Tech::from_str(x))
-            .collect::<HashSet<Tech>>();
-
+        let candidate_asked_techs = candidate.asked_techs.iter().map(|x| Tech::into_tech(x));
         techs.extend(candidate_asked_techs);
-        /*
         let jobs_techs = candidate
             .jobs
             .iter()
@@ -65,8 +69,10 @@ impl CandidateInfo {
         // Convert the jobs_tech in type Tech
 
         for s in jobs_techs.iter() {
-            techs.extend(s.iter());
+            let candidate_jobs_techs = s.iter().map(|x| Tech::into_pro_tech(x));
+            techs.extend(candidate_jobs_techs);
         }
+        /*
         let contribs_techs = candidate
             .contributions
             .iter()
