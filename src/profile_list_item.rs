@@ -1,8 +1,9 @@
+use crate::tech_tag::TechTag;
 use crate::Tech;
 use candidate::{Availability, Candidate, ContractType};
 use std::collections::HashSet;
 use yew::prelude::*;
-use yewprint::{Card, IconName, Intent, Tag, Text};
+use yewprint::{Card, Text};
 
 pub struct ProfileListItem {
     props: ProfileListItemProps,
@@ -37,44 +38,8 @@ impl Component for ProfileListItem {
             .techs
             .iter()
             .map(|x| {
-                if x.professional == true && x.public == false {
-                    html! {
-                        <Tag
-                            large=true
-                            icon=IconName::Office
-                        >
-                            {x.tech}
-                        </Tag>
-                    }
-                } else if x.professional == false && x.public == true {
-                    html! {
-                        <Tag
-                            large=true
-                            right_icon=IconName::GitPush
-                        >
-                            {x.tech}
-                        </Tag>
-                    }
-                } else if x.professional == true && x.public == true {
-                    html! {
-                        <Tag
-                            large=true
-                            icon=IconName::Office
-                            right_icon=IconName::GitPush
-
-                        >
-                            {x.tech}
-                        </Tag>
-                    }
-                } else {
-                    html! {
-                        <Tag
-                            large=true
-                            intent=Intent::Primary
-                        >
-                            {x.tech}
-                        </Tag>
-                    }
+                html! {
+                    <TechTag techs={x} />
                 }
             })
             .collect::<Html>();

@@ -1,4 +1,6 @@
+use crate::Tech;
 use yew::prelude::*;
+use yewprint::{IconName, Intent, Tag};
 
 pub struct TechTag {
     props: TechTagProps,
@@ -9,7 +11,7 @@ pub struct TechTagProps {
     pub techs: Tech,
 }
 
-impl Component for TechTagProps {
+impl Component for TechTag {
     type Message = ();
     type Properties = TechTagProps;
 
@@ -26,8 +28,43 @@ impl Component for TechTagProps {
     }
 
     fn view(&self) -> Html {
-        html! {
-            <p>{"Hello world"}</p>
+        if self.props.techs.professional == true && self.props.techs.public == false {
+            html! {
+                <Tag
+                    large=true
+                    icon=IconName::Office
+                >
+                    {self.props.techs.tech}
+                </Tag>
+            }
+        } else if self.props.techs.professional == false && self.props.techs.public == true {
+            html! {
+                <Tag
+                    large=true
+                    right_icon=IconName::GitPush
+                >
+                    {self.props.techs.tech}
+                </Tag>
+            }
+        } else if self.props.techs.professional == true && self.props.techs.public == true {
+            html! {
+                <Tag
+                    large=true
+                    icon=IconName::Office
+                    right_icon=IconName::GitPush
+                >
+                    {self.props.techs.tech}
+                </Tag>
+            }
+        } else {
+            html! {
+                <Tag
+                    large=true
+                    intent=Intent::Primary
+                >
+                    {self.props.techs.tech}
+                </Tag>
+            }
         }
     }
 }
