@@ -13,40 +13,33 @@ pub struct App {
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Tech {
-    pub tech: &'static str,
+    pub name: &'static str,
     pub professional: bool,
     pub public: bool,
 }
 
 impl Tech {
-    fn from_tech(candidate_tech: &'static str) -> Tech {
-        let tech = candidate_tech;
-        let professional = false;
-        let public = false;
+    fn from_tech(name: &'static str) -> Tech {
         Tech {
-            tech,
-            professional,
-            public,
+            name,
+            professional: false,
+            public: false,
         }
     }
-    fn from_pro_tech(candidate_tech: &'static str) -> Tech {
-        let tech = candidate_tech;
-        let professional = true;
-        let public = false;
+
+    fn from_pro_tech(name: &'static str) -> Tech {
         Tech {
-            tech,
-            professional,
-            public,
+            name,
+            professional: true,
+            public: false,
         }
     }
-    fn from_pub_tech(candidate_tech: &'static str) -> Tech {
-        let tech = candidate_tech;
-        let professional = false;
-        let public = true;
+
+    fn from_pub_tech(name: &'static str) -> Tech {
         Tech {
-            tech,
-            professional,
-            public,
+            name,
+            professional: false,
+            public: true,
         }
     }
 }
@@ -67,25 +60,21 @@ impl CandidateInfo {
         let url = candidate_url;
         let mut techs: HashSet<Tech> = HashSet::new();
 
-        let candidate_asked_techs = candidate.asked_techs.iter().map(|x| Tech::from_tech(x));
-        techs.extend(candidate_asked_techs);
+        techs.extend(candidate.asked_techs.iter().map(|x| Tech::from_tech(x)));
 
         let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
         for s in jobs_techs {
-            let candidate_jobs_techs = s.iter().map(|x| Tech::from_pro_tech(x));
-            techs.extend(candidate_jobs_techs);
+            techs.extend(s.iter().map(|x| Tech::from_pro_tech(x)));
         }
 
         let contribs_techs = candidate.contributions.iter().map(|x| x.techs);
         for s in contribs_techs {
-            let candidate_contribs_techs = s.iter().map(|x| Tech::from_pub_tech(x));
-            techs.extend(candidate_contribs_techs);
+            techs.extend(s.iter().map(|x| Tech::from_pub_tech(x)));
         }
 
         let personal_techs = candidate.personal_projects.iter().map(|x| x.techs);
         for s in personal_techs {
-            let candidate_personal_techs = s.iter().map(|x| Tech::from_pub_tech(x));
-            techs.extend(candidate_personal_techs);
+            techs.extend(s.iter().map(|x| Tech::from_pub_tech(x)));
         }
 
         CandidateInfo {
@@ -102,14 +91,10 @@ impl Component for App {
 
     fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
         let mut candidates = HashMap::new();
-        let candidate = (yozhgoor::candidate(), yozhgoor::candidate());
-        let candidate_1 = candidate.0;
-        let candidate_2 = candidate.1;
+        let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
+        let candidate_2_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor2");
 
-        let candidate_1_info = CandidateInfo::from_candidate(candidate_1, "yozhgoor");
-        let candidate_2_info = CandidateInfo::from_candidate(candidate_2, "yozhgoor2");
-
-        candidates.insert(candidate_1.slug, candidate_1_info);
+        candidates.insert(candidate_1_info.url, candidate_1_info);
         candidates.insert(candidate_2_info.url, candidate_2_info);
         crate::log!("{:?}", candidates);
 

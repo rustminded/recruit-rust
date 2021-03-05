@@ -39,7 +39,7 @@ impl Component for ProfileListItem {
             .iter()
             .map(|x| {
                 html! {
-                    <TechTag techs={x} />
+                    <TechTag tech={x} />
                 }
             })
             .collect::<Html>();
@@ -58,7 +58,7 @@ impl Component for ProfileListItem {
         html! {
             <Card class=classes!("profile-list")>
                 <div class="profile-list-header">
-                    <a href=format!("/{}", self.props.url)>
+                    <a href=self.props.url>
                         {self.props.candidate.name}
                     </a>
                     <Text>{availability}</Text>
