@@ -18,6 +18,12 @@ pub struct CandidateInfo {
     url: &'static str,
 }
 
+pub struct Tech {
+    tech: &'static str,
+    professional: bool,
+    public: bool,
+}
+
 impl CandidateInfo {
     fn from_candidate(candidate_info: &'static Candidate, url: &'static str) -> CandidateInfo {
         let candidate = candidate_info;
