@@ -39,6 +39,16 @@ impl Tech {
             public,
         }
     }
+    fn into_pub_tech(techs: &'static str) -> Tech {
+        let tech = techs;
+        let professional = false;
+        let public = true;
+        Tech {
+            tech,
+            professional,
+            public,
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -57,45 +67,40 @@ impl CandidateInfo {
         let url = candidate_url;
         let mut techs: HashSet<Tech> = HashSet::new();
 
-        // Convert the asked_techs in type Tech
         let candidate_asked_techs = candidate.asked_techs.iter().map(|x| Tech::into_tech(x));
         techs.extend(candidate_asked_techs);
+
         let jobs_techs = candidate
             .jobs
             .iter()
             .map(|x| x.techs)
             .collect::<HashSet<&[&str]>>();
-
-        // Convert the jobs_tech in type Tech
-
         for s in jobs_techs.iter() {
             let candidate_jobs_techs = s.iter().map(|x| Tech::into_pro_tech(x));
             techs.extend(candidate_jobs_techs);
         }
-        /*
+
         let contribs_techs = candidate
             .contributions
             .iter()
             .map(|x| x.techs)
             .collect::<HashSet<&[&str]>>();
-
-        // Convert the contribs_techs in type Tech
-
-        for s in contribs_techs {
-            techs.extend(s.iter());
+        for s in contribs_techs.iter() {
+            let candidate_contribs_techs = s.iter().map(|x| Tech::into_pub_tech(x));
+            techs.extend(candidate_contribs_techs);
         }
+
         let personal_techs = candidate
             .personal_projects
             .iter()
             .map(|x| x.techs)
             .collect::<HashSet<&[&str]>>();
 
-        // Convert the personal_techs in type Tech
-
-        for s in personal_techs {
-            techs.extend(s.iter());
+        for s in personal_techs.iter() {
+            let candidate_personal_techs = s.iter().map(|x| Tech::into_pub_tech(x));
+            techs.extend(candidate_personal_techs);
         }
-        */
+
         CandidateInfo {
             candidate,
             techs,
