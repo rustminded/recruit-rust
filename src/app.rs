@@ -83,7 +83,7 @@ impl CandidateInfo {
                 if techs.contains(&v) {
                     let mut tech = techs.take(&v).expect("no value");
                     tech.professional = true;
-                    techs.replace(tech);
+                    techs.insert(tech);
                 } else {
                     techs.insert(v);
                 }
@@ -96,7 +96,7 @@ impl CandidateInfo {
                 if techs.contains(&v) {
                     let mut tech = techs.take(&v).expect("no value");
                     tech.public = true;
-                    techs.replace(tech);
+                    techs.insert(tech);
                 } else {
                     techs.insert(v);
                 }
@@ -109,7 +109,7 @@ impl CandidateInfo {
                 if techs.contains(&v) {
                     let mut tech = techs.take(&v).expect("no value");
                     tech.public = true;
-                    techs.replace(tech);
+                    techs.insert(tech);
                 } else {
                     techs.insert(v);
                 }
