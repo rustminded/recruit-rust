@@ -163,7 +163,7 @@ impl Component for App {
                                             html! {
                                                 <ProfileListItem
                                                     candidate={x.candidate}
-                                                    tech={&x.techs}
+                                                    techs={&x.techs}
                                                     url={x.url}
                                                 />
                                             }

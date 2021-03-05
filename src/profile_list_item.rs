@@ -11,7 +11,7 @@ pub struct ProfileListItem {
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
-    pub tech: HashSet<Tech>,
+    pub techs: HashSet<Tech>,
     pub url: &'static str,
 }
 
@@ -34,7 +34,7 @@ impl Component for ProfileListItem {
     fn view(&self) -> Html {
         let candidate_tech = self
             .props
-            .tech
+            .techs
             .iter()
             .map(|x| {
                 if x.professional == true && x.public == false {
