@@ -80,10 +80,9 @@ impl CandidateInfo {
         let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
         for s in jobs_techs {
             for v in s.iter().map(|x| Tech::from_pro_tech(x)) {
-                if techs.contains(&v) {
-                    let mut tech = techs.take(&v).expect("no value");
-                    tech.professional = true;
-                    techs.insert(tech);
+                if let Some(mut v) = techs.take(&v) {
+                    v.professional = true;
+                    techs.insert(v);
                 } else {
                     techs.insert(v);
                 }
@@ -93,10 +92,9 @@ impl CandidateInfo {
         let contribs_techs = candidate.contributions.iter().map(|x| x.techs);
         for s in contribs_techs {
             for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
-                if techs.contains(&v) {
-                    let mut tech = techs.take(&v).expect("no value");
-                    tech.public = true;
-                    techs.insert(tech);
+                if let Some(mut v) = techs.take(&v) {
+                    v.professional = true;
+                    techs.insert(v);
                 } else {
                     techs.insert(v);
                 }
@@ -106,10 +104,9 @@ impl CandidateInfo {
         let personal_techs = candidate.personal_projects.iter().map(|x| x.techs);
         for s in personal_techs {
             for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
-                if techs.contains(&v) {
-                    let mut tech = techs.take(&v).expect("no value");
-                    tech.public = true;
-                    techs.insert(tech);
+                if let Some(mut v) = techs.take(&v) {
+                    v.professional = true;
+                    techs.insert(v);
                 } else {
                     techs.insert(v);
                 }
