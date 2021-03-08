@@ -59,9 +59,10 @@ impl PartialEq for Tech {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct TechSet<T>(HashSet<T>);
 
-impl<T: Eq + Hash> TechSet<T>
+impl<T> TechSet<T>
 where
     T: Eq + Hash,
 {
@@ -71,6 +72,17 @@ where
 
     fn add(&mut self, elem: T) {
         self.0.insert(elem);
+    }
+}
+
+impl<T> Eq for TechSet<T> where T: Eq + Hash {}
+
+impl<T> PartialEq for TechSet<T>
+where
+    T: Eq + Hash,
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.0 == other.0
     }
 }
 
@@ -88,7 +100,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 pub struct CandidateInfo {
     candidate: &'static Candidate,
-    techs: HashSet<Tech>,
+    techs: TechSet<Tech>,
     url: &'static str,
 }
 
@@ -99,7 +111,7 @@ impl CandidateInfo {
     ) -> CandidateInfo {
         let candidate = candidate_info;
         let url = candidate_url;
-        let mut techs: HashSet<Tech> = HashSet::new();
+        let mut techs: TechSet<Tech> = TechSet::new();
 
         techs.extend(candidate.asked_techs.iter().map(|x| Tech::from_tech(x)));
 
