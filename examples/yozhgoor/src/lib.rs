@@ -8,7 +8,7 @@ pub fn candidate() -> &'static Candidate {
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
         pronouns: &["he", "him"],
-        asked_techs: &["Rust", "WASM", "PWA"],
+        asked_techs: &["Rust", "WASM", "PWA", "Test"],
         urls: &[
             ("GitHub", "https://github.com/Yozhgoor"),
             ("Twitter", "https://twitter.com/yozhgoor"),
@@ -20,7 +20,7 @@ pub fn candidate() -> &'static Candidate {
             website: "https://github.com/rustminded",
             description: "Learn programming and Rust \
                     as a Junior Consultant Developer",
-            techs: &["Rust"],
+            techs: &["Rust", "Game"],
             period: "2021",
         }],
         contributions: &[
