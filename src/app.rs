@@ -55,7 +55,7 @@ impl Eq for Tech {}
 
 impl PartialEq for Tech {
     fn eq(&self, other: &Self) -> bool {
-        self.name == other.name
+        self.name.eq(other.name)
     }
 }
 
@@ -84,8 +84,8 @@ impl Extend<Tech> for TechSet {
     fn extend<I: IntoIterator<Item = Tech>>(&mut self, iter: I) {
         for elem in iter {
             if let Some(mut v) = self.0.take(&elem) {
-                v.professional = v.professional || elem.professional;
-                v.public = v.public || elem.public;
+                v.professional |= elem.professional;
+                v.public |= elem.public;
                 self.0.insert(v);
             } else {
                 self.0.insert(elem);
@@ -115,40 +115,16 @@ impl CandidateInfo {
         let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
         for s in jobs_techs {
             techs.extend(s.iter().map(|x| Tech::from_pro_tech(x)));
-            /* for v in s.iter().map(|x| Tech::from_pro_tech(x)) {
-                if let Some(mut v) = techs.take(&v) {
-                    v.professional = true;
-                    techs.insert(v);
-                } else {
-                    techs.insert(v);
-                }
-            }*/
         }
 
         let contribs_techs = candidate.contributions.iter().map(|x| x.techs);
         for s in contribs_techs {
             techs.extend(s.iter().map(|x| Tech::from_pub_tech(x)))
-            /* for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
-                if let Some(mut v) = techs.take(&v) {
-                    v.public = true;
-                    techs.insert(v);
-                } else {
-                    techs.insert(v);
-                }
-            }*/
         }
 
         let personal_techs = candidate.personal_projects.iter().map(|x| x.techs);
         for s in personal_techs {
             techs.extend(s.iter().map(|x| Tech::from_pub_tech(x)))
-            /* for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
-                if let Some(mut v) = techs.take(&v) {
-                    v.public = true;
-                    techs.insert(v);
-                } else {
-                    techs.insert(v);
-                }
-            }*/
         }
 
         CandidateInfo {
