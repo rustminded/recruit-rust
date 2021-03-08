@@ -61,24 +61,21 @@ impl PartialEq for Tech {
 
 pub struct TechSet<T>(HashSet<T>);
 
-impl<T> TechSet<T> {
+impl<T: Eq + Hash> TechSet<T> {
     fn new() -> TechSet<T> {
         TechSet(HashSet::new())
     }
-}
 
-impl<T> IntoIterator for TechSet<T> {
-    type Item = T;
-    type IntoIter = std::collections::hash_set::IntoIter<Self::Item>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        self.0.into_iter()
+    fn add(&mut self, elem: T) {
+        self.0.insert(elem);
     }
 }
 
-impl<T> Extend<T> for TechSet<T> {
+impl<T: Eq + Hash> Extend<T> for TechSet<T> {
     fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
-        self.extend(iter.into_iter());
+        for elem in iter {
+            self.add(elem);
+        }
     }
 }
 
