@@ -83,7 +83,11 @@ impl PartialEq for TechSet {
 impl Extend<Tech> for TechSet {
     fn extend<I: IntoIterator<Item = Tech>>(&mut self, iter: I) {
         for elem in iter {
-            self.0.insert(elem);
+            if let Some(v) = self.0.take(&elem) {
+                todo!()
+            } else {
+                self.0.insert(elem);
+            }
         }
     }
 }
@@ -106,43 +110,45 @@ impl CandidateInfo {
 
         techs.extend(candidate.asked_techs.iter().map(|x| Tech::from_tech(x)));
 
-        /*
         let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
         for s in jobs_techs {
-            for v in s.iter().map(|x| Tech::from_pro_tech(x)) {
+            techs.extend(s);
+            /* for v in s.iter().map(|x| Tech::from_pro_tech(x)) {
                 if let Some(mut v) = techs.take(&v) {
                     v.professional = true;
                     techs.insert(v);
                 } else {
                     techs.insert(v);
                 }
-            }
+            }*/
         }
 
         let contribs_techs = candidate.contributions.iter().map(|x| x.techs);
         for s in contribs_techs {
-            for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
+            techs.extend(s)
+            /* for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
                 if let Some(mut v) = techs.take(&v) {
                     v.public = true;
                     techs.insert(v);
                 } else {
                     techs.insert(v);
                 }
-            }
+            }*/
         }
 
         let personal_techs = candidate.personal_projects.iter().map(|x| x.techs);
         for s in personal_techs {
-            for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
+            techs.extend(s)
+            /* for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
                 if let Some(mut v) = techs.take(&v) {
                     v.public = true;
                     techs.insert(v);
                 } else {
                     techs.insert(v);
                 }
-            }
+            }*/
         }
-        */
+
         CandidateInfo {
             candidate,
             techs,
