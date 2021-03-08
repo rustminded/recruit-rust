@@ -1,7 +1,5 @@
-use crate::tech_tag::TechTag;
-use crate::Tech;
+use crate::{tech_tag::TechTag, TechSet};
 use candidate::{Availability, Candidate, ContractType};
-use std::collections::HashSet;
 use yew::prelude::*;
 use yewprint::{Card, Text};
 
@@ -12,7 +10,7 @@ pub struct ProfileListItem {
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
-    pub techs: HashSet<Tech>,
+    pub techs: TechSet,
     pub url: &'static str,
 }
 

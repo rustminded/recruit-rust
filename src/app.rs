@@ -60,39 +60,30 @@ impl PartialEq for Tech {
 }
 
 #[derive(Debug, Clone)]
-pub struct TechSet<T>(HashSet<T>);
+pub struct TechSet(HashSet<Tech>);
 
-impl<T> TechSet<T>
-where
-    T: Eq + Hash,
-{
-    fn new() -> TechSet<T> {
+impl TechSet {
+    pub fn new() -> TechSet {
         TechSet(HashSet::new())
     }
 
-    fn add(&mut self, elem: T) {
-        self.0.insert(elem);
+    pub fn iter(&self) -> std::collections::hash_set::Iter<Tech> {
+        self.0.iter()
     }
 }
 
-impl<T> Eq for TechSet<T> where T: Eq + Hash {}
+impl Eq for TechSet {}
 
-impl<T> PartialEq for TechSet<T>
-where
-    T: Eq + Hash,
-{
+impl PartialEq for TechSet {
     fn eq(&self, other: &Self) -> bool {
-        self.0 == other.0
+        self.0.eq(&other.0)
     }
 }
 
-impl<T> Extend<T> for TechSet<T>
-where
-    T: Eq + Hash,
-{
-    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
+impl Extend<Tech> for TechSet {
+    fn extend<I: IntoIterator<Item = Tech>>(&mut self, iter: I) {
         for elem in iter {
-            self.add(elem);
+            self.0.insert(elem);
         }
     }
 }
@@ -100,7 +91,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 pub struct CandidateInfo {
     candidate: &'static Candidate,
-    techs: TechSet<Tech>,
+    techs: TechSet,
     url: &'static str,
 }
 
@@ -111,10 +102,11 @@ impl CandidateInfo {
     ) -> CandidateInfo {
         let candidate = candidate_info;
         let url = candidate_url;
-        let mut techs: TechSet<Tech> = TechSet::new();
+        let mut techs: TechSet = TechSet::new();
 
         techs.extend(candidate.asked_techs.iter().map(|x| Tech::from_tech(x)));
 
+        /*
         let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
         for s in jobs_techs {
             for v in s.iter().map(|x| Tech::from_pro_tech(x)) {
@@ -150,7 +142,7 @@ impl CandidateInfo {
                 }
             }
         }
-
+        */
         CandidateInfo {
             candidate,
             techs,
