@@ -84,7 +84,9 @@ impl Extend<Tech> for TechSet {
     fn extend<I: IntoIterator<Item = Tech>>(&mut self, iter: I) {
         for elem in iter {
             if let Some(mut v) = self.0.take(&elem) {
-                todo!()
+                v.professional = v.professional || elem.professional;
+                v.public = v.public || elem.public;
+                self.0.insert(v);
             } else {
                 self.0.insert(elem);
             }
@@ -125,7 +127,7 @@ impl CandidateInfo {
 
         let contribs_techs = candidate.contributions.iter().map(|x| x.techs);
         for s in contribs_techs {
-            techs.extend(s.iter().map(|x| Tech::from_pro_tech(x)))
+            techs.extend(s.iter().map(|x| Tech::from_pub_tech(x)))
             /* for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
                 if let Some(mut v) = techs.take(&v) {
                     v.public = true;
