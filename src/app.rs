@@ -61,7 +61,10 @@ impl PartialEq for Tech {
 
 pub struct TechSet<T>(HashSet<T>);
 
-impl<T: Eq + Hash> TechSet<T> {
+impl<T: Eq + Hash> TechSet<T>
+where
+    T: Eq + Hash,
+{
     fn new() -> TechSet<T> {
         TechSet(HashSet::new())
     }
@@ -71,7 +74,10 @@ impl<T: Eq + Hash> TechSet<T> {
     }
 }
 
-impl<T: Eq + Hash> Extend<T> for TechSet<T> {
+impl<T> Extend<T> for TechSet<T>
+where
+    T: Eq + Hash,
+{
     fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
         for elem in iter {
             self.add(elem);
