@@ -59,16 +59,16 @@ impl PartialEq for Tech {
     }
 }
 
-pub struct TechSet(HashSet<Tech>);
+pub struct TechSet<T>(HashSet<T>);
 
-impl TechSet {
-    fn new() -> TechSet {
+impl<T> TechSet<T> {
+    fn new() -> TechSet<T> {
         TechSet(HashSet::new())
     }
 }
 
-impl IntoIterator for TechSet {
-    type Item = Tech;
+impl<T> IntoIterator for TechSet<T> {
+    type Item = T;
     type IntoIter = std::collections::hash_set::IntoIter<Self::Item>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -76,8 +76,8 @@ impl IntoIterator for TechSet {
     }
 }
 
-impl Extend<Tech> for TechSet {
-    fn extend<I: IntoIterator<Item = Tech>>(&mut self, iter: I) {
+impl<T> Extend<T> for TechSet<T> {
+    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
         self.extend(iter.into_iter());
     }
 }
