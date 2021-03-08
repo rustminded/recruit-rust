@@ -83,7 +83,7 @@ impl PartialEq for TechSet {
 impl Extend<Tech> for TechSet {
     fn extend<I: IntoIterator<Item = Tech>>(&mut self, iter: I) {
         for elem in iter {
-            if let Some(v) = self.0.take(&elem) {
+            if let Some(mut v) = self.0.take(&elem) {
                 todo!()
             } else {
                 self.0.insert(elem);
@@ -112,7 +112,7 @@ impl CandidateInfo {
 
         let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
         for s in jobs_techs {
-            techs.extend(s);
+            techs.extend(s.iter().map(|x| Tech::from_pro_tech(x)));
             /* for v in s.iter().map(|x| Tech::from_pro_tech(x)) {
                 if let Some(mut v) = techs.take(&v) {
                     v.professional = true;
@@ -125,7 +125,7 @@ impl CandidateInfo {
 
         let contribs_techs = candidate.contributions.iter().map(|x| x.techs);
         for s in contribs_techs {
-            techs.extend(s)
+            techs.extend(s.iter().map(|x| Tech::from_pro_tech(x)))
             /* for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
                 if let Some(mut v) = techs.take(&v) {
                     v.public = true;
@@ -138,7 +138,7 @@ impl CandidateInfo {
 
         let personal_techs = candidate.personal_projects.iter().map(|x| x.techs);
         for s in personal_techs {
-            techs.extend(s)
+            techs.extend(s.iter().map(|x| Tech::from_pub_tech(x)))
             /* for v in s.iter().map(|x| Tech::from_pub_tech(x)) {
                 if let Some(mut v) = techs.take(&v) {
                     v.public = true;
