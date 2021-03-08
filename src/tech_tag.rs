@@ -28,29 +28,89 @@ impl Component for TechTag {
     }
 
     fn view(&self) -> Html {
-        if self.props.tech.professional == true && self.props.tech.public == false {
+        if self.props.tech.professional == true
+            && self.props.tech.public == false
+            && self.props.tech.asked == false
+        {
             html! {
                 <Tag
                     class=classes!("pro-tag")
+                    intent=Intent::Warning
+                >
+                    {self.props.tech.name}
+                </Tag>
+            }
+        } else if self.props.tech.professional == false
+            && self.props.tech.public == true
+            && self.props.tech.asked == false
+        {
+            html! {
+                <Tag
+                    class=classes!("pub-tag")
                     intent=Intent::Success
                 >
                     {self.props.tech.name}
                 </Tag>
             }
-        } else if self.props.tech.professional == false && self.props.tech.public == true {
+        } else if self.props.tech.professional == false
+            && self.props.tech.public == false
+            && self.props.tech.asked == true
+        {
             html! {
                 <Tag
-                    class=classes!("pub-tag")
+                    class=classes!("asked-tag")
+                    intent=Intent::Primary
+                >
+                    {self.props.tech.name}
+                </Tag>
+            }
+        } else if self.props.tech.professional == true
+            && self.props.tech.public == false
+            && self.props.tech.asked == true
+        {
+            html! {
+                <Tag
+                    class=classes!("asked-pro-tag")
+                    right_icon=IconName::Code
+                    intent=Intent::Primary
+                >
+                    {self.props.tech.name}
+                </Tag>
+            }
+        } else if self.props.tech.professional == false
+            && self.props.tech.public == true
+            && self.props.tech.asked == true
+        {
+            html! {
+                <Tag
+                    class=classes!("asked-pub-tag")
+                    intent=Intent::Primary
                     right_icon=IconName::People
                 >
                     {self.props.tech.name}
                 </Tag>
             }
-        } else if self.props.tech.professional == true && self.props.tech.public == true {
+        } else if self.props.tech.professional == true
+            && self.props.tech.public == true
+            && self.props.tech.asked == true
+        {
             html! {
                 <Tag
-                    class=classes!("both-flag-tag")
-                    intent=Intent::Success
+                    class=classes!("three-flag-tag")
+                    intent=Intent::Warning
+                    right_icon=IconName::Star
+                >
+                    {self.props.tech.name}
+                </Tag>
+            }
+        } else if self.props.tech.professional == true
+            && self.props.tech.public == true
+            && self.props.tech.asked == false
+        {
+            html! {
+                <Tag
+                    class=classes!("pro-pub-tag")
+                    intent=Intent::Warning
                     right_icon=IconName::People
                 >
                     {self.props.tech.name}
@@ -60,7 +120,6 @@ impl Component for TechTag {
             html! {
                 <Tag
                     class=classes!("no-flag-tag")
-                    intent=Intent::Primary
                 >
                     {self.props.tech.name}
                 </Tag>

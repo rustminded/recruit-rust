@@ -17,6 +17,7 @@ pub struct Tech {
     pub name: &'static str,
     pub professional: bool,
     pub public: bool,
+    pub asked: bool,
 }
 
 impl Tech {
@@ -25,6 +26,7 @@ impl Tech {
             name,
             professional: false,
             public: false,
+            asked: true,
         }
     }
 
@@ -33,6 +35,7 @@ impl Tech {
             name,
             professional: true,
             public: false,
+            asked: false,
         }
     }
 
@@ -41,6 +44,7 @@ impl Tech {
             name,
             professional: false,
             public: true,
+            asked: false,
         }
     }
 }
@@ -86,6 +90,7 @@ impl Extend<Tech> for TechSet {
             if let Some(mut v) = self.0.take(&elem) {
                 v.professional |= elem.professional;
                 v.public |= elem.public;
+                v.asked |= elem.asked;
                 self.0.insert(v);
             } else {
                 self.0.insert(elem);
