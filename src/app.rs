@@ -208,6 +208,13 @@ impl Component for App {
                                                 .get(&candidate_slug.as_str())
                                                 .unwrap()
                                                 .candidate
+                                            highlighted_tech=Some("")
+                                        />
+                                    },
+                                    AppRoute::ProfileHl(candidate_slug, highlighted_tech) => html! {
+                                        <Profile
+                                            candidate=candidates.get(&candidate_slug.as_str()).unwrap().candidate
+                                            highlighted_tech=Some("")
                                         />
                                     },
                                 }
@@ -222,6 +229,8 @@ impl Component for App {
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoute {
+    #[to = "/{candidate_slug}#{highlighted_tech}"]
+    ProfileHl(String, String),
     #[to = "/{candidate_slug}"]
     Profile(String),
     #[to = "/"]
