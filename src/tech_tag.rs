@@ -1,25 +1,44 @@
+use crate::AppRoute;
 use crate::Tech;
 use yew::prelude::*;
+use yew_router::agent::{RouteAgentDispatcher, RouteRequest};
 use yewprint::{IconName, Intent, Tag};
 
 pub struct TechTag {
     props: TechTagProps,
+    link: ComponentLink<Self>,
+    route_dispatcher: RouteAgentDispatcher,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct TechTagProps {
     pub tech: Tech,
+    pub url: String,
+}
+
+pub enum Msg {
+    GoToRoute(AppRoute),
 }
 
 impl Component for TechTag {
-    type Message = ();
+    type Message = Msg;
     type Properties = TechTagProps;
 
-    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        TechTag { props }
+    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        TechTag {
+            props,
+            link,
+            route_dispatcher: RouteAgentDispatcher::new(),
+        }
     }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        match msg {
+            Msg::GoToRoute(app_route) => {
+                self.route_dispatcher
+                    .send(RouteRequest::ChangeRoute(app_route.into()));
+            }
+        }
         true
     }
 
@@ -36,6 +55,7 @@ impl Component for TechTag {
                 <Tag
                     class=classes!("pro-tag")
                     intent=Intent::Warning
+                    onclick=&self.link.callback(|_| Msg::GoToRoute(AppRoute::ProfileHl(self.props.url, self.props.tech.value.to_string())))
                 >
                     {self.props.tech.value}
                 </Tag>
