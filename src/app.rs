@@ -10,7 +10,7 @@ use yew_router::{router::Router, Switch};
 use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 
 pub struct App {
-    candidates: HashMap<&'static str, CandidateInfo>,
+    candidates: Rc<HashMap<&'static str, CandidateInfo>>,
 }
 
 #[derive(Debug, Clone)]
@@ -144,6 +144,7 @@ impl Component for App {
         candidates.insert(candidate_1_info.url, candidate_1_info);
         candidates.insert(candidate_2_info.url, candidate_2_info);
         crate::log!("{:?}", candidates);
+        let candidates = Rc::new(candidates);
 
         App { candidates }
     }
@@ -157,7 +158,7 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
-        let candidates = Rc::new(self.candidates);
+        let candidates = Rc::clone(&self.candidates);
 
         html! {
             <div class="app-root bp3-dark">
