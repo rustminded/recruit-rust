@@ -183,12 +183,11 @@ impl Component for App {
                     {"The place to be hired as an awesome Rustacean"}
                 </Text>
                 <Text class=classes!("reddit-link")>
-                    {"Hey, want to be even more visible ? \
-                    Do not hesitate to check this "}
+                    {"If you want to share an opportunity, check this "}
                     <a
                         href="https://www.reddit.com/r/rust/comments/kob284/official_rrust_whos_hiring_thread_for_jobseekers/"
                     >
-                        {"hiring thread on Reddit"}
+                        {"reddit post"}
                     </a>
                 </Text>
                 <div class="app-content" role="main">
