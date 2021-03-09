@@ -13,7 +13,7 @@ pub struct TechTag {
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct TechTagProps {
     pub tech: Tech,
-    pub url: String,
+    pub url: &'static str,
 }
 
 pub enum Msg {
@@ -55,7 +55,12 @@ impl Component for TechTag {
                 <Tag
                     class=classes!("pro-tag")
                     intent=Intent::Warning
-                    onclick=self.link.callback(|_| Msg::GoToRoute(AppRoute::ProfileHl(self.props.url, self.props.tech.value.to_string())))
+                    onclick=self.link.callback(move |_| Msg::GoToRoute(
+                        AppRoute::ProfileHl(
+                            self.props.url.to_string(),
+                            self.props.tech.value.to_string(),
+                        )
+                    ))
                 >
                     {self.props.tech.value}
                 </Tag>
