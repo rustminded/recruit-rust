@@ -3,7 +3,7 @@ use crate::jobs::Jobs;
 use candidate::{Availability, Candidate, ContractType};
 use itertools::Itertools;
 use yew::prelude::*;
-use yewprint::{Card, Tag, Text, H1, H2};
+use yewprint::{Card, Intent, Tag, Text, H1, H2};
 
 pub struct Profile {
     props: ProfileProps,
@@ -38,7 +38,10 @@ impl Component for Profile {
             .iter()
             .map(|x| {
                 html! {
-                    <Tag class=classes!("tag")>
+                    <Tag
+                        class=classes!("tag")
+                        intent=Intent::Primary
+                    >
                         {x}
                     </Tag>
                 }

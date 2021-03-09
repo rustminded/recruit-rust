@@ -1,6 +1,6 @@
 use candidate::Contribution;
 use yew::prelude::*;
-use yewprint::{Tag, Text};
+use yewprint::{Intent, Tag, Text};
 
 pub struct Contributions {
     props: ContributionProps,
@@ -35,7 +35,10 @@ impl Component for Contributions {
             .iter()
             .map(|x| {
                 html! {
-                    <Tag class=classes!("tag")>
+                    <Tag
+                        class=classes!("tag")
+                        intent=Intent::Success
+                    >
                         {x}
                     </Tag>
                 }
