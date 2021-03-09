@@ -20,35 +20,6 @@ pub struct Tech {
     pub asked: bool,
 }
 
-impl Tech {
-    fn from_tech(name: &'static str) -> Tech {
-        Tech {
-            name,
-            professional: false,
-            public: false,
-            asked: true,
-        }
-    }
-
-    fn from_pro_tech(name: &'static str) -> Tech {
-        Tech {
-            name,
-            professional: true,
-            public: false,
-            asked: false,
-        }
-    }
-
-    fn from_pub_tech(name: &'static str) -> Tech {
-        Tech {
-            name,
-            professional: false,
-            public: true,
-            asked: false,
-        }
-    }
-}
-
 impl Hash for Tech {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.name.hash(state);
@@ -115,21 +86,41 @@ impl CandidateInfo {
         let url = candidate_url;
         let mut techs: TechSet = TechSet::new();
 
-        techs.extend(candidate.asked_techs.iter().map(|x| Tech::from_tech(x)));
+        techs.extend(candidate.asked_techs.iter().map(|x| Tech {
+            name: x,
+            professional: false,
+            public: false,
+            asked: true,
+        }));
 
         let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
         for s in jobs_techs {
-            techs.extend(s.iter().map(|x| Tech::from_pro_tech(x)));
+            techs.extend(s.iter().map(|x| Tech {
+                name: x,
+                professional: true,
+                public: false,
+                asked: false,
+            }));
         }
 
         let contribs_techs = candidate.contributions.iter().map(|x| x.techs);
         for s in contribs_techs {
-            techs.extend(s.iter().map(|x| Tech::from_pub_tech(x)))
+            techs.extend(s.iter().map(|x| Tech {
+                name: x,
+                professional: false,
+                public: true,
+                asked: false,
+            }));
         }
 
         let personal_techs = candidate.personal_projects.iter().map(|x| x.techs);
         for s in personal_techs {
-            techs.extend(s.iter().map(|x| Tech::from_pub_tech(x)))
+            techs.extend(s.iter().map(|x| Tech {
+                name: x,
+                professional: false,
+                public: true,
+                asked: false,
+            }));
         }
 
         CandidateInfo {
