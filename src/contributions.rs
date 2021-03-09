@@ -36,7 +36,6 @@ impl Component for Contributions {
             .map(|x| {
                 html! {
                     <Tag
-                        interactive=true
                         class=classes!("tag")
                         intent=Intent::Success
                     >
