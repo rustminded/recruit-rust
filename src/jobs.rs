@@ -36,6 +36,7 @@ impl Component for Jobs {
             .map(|x| {
                 html! {
                     <Tag
+                        interactive=true
                         class=classes!("tag")
                         intent=Intent::Warning
                     >
