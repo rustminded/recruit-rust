@@ -5,6 +5,7 @@ mod contributions;
 mod jobs;
 mod profile;
 mod profile_list_item;
+mod tech_tag;
 
 pub use app::*;
 use wasm_bindgen::prelude::*;

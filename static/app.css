@@ -109,3 +109,23 @@ body{
     justify-content: space-between;
     margin-bottom: 10px;
 }
+
+.pro-tag{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.pub-tag{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.both-flag-tag{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.no-flag-tag{
+    margin-left: 2px;
+    margin-right: 2px;
+}

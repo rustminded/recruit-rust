@@ -1,6 +1,6 @@
 use candidate::Job;
 use yew::prelude::*;
-use yewprint::{Tag, Text};
+use yewprint::{Intent, Tag, Text};
 
 pub struct Jobs {
     props: JobsProps,
@@ -31,11 +31,14 @@ impl Component for Jobs {
         let jobs_tags = self
             .props
             .jobs
-            .tech
+            .techs
             .iter()
             .map(|x| {
                 html! {
-                    <Tag class=classes!("tag")>
+                    <Tag
+                        class=classes!("tag")
+                        intent=Intent::Warning
+                    >
                         {x}
                     </Tag>
                 }

@@ -1,6 +1,7 @@
+use crate::{tech_tag::TechTag, TechSet};
 use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
-use yewprint::{Card, Tag, Text};
+use yewprint::{Card, Text};
 
 pub struct ProfileListItem {
     props: ProfileListItemProps,
@@ -9,6 +10,8 @@ pub struct ProfileListItem {
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
+    pub techs: TechSet,
+    pub url: &'static str,
 }
 
 impl Component for ProfileListItem {
@@ -28,16 +31,13 @@ impl Component for ProfileListItem {
     }
 
     fn view(&self) -> Html {
-        let tags = self
+        let candidate_tech = self
             .props
-            .candidate
-            .asked_tech
+            .techs
             .iter()
             .map(|x| {
                 html! {
-                    <Tag class=classes!("tag")>
-                        {x}
-                    </Tag>
+                    <TechTag tech={x} />
                 }
             })
             .collect::<Html>();
@@ -46,6 +46,7 @@ impl Component for ProfileListItem {
             ContractType::Employee => "Employee",
             ContractType::Any => "Any",
         };
+
         let availability = match self.props.candidate.availability {
             Availability::FullTime => "Full time",
             Availability::PartTime => "Part time",
@@ -55,14 +56,14 @@ impl Component for ProfileListItem {
         html! {
             <Card class=classes!("profile-list")>
                 <div class="profile-list-header">
-                    <a href=format!("/{}", self.props.candidate.slug)>
+                    <a href=self.props.url>
                         {self.props.candidate.name}
                     </a>
                     <Text>{availability}</Text>
                     <Text>{contract}</Text>
                 </div>
                 <div class="profile-list-footer">
-                    {tags}
+                    {candidate_tech}
                 </div>
             </Card>
         }

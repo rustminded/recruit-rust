@@ -8,7 +8,7 @@ pub fn candidate() -> &'static Candidate {
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
         pronouns: &["he", "him"],
-        asked_tech: &["Rust", "WASM", "PWA"],
+        asked_techs: &["Rust", "WASM", "PWA"],
         urls: &[
             ("GitHub", "https://github.com/Yozhgoor"),
             ("Twitter", "https://twitter.com/yozhgoor"),
@@ -19,48 +19,48 @@ pub fn candidate() -> &'static Candidate {
             company: "RustMinded",
             website: "https://github.com/rustminded",
             description: "Learn programming and Rust \
-                    as a Junior Consultant Developper",
-            tech: &["Rust"],
+                    as a Junior Consultant Developer",
+            techs: &["Rust"],
             period: "2021",
         }],
         contributions: &[
             Contribution {
                 project: "Third-I by Big Boy System",
                 website: "http://bigboysystems.com",
-                tech: &["TypeScript", "React", "HTML", "CSS", "PWA"],
+                techs: &["TypeScript", "React", "HTML", "CSS", "PWA"],
                 description: "Third-I, the only camera that replicates your hearing \
                     and your point of view in the first person.",
             },
             Contribution {
                 project: "wasm-run",
                 website: "https://crates.io/crates/wasm-run",
-                tech: &["Rust", "WASM"],
+                techs: &["Rust", "WASM"],
                 description: "Build tool that replaces cargo run to build WASM projects.",
             },
             Contribution {
                 project: "Yewprint",
                 website: "https://yewprint.rm.rs/",
-                tech: &["Rust", "WASM", "Yew", "Netlify"],
+                techs: &["Rust", "WASM", "Yew", "Netlify"],
                 description: "Port of blueprintjs to yew",
             },
         ],
-        personnal_projects: &[
+        personal_projects: &[
             Contribution {
                 project: "Yewprint-playground",
                 website: "https://github.com/yozhgoor/yewprint-playground",
-                tech: &["Rust", "WASM", "Yew", "CSS"],
+                techs: &["Rust", "WASM", "Yew", "CSS"],
                 description: "a Yew and yewprint playground using wasm-run",
             },
             Contribution {
                 project: "Rusty-snake",
                 website: "https://github.com/yozhgoor/rusty-snake",
-                tech: &["Rust"],
+                techs: &["Rust"],
                 description: "Snake, the game in your terminal",
             },
             Contribution {
                 project: "Introduction à Rust",
                 website: "https://intro-to-rust.netlify.app",
-                tech: &["Rust"],
+                techs: &["Rust"],
                 description: "My vision of the Rust Programming Language, \
                     as an introduction to Rust",
             },
