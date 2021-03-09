@@ -182,6 +182,15 @@ impl Component for App {
                 <Text class=classes!("app-intro")>
                     {"The place to be hired as an awesome Rustacean"}
                 </Text>
+                <Text class=classes!("reddit-link")>
+                    {"Hey, want to be even more visible ? \
+                    Do not hesitate to check this "}
+                    <a
+                        href="https://www.reddit.com/r/rust/comments/kob284/official_rrust_whos_hiring_thread_for_jobseekers/"
+                    >
+                        {"Subreddit"}
+                    </a>
+                </Text>
                 <div class="app-content" role="main">
                     <div class="profile-list-component">
                         <H2>{"Discover the community"}</H2>
