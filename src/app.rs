@@ -214,7 +214,7 @@ impl Component for App {
                                     AppRoute::ProfileHl(candidate_slug, highlighted_tech) => html! {
                                         <Profile
                                             candidate=candidates.get(&candidate_slug.as_str()).unwrap().candidate
-                                            highlighted_tech=Some("")
+                                            highlighted_tech=Some(highlighted_tech)
                                         />
                                     },
                                 }
