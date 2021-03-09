@@ -188,7 +188,7 @@ impl Component for App {
                     <a
                         href="https://www.reddit.com/r/rust/comments/kob284/official_rrust_whos_hiring_thread_for_jobseekers/"
                     >
-                        {"Subreddit"}
+                        {"hiring thread on Reddit"}
                     </a>
                 </Text>
                 <div class="app-content" role="main">
