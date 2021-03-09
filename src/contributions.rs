@@ -9,6 +9,7 @@ pub struct Contributions {
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ContributionProps {
     pub contributions: &'static Contribution,
+    pub highlighted_tech: Option<String>,
 }
 
 impl Component for Contributions {
@@ -37,7 +38,12 @@ impl Component for Contributions {
                 html! {
                     <Tag
                         class=classes!("tag")
-                        intent=Intent::Success
+                        intent={
+                            match self.props.highlighted_tech.as_ref() {
+                                Some(highlighted_tech) if highlighted_tech == x => Intent::Danger,
+                                _ => Intent::Success
+                            }
+                        }
                     >
                         {x}
                     </Tag>

@@ -12,6 +12,7 @@ pub struct Profile {
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileProps {
     pub candidate: &'static Candidate,
+    pub highlighted_tech: Option<String>,
 }
 
 impl Component for Profile {
@@ -40,7 +41,12 @@ impl Component for Profile {
                 html! {
                     <Tag
                         class=classes!("tag")
-                        intent=Intent::Primary
+                        intent={
+                            match self.props.highlighted_tech.as_ref() {
+                                Some(highlighted_tech) if highlighted_tech == x => Intent::Danger,
+                                _ => Intent::Primary,
+                            }
+                        }
                     >
                         {x}
                     </Tag>
@@ -80,7 +86,10 @@ impl Component for Profile {
             .iter()
             .map(|x| {
                 html! {
-                    <Jobs jobs={x} />
+                    <Jobs
+                        jobs={x}
+                        highlighted_tech=self.props.highlighted_tech.clone()
+                    />
                 }
             })
             .collect::<Html>();
@@ -91,7 +100,10 @@ impl Component for Profile {
             .iter()
             .map(|x| {
                 html! {
-                    <Contributions contributions={x} />
+                    <Contributions
+                        contributions={x}
+                        highlighted_tech=self.props.highlighted_tech.clone()
+                    />
                 }
             })
             .collect::<Html>();
@@ -102,7 +114,10 @@ impl Component for Profile {
             .iter()
             .map(|x| {
                 html! {
-                    <Contributions contributions={x} />
+                    <Contributions
+                        contributions={x}
+                        highlighted_tech=self.props.highlighted_tech.clone()
+                    />
                 }
             })
             .collect::<Html>();

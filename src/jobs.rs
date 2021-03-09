@@ -9,6 +9,7 @@ pub struct Jobs {
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct JobsProps {
     pub jobs: &'static Job,
+    pub highlighted_tech: Option<String>,
 }
 
 impl Component for Jobs {
@@ -37,7 +38,12 @@ impl Component for Jobs {
                 html! {
                     <Tag
                         class=classes!("tag")
-                        intent=Intent::Warning
+                        intent={
+                            match self.props.highlighted_tech.as_ref() {
+                                Some(highlighted_tech) if highlighted_tech == x => Intent::Danger,
+                                _ => Intent::Warning
+                            }
+                        }
                     >
                         {x}
                     </Tag>
