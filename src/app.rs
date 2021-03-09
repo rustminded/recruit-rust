@@ -4,6 +4,7 @@ use candidate::Candidate;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::hash::{Hash, Hasher};
+use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
 use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
@@ -156,7 +157,7 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
-        let candidates = self.candidates.clone();
+        let candidates = Rc::new(self.candidates);
 
         html! {
             <div class="app-root bp3-dark">
