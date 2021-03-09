@@ -15,15 +15,15 @@ pub struct App {
 
 #[derive(Debug, Clone)]
 pub struct Tech {
-    pub name: &'static str,
-    pub professional: bool,
-    pub public: bool,
-    pub asked: bool,
+    pub value: &'static str,
+    pub is_professional: bool,
+    pub is_public: bool,
+    pub is_asked: bool,
 }
 
 impl Hash for Tech {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        self.name.hash(state);
+        self.value.hash(state);
     }
 }
 
@@ -31,7 +31,7 @@ impl Eq for Tech {}
 
 impl PartialEq for Tech {
     fn eq(&self, other: &Self) -> bool {
-        self.name.eq(other.name)
+        self.value.eq(other.value)
     }
 }
 
@@ -60,9 +60,9 @@ impl Extend<Tech> for TechSet {
     fn extend<I: IntoIterator<Item = Tech>>(&mut self, iter: I) {
         for elem in iter {
             if let Some(mut v) = self.0.take(&elem) {
-                v.professional |= elem.professional;
-                v.public |= elem.public;
-                v.asked |= elem.asked;
+                v.is_professional |= elem.is_professional;
+                v.is_public |= elem.is_public;
+                v.is_asked |= elem.is_asked;
                 self.0.insert(v);
             } else {
                 self.0.insert(elem);
@@ -88,39 +88,39 @@ impl CandidateInfo {
         let mut techs: TechSet = TechSet::new();
 
         techs.extend(candidate.asked_techs.iter().map(|x| Tech {
-            name: x,
-            professional: false,
-            public: false,
-            asked: true,
+            value: x,
+            is_professional: false,
+            is_public: false,
+            is_asked: true,
         }));
 
         let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
         for s in jobs_techs {
             techs.extend(s.iter().map(|x| Tech {
-                name: x,
-                professional: true,
-                public: false,
-                asked: false,
+                value: x,
+                is_professional: true,
+                is_public: false,
+                is_asked: false,
             }));
         }
 
         let contribs_techs = candidate.contributions.iter().map(|x| x.techs);
         for s in contribs_techs {
             techs.extend(s.iter().map(|x| Tech {
-                name: x,
-                professional: false,
-                public: true,
-                asked: false,
+                value: x,
+                is_professional: false,
+                is_public: true,
+                is_asked: false,
             }));
         }
 
         let personal_techs = candidate.personal_projects.iter().map(|x| x.techs);
         for s in personal_techs {
             techs.extend(s.iter().map(|x| Tech {
-                name: x,
-                professional: false,
-                public: true,
-                asked: false,
+                value: x,
+                is_professional: false,
+                is_public: true,
+                is_asked: false,
             }));
         }
 

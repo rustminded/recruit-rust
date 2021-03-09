@@ -28,45 +28,45 @@ impl Component for TechTag {
     }
 
     fn view(&self) -> Html {
-        if self.props.tech.professional == true
-            && self.props.tech.public == false
-            && self.props.tech.asked == false
+        if self.props.tech.is_professional == true
+            && self.props.tech.is_public == false
+            && self.props.tech.is_asked == false
         {
             html! {
                 <Tag
                     class=classes!("pro-tag")
                     intent=Intent::Warning
                 >
-                    {self.props.tech.name}
+                    {self.props.tech.value}
                 </Tag>
             }
-        } else if self.props.tech.professional == false
-            && self.props.tech.public == true
-            && self.props.tech.asked == false
+        } else if self.props.tech.is_professional == false
+            && self.props.tech.is_public == true
+            && self.props.tech.is_asked == false
         {
             html! {
                 <Tag
                     class=classes!("pub-tag")
                     intent=Intent::Success
                 >
-                    {self.props.tech.name}
+                    {self.props.tech.value}
                 </Tag>
             }
-        } else if self.props.tech.professional == false
-            && self.props.tech.public == false
-            && self.props.tech.asked == true
+        } else if self.props.tech.is_professional == false
+            && self.props.tech.is_public == false
+            && self.props.tech.is_asked == true
         {
             html! {
                 <Tag
                     class=classes!("asked-tag")
                     intent=Intent::Primary
                 >
-                    {self.props.tech.name}
+                    {self.props.tech.value}
                 </Tag>
             }
-        } else if self.props.tech.professional == true
-            && self.props.tech.public == false
-            && self.props.tech.asked == true
+        } else if self.props.tech.is_professional == true
+            && self.props.tech.is_public == false
+            && self.props.tech.is_asked == true
         {
             html! {
                 <Tag
@@ -74,12 +74,12 @@ impl Component for TechTag {
                     right_icon=IconName::Code
                     intent=Intent::Primary
                 >
-                    {self.props.tech.name}
+                    {self.props.tech.value}
                 </Tag>
             }
-        } else if self.props.tech.professional == false
-            && self.props.tech.public == true
-            && self.props.tech.asked == true
+        } else if self.props.tech.is_professional == false
+            && self.props.tech.is_public == true
+            && self.props.tech.is_asked == true
         {
             html! {
                 <Tag
@@ -87,12 +87,12 @@ impl Component for TechTag {
                     intent=Intent::Primary
                     right_icon=IconName::People
                 >
-                    {self.props.tech.name}
+                    {self.props.tech.value}
                 </Tag>
             }
-        } else if self.props.tech.professional == true
-            && self.props.tech.public == true
-            && self.props.tech.asked == true
+        } else if self.props.tech.is_professional == true
+            && self.props.tech.is_public == true
+            && self.props.tech.is_asked == true
         {
             html! {
                 <Tag
@@ -100,12 +100,12 @@ impl Component for TechTag {
                     intent=Intent::Warning
                     right_icon=IconName::Star
                 >
-                    {self.props.tech.name}
+                    {self.props.tech.value}
                 </Tag>
             }
-        } else if self.props.tech.professional == true
-            && self.props.tech.public == true
-            && self.props.tech.asked == false
+        } else if self.props.tech.is_professional == true
+            && self.props.tech.is_public == true
+            && self.props.tech.is_asked == false
         {
             html! {
                 <Tag
@@ -113,7 +113,7 @@ impl Component for TechTag {
                     intent=Intent::Warning
                     right_icon=IconName::People
                 >
-                    {self.props.tech.name}
+                    {self.props.tech.value}
                 </Tag>
             }
         } else {
@@ -121,7 +121,7 @@ impl Component for TechTag {
                 <Tag
                     class=classes!("no-flag-tag")
                 >
-                    {self.props.tech.name}
+                    {self.props.tech.value}
                 </Tag>
             }
         }
