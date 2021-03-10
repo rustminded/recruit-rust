@@ -12,6 +12,7 @@ pub struct Profile {
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ProfileProps {
     pub candidate: &'static Candidate,
+    #[prop_or_default]
     pub highlighted_tech: Option<String>,
 }
 
