@@ -49,54 +49,44 @@ impl Component for TechTag {
     fn view(&self) -> Html {
         let url = self.props.url.clone();
         let value = self.props.tech.value.clone();
-        let intent_value: Option<Intent>;
-        let icon_value: Option<IconName>;
-        if self.props.tech.is_professional == true
+        let (intent_value, icon_value) = if self.props.tech.is_professional == true
             && self.props.tech.is_public == false
             && self.props.tech.is_asked == false
         {
-            intent_value = Some(Intent::Warning);
-            icon_value = None;
+            (Some(Intent::Warning), None)
         } else if self.props.tech.is_professional == false
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == false
         {
-            intent_value = Some(Intent::Success);
-            icon_value = None;
+            (Some(Intent::Success), None)
         } else if self.props.tech.is_professional == false
             && self.props.tech.is_public == false
             && self.props.tech.is_asked == true
         {
-            intent_value = Some(Intent::Primary);
-            icon_value = None;
+            (Some(Intent::Primary), None)
         } else if self.props.tech.is_professional == true
             && self.props.tech.is_public == false
             && self.props.tech.is_asked == true
         {
-            intent_value = Some(Intent::Primary);
-            icon_value = Some(IconName::Code);
+            (Some(Intent::Primary), Some(IconName::Code))
         } else if self.props.tech.is_professional == false
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == true
         {
-            intent_value = Some(Intent::Primary);
-            icon_value = Some(IconName::People);
+            (Some(Intent::Primary), Some(IconName::People))
         } else if self.props.tech.is_professional == true
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == true
         {
-            intent_value = Some(Intent::Warning);
-            icon_value = Some(IconName::Star);
+            (Some(Intent::Warning), Some(IconName::Star))
         } else if self.props.tech.is_professional == true
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == false
         {
-            intent_value = Some(Intent::Warning);
-            icon_value = Some(IconName::People);
+            (Some(Intent::Warning), Some(IconName::People))
         } else {
-            intent_value = None;
-            icon_value = None;
-        }
+            (None, None)
+        };
 
         html! {
             <Tag
