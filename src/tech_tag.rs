@@ -49,62 +49,59 @@ impl Component for TechTag {
     fn view(&self) -> Html {
         let url = self.props.url.clone();
         let value = self.props.tech.value.clone();
-        let value_tuple: (Option<Intent>, Option<IconName>);
-        let value_tuple = if self.props.tech.is_professional == true
+        let intent_value: Option<Intent>;
+        let icon_value: Option<IconName>;
+        if self.props.tech.is_professional == true
             && self.props.tech.is_public == false
             && self.props.tech.is_asked == false
         {
-            (value_tuple.0 = Some(Intent::Warning), value_tuple.1 = None)
+            intent_value = Some(Intent::Warning);
+            icon_value = None;
         } else if self.props.tech.is_professional == false
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == false
         {
-            (value_tuple.0 = Some(Intent::Success), value_tuple.1 = None)
+            intent_value = Some(Intent::Success);
+            icon_value = None;
         } else if self.props.tech.is_professional == false
             && self.props.tech.is_public == false
             && self.props.tech.is_asked == true
         {
-            (value_tuple.0 = Some(Intent::Primary), value_tuple.1 = None)
+            intent_value = Some(Intent::Primary);
+            icon_value = None;
         } else if self.props.tech.is_professional == true
             && self.props.tech.is_public == false
             && self.props.tech.is_asked == true
         {
-            (
-                value_tuple.0 = Some(Intent::Primary),
-                value_tuple.1 = Some(IconName::Code),
-            )
+            intent_value = Some(Intent::Primary);
+            icon_value = Some(IconName::Code);
         } else if self.props.tech.is_professional == false
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == true
         {
-            (
-                value_tuple.0 = Some(Intent::Primary),
-                value_tuple.1 = Some(IconName::People),
-            )
+            intent_value = Some(Intent::Primary);
+            icon_value = Some(IconName::People);
         } else if self.props.tech.is_professional == true
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == true
         {
-            (
-                value_tuple.0 = Some(Intent::Warning),
-                value_tuple.1 = Some(IconName::Star),
-            )
+            intent_value = Some(Intent::Warning);
+            icon_value = Some(IconName::Star);
         } else if self.props.tech.is_professional == true
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == false
         {
-            (
-                value_tuple.0 = Some(Intent::Warning),
-                value_tuple.1 = Some(IconName::People),
-            )
+            intent_value = Some(Intent::Warning);
+            icon_value = Some(IconName::People);
         } else {
-            (value_tuple.0 = None, value_tuple.1 = None)
-        };
-        let (intent_value, icon_value) = value_tuple;
+            intent_value = None;
+            icon_value = None;
+        }
 
         html! {
             <Tag
                 class=classes!("pro-tag")
+                interactive=true
                 intent=intent_value
                 right_icon=icon_value
                 onclick=self.link.callback(move |_| Msg::GoToRoute(
