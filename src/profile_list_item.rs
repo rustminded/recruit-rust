@@ -39,7 +39,7 @@ impl Component for ProfileListItem {
                 html! {
                     <TechTag
                         tech={x}
-                        url= {self.props.url}
+                        url={self.props.url}
                     />
                 }
             })

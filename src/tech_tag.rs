@@ -49,7 +49,7 @@ impl Component for TechTag {
     fn view(&self) -> Html {
         let url = self.props.url.clone();
         let value = self.props.tech.value.clone();
-        let value_tuple = (None, None);
+        let value_tuple: (Option<Intent>, Option<IconName>);
         let value_tuple = if self.props.tech.is_professional == true
             && self.props.tech.is_public == false
             && self.props.tech.is_asked == false
