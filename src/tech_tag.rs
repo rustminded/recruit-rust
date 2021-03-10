@@ -49,150 +49,73 @@ impl Component for TechTag {
     fn view(&self) -> Html {
         let url = self.props.url.clone();
         let value = self.props.tech.value.clone();
-        if self.props.tech.is_professional == true
+        let value_tuple = (None, None);
+        let value_tuple = if self.props.tech.is_professional == true
             && self.props.tech.is_public == false
             && self.props.tech.is_asked == false
         {
-            html! {
-                <Tag
-                    class=classes!("pro-tag")
-                    intent=Intent::Warning
-                    onclick=self.link.callback(move |_| Msg::GoToRoute(
-                        AppRoute::ProfileHl(
-                            url.to_string(),
-                            value.to_string(),
-                        )
-                    ))
-                >
-                    {self.props.tech.value}
-                </Tag>
-            }
+            (value_tuple.0 = Some(Intent::Warning), value_tuple.1 = None)
         } else if self.props.tech.is_professional == false
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == false
         {
-            html! {
-                <Tag
-                    interactive=true
-                    class=classes!("pub-tag")
-                    intent=Intent::Success
-                    onclick=self.link.callback(move |_| Msg::GoToRoute(
-                        AppRoute::ProfileHl(
-                            url.to_string(),
-                            value.to_string(),
-                        )
-                    ))
-                >
-                    {self.props.tech.value}
-                </Tag>
-            }
+            (value_tuple.0 = Some(Intent::Success), value_tuple.1 = None)
         } else if self.props.tech.is_professional == false
             && self.props.tech.is_public == false
             && self.props.tech.is_asked == true
         {
-            html! {
-                <Tag
-                    interactive=true
-                    class=classes!("asked-tag")
-                    intent=Intent::Primary
-                    onclick=self.link.callback(move |_| Msg::GoToRoute(
-                        AppRoute::ProfileHl(
-                            url.to_string(),
-                            value.to_string(),
-                        )
-                    ))
-                >
-                    {self.props.tech.value}
-                </Tag>
-            }
+            (value_tuple.0 = Some(Intent::Primary), value_tuple.1 = None)
         } else if self.props.tech.is_professional == true
             && self.props.tech.is_public == false
             && self.props.tech.is_asked == true
         {
-            html! {
-                <Tag
-                    interactive=true
-                    class=classes!("asked-pro-tag")
-                    right_icon=IconName::Code
-                    intent=Intent::Primary
-                    onclick=self.link.callback(move |_| Msg::GoToRoute(
-                        AppRoute::ProfileHl(
-                            url.to_string(),
-                            value.to_string(),
-                        )
-                    ))
-                >
-                    {self.props.tech.value}
-                </Tag>
-            }
+            (
+                value_tuple.0 = Some(Intent::Primary),
+                value_tuple.1 = Some(IconName::Code),
+            )
         } else if self.props.tech.is_professional == false
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == true
         {
-            html! {
-                <Tag
-                    interactive=true
-                    class=classes!("asked-pub-tag")
-                    intent=Intent::Primary
-                    right_icon=IconName::People
-                    onclick=self.link.callback(move |_| Msg::GoToRoute(
-                        AppRoute::ProfileHl(
-                            url.to_string(),
-                            value.to_string(),
-                        )
-                    ))
-                >
-                    {self.props.tech.value}
-                </Tag>
-            }
+            (
+                value_tuple.0 = Some(Intent::Primary),
+                value_tuple.1 = Some(IconName::People),
+            )
         } else if self.props.tech.is_professional == true
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == true
         {
-            html! {
-                <Tag
-                    interactive=true
-                    class=classes!("three-flag-tag")
-                    intent=Intent::Warning
-                    right_icon=IconName::Star
-                    onclick=self.link.callback(move |_| Msg::GoToRoute(
-                        AppRoute::ProfileHl(
-                            url.to_string(),
-                            value.to_string(),
-                        )
-                    ))
-                >
-                    {self.props.tech.value}
-                </Tag>
-            }
+            (
+                value_tuple.0 = Some(Intent::Warning),
+                value_tuple.1 = Some(IconName::Star),
+            )
         } else if self.props.tech.is_professional == true
             && self.props.tech.is_public == true
             && self.props.tech.is_asked == false
         {
-            html! {
-                <Tag
-                    interactive=true
-                    class=classes!("pro-pub-tag")
-                    intent=Intent::Warning
-                    right_icon=IconName::People
-                    onclick=self.link.callback(move |_| Msg::GoToRoute(
-                        AppRoute::ProfileHl(
-                            url.to_string(),
-                            value.to_string(),
-                        )
-                    ))
-                >
-                    {self.props.tech.value}
-                </Tag>
-            }
+            (
+                value_tuple.0 = Some(Intent::Warning),
+                value_tuple.1 = Some(IconName::People),
+            )
         } else {
-            html! {
-                <Tag
-                    class=classes!("no-flag-tag")
-                >
-                    {self.props.tech.value}
-                </Tag>
-            }
+            (value_tuple.0 = None, value_tuple.1 = None)
+        };
+        let (intent_value, icon_value) = value_tuple;
+
+        html! {
+            <Tag
+                class=classes!("pro-tag")
+                intent=intent_value
+                right_icon=icon_value
+                onclick=self.link.callback(move |_| Msg::GoToRoute(
+                    AppRoute::ProfileHl(
+                        url.to_string(),
+                        value.to_string(),
+                    )
+                ))
+            >
+                {self.props.tech.value}
+            </Tag>
         }
     }
 }
