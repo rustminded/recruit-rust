@@ -73,6 +73,7 @@ impl Component for TechTag {
         {
             html! {
                 <Tag
+                    interactive=true
                     class=classes!("pub-tag")
                     intent=Intent::Success
                     onclick=self.link.callback(move |_| Msg::GoToRoute(
