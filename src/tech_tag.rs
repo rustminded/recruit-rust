@@ -1,13 +1,9 @@
-use crate::AppRoute;
 use crate::Tech;
 use yew::prelude::*;
-use yew_router::agent::{RouteAgentDispatcher, RouteRequest};
 use yewprint::{IconName, Intent, Tag};
 
 pub struct TechTag {
     props: TechTagProps,
-    link: ComponentLink<Self>,
-    route_dispatcher: RouteAgentDispatcher,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
@@ -16,29 +12,15 @@ pub struct TechTagProps {
     pub url: &'static str,
 }
 
-pub enum Msg {
-    GoToRoute(AppRoute),
-}
-
 impl Component for TechTag {
-    type Message = Msg;
+    type Message = ();
     type Properties = TechTagProps;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        TechTag {
-            props,
-            link,
-            route_dispatcher: RouteAgentDispatcher::new(),
-        }
+    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
+        TechTag { props }
     }
 
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
-        match msg {
-            Msg::GoToRoute(app_route) => {
-                self.route_dispatcher
-                    .send(RouteRequest::ChangeRoute(app_route.into()));
-            }
-        }
+    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
         true
     }
 
@@ -89,20 +71,16 @@ impl Component for TechTag {
         };
 
         html! {
-            <Tag
-                class=classes!("pro-tag")
-                interactive=true
-                intent=intent_value
-                right_icon=icon_value
-                onclick=self.link.callback(move |_| Msg::GoToRoute(
-                    AppRoute::ProfileHl(
-                        url.to_string(),
-                        value.to_string(),
-                    )
-                ))
-            >
-                {self.props.tech.value}
-            </Tag>
+            <a href=format!("{}#{}", url, value)>
+                <Tag
+                    class=classes!("pro-tag")
+                    interactive=true
+                    intent=intent_value
+                    right_icon=icon_value
+                >
+                    {self.props.tech.value}
+                </Tag>
+            </a>
         }
     }
 }
