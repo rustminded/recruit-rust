@@ -37,7 +37,10 @@ impl Component for ProfileListItem {
             .iter()
             .map(|x| {
                 html! {
-                    <TechTag tech={x} />
+                    <TechTag
+                        tech={x}
+                        url={self.props.url}
+                    />
                 }
             })
             .collect::<Html>();
