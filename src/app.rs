@@ -11,6 +11,23 @@ use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
+    link: ComponentLink<Self>,
+    state: State,
+}
+
+pub struct State {
+    entries: Vec<Entry>,
+    value: String,
+}
+
+pub struct Entry {
+    entry_value: String,
+}
+
+pub enum Msg {
+    AddEntry,
+    Update(String),
+    Nope,
 }
 
 #[derive(Debug, Clone)]
@@ -133,10 +150,15 @@ impl CandidateInfo {
 }
 
 impl Component for App {
-    type Message = ();
+    type Message = Msg;
     type Properties = ();
 
-    fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
+    fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
+        let entries = Vec::new();
+        let state = State {
+            entries,
+            value: "".into(),
+        };
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
         let candidate_2_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor2");
@@ -146,10 +168,30 @@ impl Component for App {
         crate::log!("{:?}", candidates);
         let candidates = Rc::new(candidates);
 
-        App { candidates }
+        App {
+            candidates,
+            link,
+            state,
+        }
     }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        match msg {
+            Msg::AddEntry => {
+                let entry_value = self.state.value.trim();
+                if !entry_value.is_empty() {
+                    let entry = Entry {
+                        entry_value: entry_value.to_string(),
+                    };
+                    self.state.entries.push(entry);
+                }
+                self.state.value = "".to_string();
+            }
+            Msg::Update(val) => {
+                self.state.value = val;
+            }
+            Msg::Nope => {}
+        }
         true
     }
 
@@ -177,6 +219,15 @@ impl Component for App {
                                 />
                             }
                         />
+                        <input
+                            placeholder="Search..."
+                            value=&self.state.value
+                            oninput=self.link.callback(|e: InputData| Msg::Update(e.value))
+                            onkeypress=self.link.callback(|e: KeyboardEvent| {
+                                if e.key() == "Enter" { Msg::AddEntry } else { Msg::Nope }
+                            })
+                        />
+                        <Text>{self.state.value.clone()}</Text>
                     </div>
                 </div>
                 <Text class=classes!("app-intro")>
