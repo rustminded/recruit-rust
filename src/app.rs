@@ -16,6 +16,7 @@ pub struct App {
     value: String,
 }
 
+#[derive(Debug)]
 pub struct Entry(String);
 
 pub enum Msg {
@@ -216,7 +217,7 @@ impl Component for App {
                                 if e.key() == "Enter" { Msg::AddEntry } else { Msg::Nope }
                             })
                         />
-                        <Text>{self.value.clone()}</Text>
+                        <Text>{format!("{:?}", self.entries)}</Text>
                     </div>
                 </div>
                 <Text class=classes!("app-intro")>
