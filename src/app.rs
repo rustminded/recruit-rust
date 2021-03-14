@@ -202,20 +202,17 @@ impl Component for App {
                         <InputGroup
                             round=true
                             placeholder="Search..."
+                            value=&self.value
+                            oninput=self.link.callback(|e: InputData| Msg::Update(e.value))
+                            onkeypress=self.link.callback(|e: KeyboardEvent| {
+                                if e.key() == "Enter" { Msg::AddEntry } else { Msg::Nope }
+                            })
                             right_element=html! {
                                 <Button
                                     icon=IconName::Search
                                     minimal=true
                                 />
                             }
-                        />
-                        <input
-                            placeholder="Search..."
-                            value=&self.value
-                            oninput=self.link.callback(|e: InputData| Msg::Update(e.value))
-                            onkeypress=self.link.callback(|e: KeyboardEvent| {
-                                if e.key() == "Enter" { Msg::AddEntry } else { Msg::Nope }
-                            })
                         />
                         <Text>{format!("{:?}", self.entries)}</Text>
                     </div>
