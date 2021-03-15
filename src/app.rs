@@ -170,12 +170,13 @@ impl Component for App {
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::AddEntry => {
-                let entry_value = self.value.trim();
+                let entry_value: String = self.value.clone();
                 if !entry_value.is_empty() {
-                    let entry = Entry(entry_value.to_string());
-                    self.entries.insert(entry);
+                    let entry_values: HashSet<&str> = entry_value.split(' ').collect();
+                    for s in entry_values {
+                        self.entries.insert(Entry(s.to_string()));
+                    }
                 }
-                self.value = "".to_string();
             }
             Msg::Update(val) => {
                 self.value = val;
