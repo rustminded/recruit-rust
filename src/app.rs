@@ -173,25 +173,33 @@ impl Component for App {
                                             }
                                         })
                                         .collect::<Html>(),
-                                    AppRoute::Profile(candidate_slug) => html! {
-                                        <Profile
-                                            candidate= if let Some(candidate) = candidates.get(&candidate_slug.as_str()) {
-                                                candidate.candidate
-                                            } else {
-                                                todo!()
-                                            }
-                                        />
-                                    },
-                                    AppRoute::ProfileHl(candidate_slug, highlighted_tech) => html! {
-                                        <Profile
-                                            candidate = if let Some(candidate) = candidates.get(&candidate_slug.as_str()) {
-                                                candidate.candidate
-                                            } else {
-                                                todo!()
-                                            }
-                                            highlighted_tech=highlighted_tech
-                                        />
-                                    },
+                                    AppRoute::Profile(candidate_slug) => if let Some(candidate) = candidates.get(&candidate_slug.as_str()) {
+                                        html! {
+                                            <Profile
+                                                candidate=candidate.candidate
+                                            />
+                                        }
+                                    } else {
+                                        html! {
+                                            <div>
+                                                <Text>{"This profile doesn't exist"}</Text>
+                                            </div>
+                                        }
+                                    }
+                                    AppRoute::ProfileHl(candidate_slug, highlighted_tech) => if let Some(candidate) = candidates.get(&candidate_slug.as_str()) {
+                                        html! {
+                                            <Profile
+                                                candidate = candidate.candidate
+                                                highlighted_tech=highlighted_tech
+                                            />
+                                        }
+                                    } else {
+                                        html! {
+                                            <div>
+                                                <Text>{"This profile doesn't exist"}</Text>
+                                            </div>
+                                        }
+                                    }
                                 }
                             })
                         />
