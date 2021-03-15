@@ -175,15 +175,20 @@ impl Component for App {
                                         .collect::<Html>(),
                                     AppRoute::Profile(candidate_slug) => html! {
                                         <Profile
-                                            candidate=candidates
-                                                .get(&candidate_slug.as_str()).expect("This profile doesn't exist")
-                                                .candidate
+                                            candidate= if let Some(candidate) = candidates.get(&candidate_slug.as_str()) {
+                                                candidate.candidate
+                                            } else {
+                                                todo!()
+                                            }
                                         />
                                     },
                                     AppRoute::ProfileHl(candidate_slug, highlighted_tech) => html! {
                                         <Profile
-                                            candidate=candidates.get(&candidate_slug.as_str()).expect("This profile doesn't exist")
-                                            .candidate
+                                            candidate = if let Some(candidate) = candidates.get(&candidate_slug.as_str()) {
+                                                candidate.candidate
+                                            } else {
+                                                todo!()
+                                            }
                                             highlighted_tech=highlighted_tech
                                         />
                                     },
