@@ -3145,7 +3145,7 @@ dependencies = [
 [[package]]
 name = "yewprint"
 version = "0.1.0"
-source = "git+https://github.com/cecton/yewprint.git?branch=main#904715797a0568176191e2413836f2bc6aaf640f"
+source = "git+https://github.com/cecton/yewprint.git?branch=main#c9b23d91e6943db070c3a5a069c0015e8d64104c"
 dependencies = [
  "heck",
  "id_tree",

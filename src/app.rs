@@ -1,9 +1,8 @@
 use crate::profile::Profile;
 use crate::profile_list_item::ProfileListItem;
+use crate::techs::{Tech, TechSet};
 use candidate::Candidate;
 use std::collections::HashMap;
-use std::collections::HashSet;
-use std::hash::{Hash, Hasher};
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
@@ -11,64 +10,15 @@ use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
+    link: ComponentLink<Self>,
+    entries: Rc<TechSet>,
+    value: String,
 }
 
-#[derive(Debug, Clone)]
-pub struct Tech {
-    pub value: &'static str,
-    pub is_professional: bool,
-    pub is_public: bool,
-    pub is_asked: bool,
-}
-
-impl Hash for Tech {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        self.value.hash(state);
-    }
-}
-
-impl Eq for Tech {}
-
-impl PartialEq for Tech {
-    fn eq(&self, other: &Self) -> bool {
-        self.value.eq(other.value)
-    }
-}
-
-#[derive(Debug, Clone)]
-pub struct TechSet(HashSet<Tech>);
-
-impl TechSet {
-    pub fn new() -> TechSet {
-        TechSet(HashSet::new())
-    }
-
-    pub fn iter(&self) -> std::collections::hash_set::Iter<Tech> {
-        self.0.iter()
-    }
-}
-
-impl Eq for TechSet {}
-
-impl PartialEq for TechSet {
-    fn eq(&self, other: &Self) -> bool {
-        self.0.eq(&other.0)
-    }
-}
-
-impl Extend<Tech> for TechSet {
-    fn extend<I: IntoIterator<Item = Tech>>(&mut self, iter: I) {
-        for elem in iter {
-            if let Some(mut v) = self.0.take(&elem) {
-                v.is_professional |= elem.is_professional;
-                v.is_public |= elem.is_public;
-                v.is_asked |= elem.is_asked;
-                self.0.insert(v);
-            } else {
-                self.0.insert(elem);
-            }
-        }
-    }
+pub enum Msg {
+    AddEntry,
+    Update(String),
+    Nope,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -87,41 +37,26 @@ impl CandidateInfo {
         let url = candidate_url;
         let mut techs: TechSet = TechSet::new();
 
-        techs.extend(candidate.asked_techs.iter().map(|x| Tech {
-            value: x,
-            is_professional: false,
-            is_public: false,
-            is_asked: true,
-        }));
+        techs.extend(
+            candidate
+                .asked_techs
+                .iter()
+                .map(|x| Tech::from(*x).with_asked()),
+        );
 
         let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
         for s in jobs_techs {
-            techs.extend(s.iter().map(|x| Tech {
-                value: x,
-                is_professional: true,
-                is_public: false,
-                is_asked: false,
-            }));
+            techs.extend(s.iter().map(|x| Tech::from(*x).with_pro()));
         }
 
         let contribs_techs = candidate.contributions.iter().map(|x| x.techs);
         for s in contribs_techs {
-            techs.extend(s.iter().map(|x| Tech {
-                value: x,
-                is_professional: false,
-                is_public: true,
-                is_asked: false,
-            }));
+            techs.extend(s.iter().map(|x| Tech::from(*x).with_pub()));
         }
 
         let personal_techs = candidate.personal_projects.iter().map(|x| x.techs);
         for s in personal_techs {
-            techs.extend(s.iter().map(|x| Tech {
-                value: x,
-                is_professional: false,
-                is_public: true,
-                is_asked: false,
-            }));
+            techs.extend(s.iter().map(|x| Tech::from(*x).with_pub()));
         }
 
         CandidateInfo {
@@ -133,23 +68,44 @@ impl CandidateInfo {
 }
 
 impl Component for App {
-    type Message = ();
+    type Message = Msg;
     type Properties = ();
 
-    fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
+    fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
+        let entries = TechSet::new();
+        let value = String::new();
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
         let candidate_2_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor2");
 
         candidates.insert(candidate_1_info.url, candidate_1_info);
         candidates.insert(candidate_2_info.url, candidate_2_info);
-        crate::log!("{:?}", candidates);
         let candidates = Rc::new(candidates);
+        let entries = Rc::new(entries);
 
-        App { candidates }
+        App {
+            candidates,
+            link,
+            entries,
+            value,
+        }
     }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        match msg {
+            Msg::AddEntry => {
+                self.entries = Rc::new(
+                    self.value
+                        .split_whitespace()
+                        .map(|x| Tech::from(x.to_string()))
+                        .collect(),
+                );
+            }
+            Msg::Update(val) => {
+                self.value = val;
+            }
+            Msg::Nope => {}
+        }
         true
     }
 
@@ -159,6 +115,7 @@ impl Component for App {
 
     fn view(&self) -> Html {
         let candidates = Rc::clone(&self.candidates);
+        let entries = Rc::clone(&self.entries);
 
         html! {
             <div class="app-root bp3-dark">
@@ -169,7 +126,12 @@ impl Component for App {
                     <div class="app-search-field">
                         <InputGroup
                             round=true
-                            placeholder="Search..."
+                            placeholder="Search Techs..."
+                            value=&self.value
+                            oninput=self.link.callback(|e: InputData| Msg::Update(e.value))
+                            onkeypress=self.link.callback(|e: KeyboardEvent| {
+                                if e.key() == "Enter" { Msg::AddEntry } else { Msg::Nope }
+                            })
                             right_element=html! {
                                 <Button
                                     icon=IconName::Search
@@ -200,6 +162,7 @@ impl Component for App {
                                 match switch {
                                     AppRoute::Home => candidates
                                         .values()
+                                        .filter(|x| entries.is_empty() || !x.techs.is_disjoint(&entries))
                                         .map(|x| {
                                             html! {
                                                 <ProfileListItem

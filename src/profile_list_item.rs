@@ -1,4 +1,5 @@
-use crate::{tech_tag::TechTag, TechSet};
+use crate::tech_tag::TechTag;
+use crate::techs::TechSet;
 use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
 use yewprint::{Card, Text};
