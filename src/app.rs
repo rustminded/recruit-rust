@@ -12,11 +12,11 @@ use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
     link: ComponentLink<Self>,
-    entries: Vec<Entry>,
+    entries: HashSet<Entry>,
     value: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq, Hash)]
 pub struct Entry(String);
 
 pub enum Msg {
@@ -149,7 +149,7 @@ impl Component for App {
     type Properties = ();
 
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let entries = Vec::new();
+        let entries = HashSet::new();
         let value = String::new();
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
@@ -173,7 +173,7 @@ impl Component for App {
                 let entry_value = self.value.trim();
                 if !entry_value.is_empty() {
                     let entry = Entry(entry_value.to_string());
-                    self.entries.push(entry);
+                    self.entries.insert(entry);
                 }
                 self.value = "".to_string();
             }
