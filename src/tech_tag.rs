@@ -1,4 +1,4 @@
-use crate::Tech;
+use crate::techs::Tech;
 use yew::prelude::*;
 use yewprint::{IconName, Intent, Tag};
 
@@ -78,7 +78,7 @@ impl Component for TechTag {
                     intent=intent_value
                     right_icon=icon_value
                 >
-                    {self.props.tech.value}
+                    {self.props.tech.value.clone()}
                 </Tag>
             </a>
         }
