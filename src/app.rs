@@ -12,12 +12,9 @@ use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
     link: ComponentLink<Self>,
-    entries: HashSet<Entry>,
+    entries: HashSet<String>,
     value: String,
 }
-
-#[derive(Debug, Eq, PartialEq, Hash)]
-pub struct Entry(String);
 
 pub enum Msg {
     AddEntry,
@@ -170,13 +167,11 @@ impl Component for App {
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::AddEntry => {
-                let entry_value: String = self.value.clone();
-                if !entry_value.is_empty() {
-                    let entry_values: HashSet<&str> = entry_value.split(' ').collect();
-                    for s in entry_values {
-                        self.entries.insert(Entry(s.to_string()));
-                    }
-                }
+                self.entries = self
+                    .value
+                    .split_whitespace()
+                    .map(|x| x.to_string())
+                    .collect();
             }
             Msg::Update(val) => {
                 self.value = val;
