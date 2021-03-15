@@ -176,15 +176,14 @@ impl Component for App {
                                     AppRoute::Profile(candidate_slug) => html! {
                                         <Profile
                                             candidate=candidates
-                                                .get(&candidate_slug.as_str())
-                                                .unwrap()
+                                                .get(&candidate_slug.as_str()).expect("This profile doesn't exist")
                                                 .candidate
                                         />
                                     },
                                     AppRoute::ProfileHl(candidate_slug, highlighted_tech) => html! {
                                         <Profile
-                                            candidate=candidates.get(&candidate_slug.as_str())
-                                            .unwrap().candidate
+                                            candidate=candidates.get(&candidate_slug.as_str()).expect("This profile doesn't exist")
+                                            .candidate
                                             highlighted_tech=highlighted_tech
                                         />
                                     },
