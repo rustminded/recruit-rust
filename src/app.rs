@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
-use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
+use yewprint::{Button, IconName, InputGroup, Text, H1, H2, H3};
 
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
@@ -196,7 +196,17 @@ impl Component for App {
                                     } else {
                                         html! {
                                             <div>
-                                                <Text>{"This profile doesn't exist"}</Text>
+                                                <H3>{"Page not found"}</H3>
+                                                <Text>{"This profile does not seem to exist"}</Text>
+                                                <Text>
+                                                    {"You may find what \
+                                                    you were looking for on our "}
+                                                    <a
+                                                        href="/"
+                                                    >
+                                                        {"homepage"}
+                                                    </a>
+                                                </Text>
                                             </div>
                                         }
                                     }
