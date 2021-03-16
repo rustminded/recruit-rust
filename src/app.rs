@@ -68,6 +68,36 @@ impl CandidateInfo {
     }
 }
 
+macro_rules! profile {
+    ($a:tt, $b:tt, $c:tt) => {
+        if let Some(candidate) = $a.get($b.as_str()) {
+            html! {
+                <Profile
+                    candidate=candidate.candidate
+                    highlighted_tech=$c
+                />
+            }
+        } else {
+            html! {
+                <PageNotFound />
+            }
+        }
+    };
+    ($a:tt, $b:tt) => {
+        if let Some(candidate) = $a.get($b.as_str()) {
+            html! {
+                <Profile
+                    candidate=candidate.candidate
+                />
+            }
+        } else {
+            html! {
+                <PageNotFound />
+            }
+        }
+    };
+}
+
 impl Component for App {
     type Message = Msg;
     type Properties = ();
@@ -174,29 +204,18 @@ impl Component for App {
                                             }
                                         })
                                         .collect::<Html>(),
-                                    AppRoute::Profile(candidate_slug) => if let Some(candidate) = candidates.get(&candidate_slug.as_str()) {
-                                        html! {
-                                            <Profile
-                                                candidate=candidate.candidate
-                                            />
-                                        }
-                                    } else {
-                                        html! {
-                                            <PageNotFound />
-                                        }
-                                    }
-                                    AppRoute::ProfileHl(candidate_slug, highlighted_tech) => if let Some(candidate) = candidates.get(&candidate_slug.as_str()) {
-                                        html! {
-                                            <Profile
-                                                candidate=candidate.candidate
-                                                highlighted_tech=highlighted_tech
-                                            />
-                                        }
-                                    } else {
-                                        html! {
-                                            <PageNotFound />
-                                        }
-                                    }
+                                    AppRoute::Profile(candidate_slug) => profile!(
+                                        candidates,
+                                        candidate_slug
+                                    ),
+                                    AppRoute::ProfileHl(
+                                        candidate_slug,
+                                        highlighted_tech
+                                    ) => profile!(
+                                        candidates,
+                                        candidate_slug,
+                                        highlighted_tech
+                                    ),
                                 }
                             })
                         />
