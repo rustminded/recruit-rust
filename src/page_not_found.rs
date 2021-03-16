@@ -1,5 +1,5 @@
 use yew::prelude::*;
-use yewprint::{Text, H3};
+use yewprint::{Callout, Intent, Text};
 
 pub struct PageNotFound {}
 
@@ -21,8 +21,11 @@ impl Component for PageNotFound {
 
     fn view(&self) -> Html {
         html! {
-            <div class="page_not_found">
-                <H3>{"Page not found"}</H3>
+            <Callout
+                class=classes!("page-not-found")
+                title={"Page not found"}
+                intent=Intent::Warning
+            >
                 <Text>{"This profile does not seem to exist"}</Text>
                 <Text>
                     {"You may find what you were looking for on our "}
@@ -30,7 +33,7 @@ impl Component for PageNotFound {
                         {"homepage"}
                     </a>
                 </Text>
-            </div>
+            </Callout>
         }
     }
 }
