@@ -1,3 +1,4 @@
+use crate::page_not_found::PageNotFound;
 use crate::profile::Profile;
 use crate::profile_list_item::ProfileListItem;
 use crate::techs::{Tech, TechSet};
@@ -6,7 +7,7 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
-use yewprint::{Button, IconName, InputGroup, Text, H1, H2, H3};
+use yewprint::{Button, IconName, InputGroup, Text, H1, H2};
 
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
@@ -181,33 +182,19 @@ impl Component for App {
                                         }
                                     } else {
                                         html! {
-                                            <div>
-                                                <Text>{"This profile doesn't exist"}</Text>
-                                            </div>
+                                            <PageNotFound />
                                         }
                                     }
                                     AppRoute::ProfileHl(candidate_slug, highlighted_tech) => if let Some(candidate) = candidates.get(&candidate_slug.as_str()) {
                                         html! {
                                             <Profile
-                                                candidate = candidate.candidate
+                                                candidate=candidate.candidate
                                                 highlighted_tech=highlighted_tech
                                             />
                                         }
                                     } else {
                                         html! {
-                                            <div>
-                                                <H3>{"Page not found"}</H3>
-                                                <Text>{"This profile does not seem to exist"}</Text>
-                                                <Text>
-                                                    {"You may find what \
-                                                    you were looking for on our "}
-                                                    <a
-                                                        href="/"
-                                                    >
-                                                        {"homepage"}
-                                                    </a>
-                                                </Text>
-                                            </div>
+                                            <PageNotFound />
                                         }
                                     }
                                 }
