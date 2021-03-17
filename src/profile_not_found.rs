@@ -1,14 +1,14 @@
 use yew::prelude::*;
 use yewprint::{Callout, Intent, Text};
 
-pub struct PageNotFound {}
+pub struct ProfileNotFound {}
 
-impl Component for PageNotFound {
+impl Component for ProfileNotFound {
     type Message = ();
     type Properties = ();
 
     fn create(_props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        PageNotFound {}
+        ProfileNotFound {}
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
@@ -22,7 +22,7 @@ impl Component for PageNotFound {
     fn view(&self) -> Html {
         html! {
             <Callout
-                class=classes!("page-not-found")
+                class=classes!("profile-not-found")
                 title={"Profile not found"}
                 intent=Intent::Warning
             >

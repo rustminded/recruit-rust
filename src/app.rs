@@ -1,6 +1,6 @@
-use crate::page_not_found::PageNotFound;
 use crate::profile::Profile;
 use crate::profile_list_item::ProfileListItem;
+use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use candidate::Candidate;
 use std::collections::HashMap;
@@ -184,7 +184,7 @@ impl Component for App {
                                         }
                                     } else {
                                         html! {
-                                            <PageNotFound />
+                                            <ProfileNotFound />
                                         }
                                     }
                                     AppRoute::ProfileHl(slug, hl_tech) => if let Some(candidate) =
@@ -198,7 +198,7 @@ impl Component for App {
                                         }
                                     } else {
                                         html! {
-                                            <PageNotFound />
+                                            <ProfileNotFound />
                                         }
                                     }
                                 }

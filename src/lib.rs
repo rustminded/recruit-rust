@@ -3,9 +3,9 @@
 mod app;
 mod contributions;
 mod jobs;
-mod page_not_found;
 mod profile;
 mod profile_list_item;
+mod profile_not_found;
 mod tech_tag;
 mod techs;
 
