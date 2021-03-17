@@ -174,8 +174,8 @@ impl Component for App {
                                             }
                                         })
                                         .collect::<Html>(),
-                                    AppRoute::Profile(slug) =>
-                                        if let Some(candidate) = candidates.get(&slug.as_str())
+                                    AppRoute::Profile(slug) => if let Some(candidate) =
+                                        candidates.get(&slug.as_str())
                                     {
                                         html! {
                                             <Profile
@@ -187,13 +187,13 @@ impl Component for App {
                                             <PageNotFound />
                                         }
                                     }
-                                    AppRoute::ProfileHl(slug, highlighted_tech) =>
-                                        if let Some(candidate) = candidates.get(&slug.as_str())
+                                    AppRoute::ProfileHl(slug, hl_tech) => if let Some(candidate) =
+                                        candidates.get(&slug.as_str())
                                     {
                                         html! {
                                             <Profile
                                                 candidate=candidate.candidate
-                                                highlighted_tech=highlighted_tech
+                                                highlighted_tech=hl_tech
                                             />
                                         }
                                     } else {
@@ -213,7 +213,7 @@ impl Component for App {
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoute {
-    #[to = "/{slug}#{highlighted_tech}"]
+    #[to = "/{slug}#{hl_tech}"]
     ProfileHl(String, String),
     #[to = "/{slug}"]
     Profile(String),
