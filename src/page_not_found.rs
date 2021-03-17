@@ -23,7 +23,7 @@ impl Component for PageNotFound {
         html! {
             <Callout
                 class=classes!("page-not-found")
-                title={"Page not found"}
+                title={"Profile not found"}
                 intent=Intent::Warning
             >
                 <Text>{"This profile does not seem to exist"}</Text>
