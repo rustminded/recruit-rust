@@ -1,5 +1,6 @@
 use crate::profile::Profile;
 use crate::profile_list_item::ProfileListItem;
+use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use candidate::Candidate;
 use std::collections::HashMap;
@@ -173,21 +174,33 @@ impl Component for App {
                                             }
                                         })
                                         .collect::<Html>(),
-                                    AppRoute::Profile(candidate_slug) => html! {
-                                        <Profile
-                                            candidate=candidates
-                                                .get(&candidate_slug.as_str())
-                                                .unwrap()
-                                                .candidate
-                                        />
-                                    },
-                                    AppRoute::ProfileHl(candidate_slug, highlighted_tech) => html! {
-                                        <Profile
-                                            candidate=candidates.get(&candidate_slug.as_str())
-                                            .unwrap().candidate
-                                            highlighted_tech=highlighted_tech
-                                        />
-                                    },
+                                    AppRoute::Profile(slug) => if let Some(candidate) =
+                                        candidates.get(&slug.as_str())
+                                    {
+                                        html! {
+                                            <Profile
+                                                candidate=candidate.candidate
+                                            />
+                                        }
+                                    } else {
+                                        html! {
+                                            <ProfileNotFound />
+                                        }
+                                    }
+                                    AppRoute::ProfileHl(slug, hl_tech) => if let Some(candidate) =
+                                        candidates.get(&slug.as_str())
+                                    {
+                                        html! {
+                                            <Profile
+                                                candidate=candidate.candidate
+                                                highlighted_tech=hl_tech
+                                            />
+                                        }
+                                    } else {
+                                        html! {
+                                            <ProfileNotFound />
+                                        }
+                                    }
                                 }
                             })
                         />
@@ -200,9 +213,9 @@ impl Component for App {
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoute {
-    #[to = "/{candidate_slug}#{highlighted_tech}"]
+    #[to = "/{slug}#{hl_tech}"]
     ProfileHl(String, String),
-    #[to = "/{candidate_slug}"]
+    #[to = "/{slug}"]
     Profile(String),
     #[to = "/"]
     Home,

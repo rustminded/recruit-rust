@@ -134,3 +134,9 @@ body{
     margin-left: 2px;
     margin-right: 2px;
 }
+
+.profile-not-found{
+    margin-top: 15px;
+    margin-left: 30px;
+    max-width: 30%;
+}

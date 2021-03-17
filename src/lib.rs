@@ -5,6 +5,7 @@ mod contributions;
 mod jobs;
 mod profile;
 mod profile_list_item;
+mod profile_not_found;
 mod tech_tag;
 mod techs;
 
