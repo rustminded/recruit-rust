@@ -36,15 +36,14 @@ impl Component for Profile {
                     highlighted_tech.clear();
                     highlighted_tech.push_str(&value);
                 } else {
-                    let highlighted_tech = String::from(&value);
-                    self.props.highlighted_tech = Some(highlighted_tech);
+                    self.props.highlighted_tech = Some(value);
                 }
             }
         }
         true
     }
 
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
+    fn change(&mut self, props: Self::Properties) -> ShouldRender {
         if self.props != props {
             self.props = props;
             true
