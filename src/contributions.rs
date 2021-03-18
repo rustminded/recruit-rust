@@ -4,23 +4,32 @@ use yewprint::{Intent, Tag, Text};
 
 pub struct Contributions {
     props: ContributionProps,
+    link: ComponentLink<Self>,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct ContributionProps {
-    pub contributions: &'static Contribution,
+    pub contribution: &'static Contribution,
     pub highlighted_tech: Option<String>,
+    pub onclick: Callback<String>,
+}
+
+pub enum Msg {
+    HighLight(String),
 }
 
 impl Component for Contributions {
-    type Message = ();
+    type Message = Msg;
     type Properties = ContributionProps;
 
-    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        Contributions { props }
+    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        Contributions { props, link }
     }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        match msg {
+            Msg::HighLight(value) => self.props.onclick.emit(value),
+        }
         true
     }
 
@@ -36,7 +45,7 @@ impl Component for Contributions {
     fn view(&self) -> Html {
         let contrib_tags = self
             .props
-            .contributions
+            .contribution
             .techs
             .iter()
             .map(|x| {
@@ -49,6 +58,7 @@ impl Component for Contributions {
                                 _ => Intent::Success
                             }
                         }
+                        onclick=self.link.callback(move |_| Msg::HighLight(x.to_string()))
                     >
                         {x}
                     </Tag>
@@ -61,11 +71,11 @@ impl Component for Contributions {
                 <div class="candidate-tag">
                     {contrib_tags}
                 </div>
-                    <a class="contribution-link" href={self.props.contributions.website}>
-                        {self.props.contributions.project}
+                    <a class="contribution-link" href={self.props.contribution.website}>
+                        {self.props.contribution.project}
                     </a>
                     <Text class=classes!("contribution-description")>
-                        {self.props.contributions.description}
+                        {self.props.contribution.description}
                     </Text>
                 <div class="separator">
                 </div>
