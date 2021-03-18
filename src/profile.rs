@@ -7,7 +7,6 @@ use yewprint::{Card, Intent, Tag, Text, H1, H2};
 
 pub struct Profile {
     props: ProfileProps,
-    link: ComponentLink<Self>,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
@@ -17,30 +16,15 @@ pub struct ProfileProps {
     pub highlighted_tech: Option<String>,
 }
 
-pub enum Msg {
-    Click(String),
-}
-
 impl Component for Profile {
-    type Message = Msg;
+    type Message = ();
     type Properties = ProfileProps;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        Profile { props, link }
+    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
+        Profile { props }
     }
 
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
-        match msg {
-            Msg::Click(value) => {
-                if let Some(highlighted_tech) = self.props.highlighted_tech.as_mut() {
-                    highlighted_tech.clear();
-                    highlighted_tech.push_str(&value);
-                } else {
-                    let highlighted_tech = String::from(&value);
-                    self.props.highlighted_tech = Some(highlighted_tech);
-                }
-            }
-        }
+    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
         true
     }
 
@@ -63,14 +47,12 @@ impl Component for Profile {
                 html! {
                     <Tag
                         class=classes!("tag")
-                        interactive=true
                         intent={
                             match self.props.highlighted_tech.as_ref() {
                                 Some(highlighted_tech) if highlighted_tech == x => Intent::Danger,
                                 _ => Intent::Primary,
                             }
                         }
-                        onclick=self.link.callback(move |_| Msg::Click(x.to_string()))
                     >
                         {x}
                     </Tag>
