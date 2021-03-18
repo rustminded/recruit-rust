@@ -4,34 +4,48 @@ use yewprint::{Intent, Tag, Text};
 
 pub struct Jobs {
     props: JobsProps,
+    link: ComponentLink<Self>,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
 pub struct JobsProps {
-    pub jobs: &'static Job,
+    pub job: &'static Job,
     pub highlighted_tech: Option<String>,
+    pub onclick: Callback<String>,
+}
+
+pub enum Msg {
+    Highlight(String),
 }
 
 impl Component for Jobs {
-    type Message = ();
+    type Message = Msg;
     type Properties = JobsProps;
 
-    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        Jobs { props }
+    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        Jobs { props, link }
     }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        match msg {
+            Msg::Highlight(value) => self.props.onclick.emit(value),
+        }
         true
     }
 
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-        true
+    fn change(&mut self, props: Self::Properties) -> ShouldRender {
+        if self.props != props {
+            self.props = props;
+            true
+        } else {
+            false
+        }
     }
 
     fn view(&self) -> Html {
         let jobs_tags = self
             .props
-            .jobs
+            .job
             .techs
             .iter()
             .map(|x| {
@@ -44,6 +58,7 @@ impl Component for Jobs {
                                 _ => Intent::Warning
                             }
                         }
+                        onclick=self.link.callback(move |_| Msg::Highlight(x.to_string()))
                     >
                         {x}
                     </Tag>
@@ -57,18 +72,18 @@ impl Component for Jobs {
                     {jobs_tags}
                 </div>
                 <div class="jobs-header">
-                    <a class="jobs-header-link" href={self.props.jobs.website}>
-                        {self.props.jobs.company}
+                    <a class="jobs-header-link" href={self.props.job.website}>
+                        {self.props.job.company}
                     </a>
                     <Text class=classes!("jobs-header-separator")>
                         {"|"}
                     </Text>
                     <Text class=classes!("jobs-header-period")>
-                        {self.props.jobs.period}
+                        {self.props.job.period}
                     </Text>
                 </div>
                 <Text class=classes!("jobs-description")>
-                    {self.props.jobs.description}
+                    {self.props.job.description}
                 </Text>
                 <div class="separator">
                 </div>

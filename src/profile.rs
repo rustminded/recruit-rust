@@ -7,6 +7,7 @@ use yewprint::{Card, Intent, Tag, Text, H1, H2};
 
 pub struct Profile {
     props: ProfileProps,
+    link: ComponentLink<Self>,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
@@ -16,20 +17,38 @@ pub struct ProfileProps {
     pub highlighted_tech: Option<String>,
 }
 
+pub enum Msg {
+    Highlight(String),
+}
+
 impl Component for Profile {
-    type Message = ();
+    type Message = Msg;
     type Properties = ProfileProps;
 
-    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        Profile { props }
+    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        Profile { props, link }
     }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        match msg {
+            Msg::Highlight(value) => {
+                if let Some(highlighted_tech) = self.props.highlighted_tech.as_mut() {
+                    *highlighted_tech = value;
+                } else {
+                    self.props.highlighted_tech = Some(value);
+                }
+            }
+        }
         true
     }
 
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-        true
+    fn change(&mut self, props: Self::Properties) -> ShouldRender {
+        if self.props != props {
+            self.props = props;
+            true
+        } else {
+            false
+        }
     }
 
     fn view(&self) -> Html {
@@ -42,12 +61,14 @@ impl Component for Profile {
                 html! {
                     <Tag
                         class=classes!("tag")
+                        interactive=true
                         intent={
                             match self.props.highlighted_tech.as_ref() {
                                 Some(highlighted_tech) if highlighted_tech == x => Intent::Danger,
                                 _ => Intent::Primary,
                             }
                         }
+                        onclick=self.link.callback(move |_| Msg::Highlight(x.to_string()))
                     >
                         {x}
                     </Tag>
@@ -88,8 +109,9 @@ impl Component for Profile {
             .map(|x| {
                 html! {
                     <Jobs
-                        jobs={x}
+                        job={x}
                         highlighted_tech=self.props.highlighted_tech.clone()
+                        onclick=self.link.callback(|x| Msg::Highlight(x))
                     />
                 }
             })
@@ -102,8 +124,9 @@ impl Component for Profile {
             .map(|x| {
                 html! {
                     <Contributions
-                        contributions={x}
+                        contribution={x}
                         highlighted_tech=self.props.highlighted_tech.clone()
+                        onclick=self.link.callback(|x| Msg::Highlight(x))
                     />
                 }
             })
@@ -116,8 +139,9 @@ impl Component for Profile {
             .map(|x| {
                 html! {
                     <Contributions
-                        contributions={x}
+                        contribution={x}
                         highlighted_tech=self.props.highlighted_tech.clone()
+                        onclick=self.link.callback(|x| Msg::Highlight(x))
                     />
                 }
             })
