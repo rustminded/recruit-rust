@@ -522,6 +522,10 @@ checksum = "631ae5198c9be5e753e5cc215e1bd73c2b466a3565173db433f52bb9d3e66dba"
 [[package]]
 name = "candidate"
 version = "0.1.0"
+dependencies = [
+ "chrono",
+ "chrono-tz",
+]
 
 [[package]]
 name = "cargo-platform"
@@ -3204,6 +3208,8 @@ name = "yozhgoor"
 version = "0.1.0"
 dependencies = [
  "candidate",
+ "chrono",
+ "chrono-tz",
 ]
 
 [[package]]
