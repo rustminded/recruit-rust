@@ -4,6 +4,7 @@ use yewprint::{Intent, Tag, Text};
 
 pub struct Jobs {
     props: JobsProps,
+    link: ComponentLink<Self>,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
@@ -12,20 +13,40 @@ pub struct JobsProps {
     pub highlighted_tech: Option<String>,
 }
 
+pub enum Msg {
+    Click(String),
+}
+
 impl Component for Jobs {
-    type Message = ();
+    type Message = Msg;
     type Properties = JobsProps;
 
-    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        Jobs { props }
+    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        Jobs { props, link }
     }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        match msg {
+            Msg::Click(value) => {
+                if let Some(highlighted_tech) = self.props.highlighted_tech.as_mut() {
+                    highlighted_tech.clear();
+                    highlighted_tech.push_str(&value);
+                } else {
+                    let highlighted_tech = String::from(&value);
+                    self.props.highlighted_tech = Some(highlighted_tech);
+                }
+            }
+        }
         true
     }
 
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-        true
+    fn change(&mut self, props: Self::Properties) -> ShouldRender {
+        if self.props != props {
+            self.props = props;
+            true
+        } else {
+            false
+        }
     }
 
     fn view(&self) -> Html {
@@ -38,12 +59,14 @@ impl Component for Jobs {
                 html! {
                     <Tag
                         class=classes!("tag")
+                        interactive=true
                         intent={
                             match self.props.highlighted_tech.as_ref() {
                                 Some(highlighted_tech) if highlighted_tech == x => Intent::Danger,
                                 _ => Intent::Warning
                             }
                         }
+                        onclick=self.link.callback(move |_| Msg::Click(x.to_string()))
                     >
                         {x}
                     </Tag>
