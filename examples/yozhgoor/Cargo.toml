@@ -8,5 +8,4 @@ edition = "2018"
 
 [dependencies]
 candidate = { path = "../../candidate" }
-chrono = "0.4"
 chrono-tz = "0.5"
