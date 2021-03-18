@@ -28,7 +28,12 @@ impl Component for ProfileListItem {
     }
 
     fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-        true
+        if self.props != props {
+            self.props = props;
+            true
+        } else {
+            false
+        }
     }
 
     fn view(&self) -> Html {
