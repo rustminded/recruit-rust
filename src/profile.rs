@@ -28,13 +28,8 @@ impl Component for Profile {
         true
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender {
-        if self.props != props {
-            self.props = props;
-            true
-        } else {
-            false
-        }
+    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
+        true
     }
 
     fn view(&self) -> Html {
