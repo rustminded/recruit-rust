@@ -15,7 +15,7 @@ pub struct JobsProps {
 }
 
 pub enum Msg {
-    HighLight(String),
+    Highlight(String),
 }
 
 impl Component for Jobs {
@@ -28,7 +28,7 @@ impl Component for Jobs {
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
-            Msg::HighLight(value) => self.props.onclick.emit(value),
+            Msg::Highlight(value) => self.props.onclick.emit(value),
         }
         true
     }
@@ -58,7 +58,7 @@ impl Component for Jobs {
                                 _ => Intent::Warning
                             }
                         }
-                        onclick=self.link.callback(move |_| Msg::HighLight(x.to_string()))
+                        onclick=self.link.callback(move |_| Msg::Highlight(x.to_string()))
                     >
                         {x}
                     </Tag>

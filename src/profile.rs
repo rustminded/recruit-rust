@@ -18,7 +18,7 @@ pub struct ProfileProps {
 }
 
 pub enum Msg {
-    HighLight(String),
+    Highlight(String),
 }
 
 impl Component for Profile {
@@ -31,10 +31,9 @@ impl Component for Profile {
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
-            Msg::HighLight(value) => {
+            Msg::Highlight(value) => {
                 if let Some(highlighted_tech) = self.props.highlighted_tech.as_mut() {
-                    highlighted_tech.clear();
-                    highlighted_tech.push_str(&value);
+                    *highlighted_tech = value;
                 } else {
                     self.props.highlighted_tech = Some(value);
                 }
@@ -69,7 +68,7 @@ impl Component for Profile {
                                 _ => Intent::Primary,
                             }
                         }
-                        onclick=self.link.callback(move |_| Msg::HighLight(x.to_string()))
+                        onclick=self.link.callback(move |_| Msg::Highlight(x.to_string()))
                     >
                         {x}
                     </Tag>
@@ -112,7 +111,7 @@ impl Component for Profile {
                     <Jobs
                         job={x}
                         highlighted_tech=self.props.highlighted_tech.clone()
-                        onclick=self.link.callback(|x| Msg::HighLight(x))
+                        onclick=self.link.callback(|x| Msg::Highlight(x))
                     />
                 }
             })
@@ -127,7 +126,7 @@ impl Component for Profile {
                     <Contributions
                         contribution={x}
                         highlighted_tech=self.props.highlighted_tech.clone()
-                        onclick=self.link.callback(|x| Msg::HighLight(x))
+                        onclick=self.link.callback(|x| Msg::Highlight(x))
                     />
                 }
             })
@@ -142,7 +141,7 @@ impl Component for Profile {
                     <Contributions
                         contribution={x}
                         highlighted_tech=self.props.highlighted_tech.clone()
-                        onclick=self.link.callback(|x| Msg::HighLight(x))
+                        onclick=self.link.callback(|x| Msg::Highlight(x))
                     />
                 }
             })
