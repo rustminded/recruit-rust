@@ -1,5 +1,8 @@
 #![cfg(target_arch = "wasm32")]
 
+extern crate chrono;
+extern crate chrono_tz;
+
 mod app;
 mod contributions;
 mod jobs;
