@@ -15,7 +15,7 @@ pub struct Candidate {
     pub contract_type: ContractType,
     pub availability: Availability,
     pub certifications: &'static [&'static str],
-    pub timezone: &'static [Tz],
+    pub timezones: &'static [Tz],
 }
 
 #[derive(Debug, Clone, PartialEq)]
