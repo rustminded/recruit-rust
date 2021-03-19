@@ -101,6 +101,17 @@ impl Component for Profile {
             Availability::PartTime => "Part time",
             Availability::NotAvailable => "Not available",
         };
+        let certifications = self
+            .props
+            .candidate
+            .certifications
+            .iter()
+            .map(|x| {
+                html! {
+                    <Text>{x}</Text>
+                }
+            })
+            .collect::<Html>();
         let jobs_list = self
             .props
             .candidate
@@ -168,6 +179,7 @@ impl Component for Profile {
                 </div>
                 <Text>{contract}</Text>
                 <Text>{availability}</Text>
+                {certifications}
                 <div class="candidate-jobs">
                     <H2>{"Jobs"}</H2>
                     {jobs_list}

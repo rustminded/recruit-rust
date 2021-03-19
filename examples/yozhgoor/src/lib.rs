@@ -1,4 +1,5 @@
 use candidate::*;
+use chrono_tz::Europe;
 
 pub fn candidate() -> &'static Candidate {
     &Candidate {
@@ -15,6 +16,7 @@ pub fn candidate() -> &'static Candidate {
             ("StackOverflow", "https://stackoverflow.com/users/14050514"),
             ("Reddit", "https://www.reddit.com/user/yozhgoor"),
         ],
+        timezone: &[Europe::Brussels],
         jobs: &[Job {
             company: "RustMinded",
             website: "https://github.com/rustminded",

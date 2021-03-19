@@ -1,3 +1,5 @@
+use chrono_tz::Tz;
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Candidate {
     pub slug: &'static str,
@@ -13,6 +15,7 @@ pub struct Candidate {
     pub contract_type: ContractType,
     pub availability: Availability,
     pub certifications: &'static [&'static str],
+    pub timezone: &'static [Tz],
 }
 
 #[derive(Debug, Clone, PartialEq)]

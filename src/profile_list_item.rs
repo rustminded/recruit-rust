@@ -61,6 +61,17 @@ impl Component for ProfileListItem {
             Availability::PartTime => "Part time",
             Availability::NotAvailable => "Not available",
         };
+        let certifications = self
+            .props
+            .candidate
+            .certifications
+            .iter()
+            .map(|x| {
+                html! {
+                    <Text>{x}</Text>
+                }
+            })
+            .collect::<Html>();
 
         html! {
             <Card class=classes!("profile-list")>
@@ -70,6 +81,7 @@ impl Component for ProfileListItem {
                     </a>
                     <Text>{availability}</Text>
                     <Text>{contract}</Text>
+                    {certifications}
                 </div>
                 <div class="profile-list-footer">
                     {candidate_tech}
