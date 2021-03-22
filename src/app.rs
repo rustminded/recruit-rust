@@ -2,6 +2,7 @@ use crate::profile::Profile;
 use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
+use candidate::Availability;
 use candidate::Candidate;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -27,6 +28,7 @@ pub struct CandidateInfo {
     candidate: &'static Candidate,
     techs: TechSet,
     url: &'static str,
+    available: bool,
 }
 
 impl CandidateInfo {
@@ -36,6 +38,7 @@ impl CandidateInfo {
     ) -> CandidateInfo {
         let candidate = candidate_info;
         let url = candidate_url;
+        let available = candidate.availability == Availability::NotAvailable;
         let mut techs: TechSet = TechSet::new();
 
         techs.extend(
@@ -64,6 +67,7 @@ impl CandidateInfo {
             candidate,
             techs,
             url,
+            available,
         }
     }
 }
@@ -163,7 +167,10 @@ impl Component for App {
                                 match switch {
                                     AppRoute::Home => candidates
                                         .values()
-                                        .filter(|x| entries.is_empty() || !x.techs.is_disjoint(&entries))
+                                        .filter(|x|
+                                            entries.is_empty() || !x.techs.is_disjoint(&entries)
+                                        )
+                                        .filter(|x| x.available)
                                         .map(|x| {
                                             html! {
                                                 <ProfileListItem
