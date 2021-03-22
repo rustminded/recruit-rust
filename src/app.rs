@@ -2,7 +2,7 @@ use crate::profile::Profile;
 use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
-use candidate::Candidate;
+use candidate::{Availability, Candidate};
 use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
@@ -163,7 +163,12 @@ impl Component for App {
                                 match switch {
                                     AppRoute::Home => candidates
                                         .values()
-                                        .filter(|x| entries.is_empty() || !x.techs.is_disjoint(&entries))
+                                        .filter(|x|
+                                            entries.is_empty() || !x.techs.is_disjoint(&entries)
+                                        )
+                                        .filter(|x|
+                                            x.candidate.availability != Availability::NotAvailable
+                                        )
                                         .map(|x| {
                                             html! {
                                                 <ProfileListItem
