@@ -170,7 +170,7 @@ impl Component for App {
                                         .filter(|x|
                                             entries.is_empty() || !x.techs.is_disjoint(&entries)
                                         )
-                                        .filter(|x| x.available)
+                                        .filter(|x| !x.available)
                                         .map(|x| {
                                             html! {
                                                 <ProfileListItem
