@@ -27,7 +27,6 @@ pub struct CandidateInfo {
     candidate: &'static Candidate,
     techs: TechSet,
     url: &'static str,
-    available: bool,
 }
 
 impl CandidateInfo {
@@ -37,7 +36,6 @@ impl CandidateInfo {
     ) -> CandidateInfo {
         let candidate = candidate_info;
         let url = candidate_url;
-        let available = candidate.availability != Availability::NotAvailable;
         let mut techs: TechSet = TechSet::new();
 
         techs.extend(
@@ -66,7 +64,6 @@ impl CandidateInfo {
             candidate,
             techs,
             url,
-            available,
         }
     }
 }
@@ -169,7 +166,9 @@ impl Component for App {
                                         .filter(|x|
                                             entries.is_empty() || !x.techs.is_disjoint(&entries)
                                         )
-                                        .filter(|x| x.available)
+                                        .filter(|x|
+                                            x.candidate.availability != Availability::NotAvailable
+                                        )
                                         .map(|x| {
                                             html! {
                                                 <ProfileListItem
