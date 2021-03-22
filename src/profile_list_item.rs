@@ -73,20 +73,24 @@ impl Component for ProfileListItem {
             })
             .collect::<Html>();
 
-        html! {
-            <Card class=classes!("profile-list")>
-                <div class="profile-list-header">
-                    <a href=self.props.url>
-                        {self.props.candidate.name}
-                    </a>
-                    <Text>{availability}</Text>
-                    <Text>{contract}</Text>
-                    {certifications}
-                </div>
-                <div class="profile-list-footer">
-                    {candidate_tech}
-                </div>
-            </Card>
+        if self.props.candidate.availability == Availability::NotAvailable {
+            html! {}
+        } else {
+            html! {
+                <Card class=classes!("profile-list")>
+                    <div class="profile-list-header">
+                        <a href=self.props.url>
+                            {self.props.candidate.name}
+                        </a>
+                        <Text>{availability}</Text>
+                        <Text>{contract}</Text>
+                        {certifications}
+                    </div>
+                    <div class="profile-list-footer">
+                        {candidate_tech}
+                    </div>
+                </Card>
+            }
         }
     }
 }

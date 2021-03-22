@@ -68,7 +68,7 @@ pub fn candidate() -> &'static Candidate {
             },
         ],
         contract_type: ContractType::Contractor,
-        availability: Availability::NotAvailable,
+        availability: Availability::PartTime,
         certifications: &[],
     }
 }
