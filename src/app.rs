@@ -7,7 +7,7 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
-use yewprint::{Button, IconName, InputGroup, Slider, Text, H1, H2};
+use yewprint::{Button, IconName, InputGroup, Slider, Tag, Text, H1, H2};
 
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
@@ -137,58 +137,22 @@ impl Component for App {
                             placeholder="Search Techs..."
                             value=&self.value
                             oninput=self.link.callback(|e: InputData| Msg::Update(e.value))
-                            onkeypress=self.link.callback(|e: KeyboardEvent| {
+                            onkeydown=self.link.callback(|e: KeyboardEvent| {
                                 if e.key() == "Enter" { Msg::AddEntry } else { Msg::Nope }
                             })
                             right_element=html! {
                                 <Button
                                     icon=IconName::Search
                                     minimal=true
+                                    onclick=self.link.callback(|_| Msg::AddEntry)
                                 />
                             }
                         />
                     </div>
                 </div>
-                <div class=classes!("app-top")>
-                    <Text class=classes!("app-intro")>
-                        {"The place to be hired as an awesome Rustacean"}
-                    </Text>
-                    <Slider<i32>
-                        selected=self.selected_timezone
-                        values=vec![
-                            (-12, Some(String::from("UTC -12"))),
-                            (-11, Some(String::from("UTC -11"))),
-                            (-10, Some(String::from("UTC -10"))),
-                            (-9, Some(String::from("UTC -9"))),
-                            (-8, Some(String::from("UTC -8"))),
-                            (-7, Some(String::from("UTC -7"))),
-                            (-6, Some(String::from("UTC -6"))),
-                            (-5, Some(String::from("UTC -5"))),
-                            (-4, Some(String::from("UTC -4"))),
-                            (-3, Some(String::from("UTC -3"))),
-                            (-2, Some(String::from("UTC -2"))),
-                            (-1, Some(String::from("UTC -1"))),
-                            (0, Some(String::from("UTC"))),
-                            (1, Some(String::from("UTC + 1"))),
-                            (2, Some(String::from("UTC + 2"))),
-                            (3, Some(String::from("UTC + 3"))),
-                            (4, Some(String::from("UTC + 4"))),
-                            (5, Some(String::from("UTC + 5"))),
-                            (6, Some(String::from("UTC + 6"))),
-                            (7, Some(String::from("UTC + 7"))),
-                            (8, Some(String::from("UTC + 8"))),
-                            (9, Some(String::from("UTC + 9"))),
-                            (10, Some(String::from("UTC + 10"))),
-                            (11, Some(String::from("UTC + 11"))),
-                            (12, Some(String::from("UTC + 12"))),
-                            (13, Some(String::from("UTC + 13"))),
-                            (14, Some(String::from("UTC + 14"))),
-                        ]
-                        onchange=self.link.callback(|x| Msg::SelectTimezone(x))
-
-                    />
-
-                </div>
+                <Text class=classes!("app-intro")>
+                    {"The place to be hired as an awesome Rustacean"}
+                </Text>
                 <Text class=classes!("reddit-link")>
                     {"If you want to share an opportunity, check this "}
                     <a
@@ -200,59 +164,81 @@ impl Component for App {
                 <div class="app-content" role="main">
                     <div class="profile-list-component">
                         <H2>{"Discover the community"}</H2>
-                    </div>
-                    <div>
-                        <Router<AppRoute, ()>
-                            render=Router::render(move |switch: AppRoute| {
-                                match switch {
-                                    AppRoute::Home => candidates
-                                        .values()
-                                        .filter(|x|
-                                            entries.is_empty() || !x.techs.is_disjoint(&entries)
-                                        )
-                                        .filter(|x|
-                                            x.candidate.availability != Availability::NotAvailable
-                                        )
-                                        .map(|x| {
+                        <div class="timezone-info">
+                            <Text>{"Timezone range: "}</Text>
+                            <Tag
+                                style="margin-left: 5px;"
+                                minimal=true
+                            >
+                                {format!(
+                                    "UTC {} to {}",
+                                    (self.selected_timezone - 1).clamp(-12, 14),
+                                    (self.selected_timezone + 1).clamp(-12, 14),
+                                )}
+                            </Tag>
+                        </div>
+                        <Slider<i32>
+                            class=classes!("timezone-slider")
+                            selected=self.selected_timezone
+                            values=(-12..=14)
+                                .step_by(1)
+                                .map(|x| (x, None))
+                                .collect::<Vec<(i32, Option<String>)>>()
+                            onchange=self.link.callback(|x| Msg::SelectTimezone(x))
+                        />
+                        <div>
+                            <Router<AppRoute, ()>
+                                render=Router::render(move |switch: AppRoute| {
+                                    match switch {
+                                        AppRoute::Home => candidates
+                                            .values()
+                                            .filter(|x|
+                                                entries.is_empty() || !x.techs.is_disjoint(&entries)
+                                            )
+                                            .filter(|x|
+                                                x.candidate.availability != Availability::NotAvailable
+                                            )
+                                            .map(|x| {
+                                                html! {
+                                                    <ProfileListItem
+                                                        candidate={x.candidate}
+                                                        techs={&x.techs}
+                                                        url={x.url}
+                                                    />
+                                                }
+                                            })
+                                            .collect::<Html>(),
+                                        AppRoute::Profile(slug) => if let Some(candidate) =
+                                            candidates.get(&slug.as_str())
+                                        {
                                             html! {
-                                                <ProfileListItem
-                                                    candidate={x.candidate}
-                                                    techs={&x.techs}
-                                                    url={x.url}
+                                                <Profile
+                                                    candidate=candidate.candidate
                                                 />
                                             }
-                                        })
-                                        .collect::<Html>(),
-                                    AppRoute::Profile(slug) => if let Some(candidate) =
-                                        candidates.get(&slug.as_str())
-                                    {
-                                        html! {
-                                            <Profile
-                                                candidate=candidate.candidate
-                                            />
+                                        } else {
+                                            html! {
+                                                <ProfileNotFound />
+                                            }
                                         }
-                                    } else {
-                                        html! {
-                                            <ProfileNotFound />
-                                        }
-                                    }
-                                    AppRoute::ProfileHl(slug, hl_tech) => if let Some(candidate) =
-                                        candidates.get(&slug.as_str())
-                                    {
-                                        html! {
-                                            <Profile
-                                                candidate=candidate.candidate
-                                                highlighted_tech=hl_tech
-                                            />
-                                        }
-                                    } else {
-                                        html! {
-                                            <ProfileNotFound />
+                                        AppRoute::ProfileHl(slug, hl_tech) => if let Some(candidate) =
+                                            candidates.get(&slug.as_str())
+                                        {
+                                            html! {
+                                                <Profile
+                                                    candidate=candidate.candidate
+                                                    highlighted_tech=hl_tech
+                                                />
+                                            }
+                                        } else {
+                                            html! {
+                                                <ProfileNotFound />
+                                            }
                                         }
                                     }
-                                }
-                            })
-                        />
+                                })
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

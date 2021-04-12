@@ -140,3 +140,8 @@ body{
     margin-left: 30px;
     max-width: 30%;
 }
+
+.timezone-info{
+    display: flex;
+    margin-bottom: 3px;
+}
