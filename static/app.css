@@ -141,6 +141,10 @@ body{
     max-width: 30%;
 }
 
+.timezone-card{
+    margin-bottom: 10px;
+}
+
 .timezone-info{
     display: flex;
     margin-bottom: 3px;

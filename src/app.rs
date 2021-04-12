@@ -7,21 +7,24 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
-use yewprint::{Button, IconName, InputGroup, Slider, Tag, Text, H1, H2};
+use yewprint::{Button, Card, IconName, InputGroup, Slider, Tag};
+use yewprint::{Text, H1, H2, H3};
 
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
     link: ComponentLink<Self>,
     entries: Rc<TechSet>,
-    value: String,
+    searched_value: String,
     selected_timezone: i32,
 }
 
+pub const TZ_RANGE: i32 = 3;
+
 pub enum Msg {
     AddEntry,
-    Update(String),
-    Nope,
+    UpdateSearch(String),
     SelectTimezone(i32),
+    Noop,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -76,8 +79,8 @@ impl Component for App {
 
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
         let entries = TechSet::new();
-        let value = String::new();
-        let selected_timezone = 0;
+        let searched_value = String::new();
+        let selected_timezone = Default::default();
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
         let candidate_2_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor2");
@@ -91,7 +94,7 @@ impl Component for App {
             candidates,
             link,
             entries,
-            value,
+            searched_value,
             selected_timezone,
         }
     }
@@ -100,21 +103,23 @@ impl Component for App {
         match msg {
             Msg::AddEntry => {
                 self.entries = Rc::new(
-                    self.value
+                    self.searched_value
                         .split_whitespace()
                         .map(|x| Tech::from(x.to_string()))
                         .collect(),
                 );
+                true
             }
-            Msg::Update(val) => {
-                self.value = val;
+            Msg::UpdateSearch(val) => {
+                self.searched_value = val;
+                true
             }
             Msg::SelectTimezone(tz) => {
                 self.selected_timezone = tz;
+                true
             }
-            Msg::Nope => {}
+            Msg::Noop => false,
         }
-        true
     }
 
     fn change(&mut self, _props: Self::Properties) -> ShouldRender {
@@ -135,10 +140,10 @@ impl Component for App {
                         <InputGroup
                             round=true
                             placeholder="Search Techs..."
-                            value=&self.value
-                            oninput=self.link.callback(|e: InputData| Msg::Update(e.value))
+                            value=&self.searched_value
+                            oninput=self.link.callback(|e: InputData| Msg::UpdateSearch(e.value))
                             onkeydown=self.link.callback(|e: KeyboardEvent| {
-                                if e.key() == "Enter" { Msg::AddEntry } else { Msg::Nope }
+                                if e.key() == "Enter" { Msg::AddEntry } else { Msg::Noop }
                             })
                             right_element=html! {
                                 <Button
@@ -164,28 +169,39 @@ impl Component for App {
                 <div class="app-content" role="main">
                     <div class="profile-list-component">
                         <H2>{"Discover the community"}</H2>
-                        <div class="timezone-info">
-                            <Text>{"Timezone range: "}</Text>
-                            <Tag
-                                style="margin-left: 5px;"
-                                minimal=true
-                            >
-                                {format!(
-                                    "UTC {} to {}",
-                                    (self.selected_timezone - 1).clamp(-12, 14),
-                                    (self.selected_timezone + 1).clamp(-12, 14),
-                                )}
-                            </Tag>
-                        </div>
-                        <Slider<i32>
-                            class=classes!("timezone-slider")
-                            selected=self.selected_timezone
-                            values=(-12..=14)
-                                .step_by(1)
-                                .map(|x| (x, None))
-                                .collect::<Vec<(i32, Option<String>)>>()
-                            onchange=self.link.callback(|x| Msg::SelectTimezone(x))
-                        />
+                        <Card class=classes!("timezone-card")>
+                            <div class="timezone-info">
+                                <Text>{"Timezone range: "}</Text>
+                                <Tag
+                                    style="margin-left: 5px;"
+                                    minimal=true
+                                >
+                                    {format!(
+                                        "UTC {} to {}",
+                                        (self.selected_timezone - TZ_RANGE)
+                                            .clamp(-12, 14),
+                                        (self.selected_timezone + TZ_RANGE)
+                                            .clamp(-12, 14),
+                                    )}
+                                </Tag>
+                            </div>
+                            <Slider<i32>
+                                class=classes!("timezone-slider")
+                                selected=self.selected_timezone
+                                values=(-12..=14)
+                                    .map(|x| match x {
+                                        -6 => (x, Some(String::from("North America"))),
+                                        -4 => (x, Some(String::from("South America"))),
+                                        1 => (x, Some(String::from("Europe/Africa"))),
+                                        7 => (x, Some(String::from("Asia"))),
+                                        9 => (x, Some(String::from("Australia"))),
+                                        _ => (x, None),
+                                    })
+                                    .collect::<Vec<(i32, Option<String>)>>()
+                                onchange=self.link.callback(|x| Msg::SelectTimezone(x))
+                            />
+                        </Card>
+                        <H3>{"Profiles:"}</H3>
                         <div>
                             <Router<AppRoute, ()>
                                 render=Router::render(move |switch: AppRoute| {
