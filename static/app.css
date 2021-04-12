@@ -141,7 +141,12 @@ body{
     max-width: 30%;
 }
 
-.timezone-card{
+.timezone{
+    margin-bottom: 10px;
+}
+
+.timezone-collapse{
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 

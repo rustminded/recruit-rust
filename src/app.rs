@@ -7,7 +7,7 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
-use yewprint::{Button, Card, IconName, InputGroup, Slider, Tag};
+use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Tag};
 use yewprint::{Text, H1, H2, H3};
 
 pub struct App {
@@ -16,6 +16,7 @@ pub struct App {
     entries: Rc<TechSet>,
     searched_value: String,
     selected_timezone: i32,
+    collapsed: bool,
 }
 
 pub const TZ_RANGE: i32 = 3;
@@ -24,6 +25,7 @@ pub enum Msg {
     AddEntry,
     UpdateSearch(String),
     SelectTimezone(i32),
+    ToggleCollapse,
     Noop,
 }
 
@@ -96,6 +98,7 @@ impl Component for App {
             entries,
             searched_value,
             selected_timezone,
+            collapsed: true,
         }
     }
 
@@ -116,6 +119,10 @@ impl Component for App {
             }
             Msg::SelectTimezone(tz) => {
                 self.selected_timezone = tz;
+                true
+            }
+            Msg::ToggleCollapse => {
+                self.collapsed ^= true;
                 true
             }
             Msg::Noop => false,
@@ -169,38 +176,50 @@ impl Component for App {
                 <div class="app-content" role="main">
                     <div class="profile-list-component">
                         <H2>{"Discover the community"}</H2>
-                        <Card class=classes!("timezone-card")>
-                            <div class="timezone-info">
-                                <Text>{"Timezone range: "}</Text>
-                                <Tag
-                                    style="margin-left: 5px;"
-                                    minimal=true
-                                >
-                                    {format!(
-                                        "UTC {} to {}",
-                                        (self.selected_timezone - TZ_RANGE)
-                                            .clamp(-12, 14),
-                                        (self.selected_timezone + TZ_RANGE)
-                                            .clamp(-12, 14),
-                                    )}
-                                </Tag>
-                            </div>
-                            <Slider<i32>
-                                class=classes!("timezone-slider")
-                                selected=self.selected_timezone
-                                values=(-12..=14)
-                                    .map(|x| match x {
-                                        -6 => (x, Some(String::from("North America"))),
-                                        -4 => (x, Some(String::from("South America"))),
-                                        1 => (x, Some(String::from("Europe/Africa"))),
-                                        7 => (x, Some(String::from("Asia"))),
-                                        9 => (x, Some(String::from("Australia"))),
-                                        _ => (x, None),
-                                    })
-                                    .collect::<Vec<(i32, Option<String>)>>()
-                                onchange=self.link.callback(|x| Msg::SelectTimezone(x))
-                            />
-                        </Card>
+                        <div class="timezone">
+                            <Button
+                                class=classes!("timezone-button")
+                                onclick=self.link.callback(|_| Msg::ToggleCollapse)
+                            >
+                                {"Filtering parameters"}
+                            </Button>
+                            <Collapse
+                                class=classes!("timezone-collapse")
+                                is_open=!self.collapsed
+                                keep_children_mounted=true
+                            >
+                                <div class="timezone-info">
+                                    <Text>{"Timezone range: "}</Text>
+                                    <Tag
+                                        style="margin-left: 5px;"
+                                        minimal=true
+                                    >
+                                        {format!(
+                                            "UTC {} to {}",
+                                            (self.selected_timezone - TZ_RANGE)
+                                                .clamp(-12, 14),
+                                            (self.selected_timezone + TZ_RANGE)
+                                                .clamp(-12, 14),
+                                        )}
+                                    </Tag>
+                                </div>
+                                <Slider<i32>
+                                    class=classes!("timezone-slider")
+                                    selected=self.selected_timezone
+                                    values=(-12..=14)
+                                        .map(|x| match x {
+                                            -6 => (x, Some(String::from("North America"))),
+                                            -4 => (x, Some(String::from("South America"))),
+                                            1 => (x, Some(String::from("Europe/Africa"))),
+                                            7 => (x, Some(String::from("Asia"))),
+                                            9 => (x, Some(String::from("Australia"))),
+                                            _ => (x, None),
+                                        })
+                                        .collect::<Vec<(i32, Option<String>)>>()
+                                    onchange=self.link.callback(|x| Msg::SelectTimezone(x))
+                                />
+                            </Collapse>
+                        </div>
                         <H3>{"Profiles:"}</H3>
                         <div>
                             <Router<AppRoute, ()>
