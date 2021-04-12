@@ -178,11 +178,15 @@ impl Component for App {
                         <H2>{"Discover the community"}</H2>
                         <div class="timezone">
                             <Button
+                                icon=if self.collapsed {
+                                    IconName::Filter
+                                } else {
+                                    IconName::FilterOpen
+                                }
+                                minimal=true
                                 class=classes!("timezone-button")
                                 onclick=self.link.callback(|_| Msg::ToggleCollapse)
-                            >
-                                {"Filtering parameters"}
-                            </Button>
+                            />
                             <Collapse
                                 class=classes!("timezone-collapse")
                                 is_open=!self.collapsed

@@ -154,3 +154,7 @@ body{
     display: flex;
     margin-bottom: 3px;
 }
+
+.profiles-header{
+    display: flex;
+}
