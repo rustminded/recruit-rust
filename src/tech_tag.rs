@@ -69,7 +69,7 @@ impl Component for TechTag {
                     intent=intent_value
                     right_icon=icon_value
                 >
-                    {self.props.tech.value.clone()}
+                    {value.clone()}
                 </Tag>
             </a>
         }
