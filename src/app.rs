@@ -19,7 +19,7 @@ pub struct App {
     collapsed: bool,
 }
 
-pub const TZ_RANGE: i64 = 10_800;
+pub const TZ_RANGE: i64 = 3;
 
 pub enum Msg {
     AddEntry,
@@ -198,20 +198,25 @@ impl Component for App {
                                         style="margin-left: 5px;"
                                         minimal=true
                                     >
-                                        {self.selected_timezone}
+                                        {
+                                            format!(
+                                                "UTC {} to {}",
+                                                (self.selected_timezone - TZ_RANGE).clamp(-12, 14),
+                                                (self.selected_timezone + TZ_RANGE).clamp(-12, 14),
+                                            )
+                                        }
                                     </Tag>
                                 </div>
                                 <Slider<i64>
                                     class=classes!("timezone-slider")
                                     selected=self.selected_timezone
-                                    values=(-43_200..=50_400)
-                                        .step_by(3600)
+                                    values=(-12..=14)
                                         .map(|x| match x {
-                                            -21_600 => (x, Some(String::from("North America"))),
-                                            -14400 => (x, Some(String::from("South America"))),
-                                            3600 => (x, Some(String::from("Europe/Africa"))),
-                                            25_200 => (x, Some(String::from("Asia"))),
-                                            32_400 => (x, Some(String::from("Australia"))),
+                                            -6 => (x, Some(String::from("North America"))),
+                                            -4 => (x, Some(String::from("South America"))),
+                                            1 => (x, Some(String::from("Europe/Africa"))),
+                                            7 => (x, Some(String::from("Asia"))),
+                                            9 => (x, Some(String::from("Australia"))),
                                             _ => (x, None),
                                         })
                                         .collect::<Vec<(i64, Option<String>)>>()
