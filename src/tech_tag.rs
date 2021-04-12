@@ -35,41 +35,27 @@ impl Component for TechTag {
 
     fn view(&self) -> Html {
         let url = self.props.url.clone();
-        let value = self.props.tech.value.clone();
-        let (intent_value, icon_value) = if self.props.tech.is_professional == true
-            && self.props.tech.is_public == false
-            && self.props.tech.is_asked == false
+        let tech = &self.props.tech;
+        let value = tech.value.clone();
+
+        let (intent_value, icon_value) = if tech.is_professional == true
+            && tech.is_public == false
+            && tech.is_asked == false
         {
             (Some(Intent::Warning), None)
-        } else if self.props.tech.is_professional == false
-            && self.props.tech.is_public == true
-            && self.props.tech.is_asked == false
+        } else if tech.is_professional == false && tech.is_public == true && tech.is_asked == false
         {
             (Some(Intent::Success), None)
-        } else if self.props.tech.is_professional == false
-            && self.props.tech.is_public == false
-            && self.props.tech.is_asked == true
+        } else if tech.is_professional == false && tech.is_public == false && tech.is_asked == true
         {
             (Some(Intent::Primary), None)
-        } else if self.props.tech.is_professional == true
-            && self.props.tech.is_public == false
-            && self.props.tech.is_asked == true
-        {
+        } else if tech.is_professional == true && tech.is_public == false && tech.is_asked == true {
             (Some(Intent::Primary), Some(IconName::Code))
-        } else if self.props.tech.is_professional == false
-            && self.props.tech.is_public == true
-            && self.props.tech.is_asked == true
-        {
+        } else if tech.is_professional == false && tech.is_public == true && tech.is_asked == true {
             (Some(Intent::Primary), Some(IconName::People))
-        } else if self.props.tech.is_professional == true
-            && self.props.tech.is_public == true
-            && self.props.tech.is_asked == true
-        {
+        } else if tech.is_professional == true && tech.is_public == true && tech.is_asked == true {
             (Some(Intent::Warning), Some(IconName::Star))
-        } else if self.props.tech.is_professional == true
-            && self.props.tech.is_public == true
-            && self.props.tech.is_asked == false
-        {
+        } else if tech.is_professional == true && tech.is_public == true && tech.is_asked == false {
             (Some(Intent::Warning), Some(IconName::People))
         } else {
             (None, None)
@@ -83,7 +69,7 @@ impl Component for TechTag {
                     intent=intent_value
                     right_icon=icon_value
                 >
-                    {self.props.tech.value.clone()}
+                    {value.clone()}
                 </Tag>
             </a>
         }
