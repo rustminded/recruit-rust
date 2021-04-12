@@ -3169,11 +3169,12 @@ dependencies = [
 [[package]]
 name = "yewprint"
 version = "0.1.0"
-source = "git+https://github.com/cecton/yewprint.git?branch=main#c9b23d91e6943db070c3a5a069c0015e8d64104c"
+source = "git+https://github.com/cecton/yewprint.git?branch=main#008d7e341bb91faa0590e76ae2af344b6b0a068b"
 dependencies = [
  "heck",
  "id_tree",
  "regex",
+ "wasm-bindgen",
  "web-sys",
  "yew",
  "yewtil",
