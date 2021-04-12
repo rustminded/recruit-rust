@@ -146,15 +146,13 @@ body{
 }
 
 .timezone-collapse{
+    margin-left: 12px;
     margin-top: 10px;
     margin-bottom: 10px;
+    width: 95%;
 }
 
 .timezone-info{
     display: flex;
     margin-bottom: 3px;
-}
-
-.profiles-header{
-    display: flex;
 }

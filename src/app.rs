@@ -15,16 +15,16 @@ pub struct App {
     link: ComponentLink<Self>,
     entries: Rc<TechSet>,
     searched_value: String,
-    selected_timezone: i32,
+    selected_timezone: i64,
     collapsed: bool,
 }
 
-pub const TZ_RANGE: i32 = 3;
+pub const TZ_RANGE: i64 = 10_800;
 
 pub enum Msg {
     AddEntry,
     UpdateSearch(String),
-    SelectTimezone(i32),
+    SelectTimezone(i64),
     ToggleCollapse,
     Noop,
 }
@@ -198,28 +198,23 @@ impl Component for App {
                                         style="margin-left: 5px;"
                                         minimal=true
                                     >
-                                        {format!(
-                                            "UTC {} to {}",
-                                            (self.selected_timezone - TZ_RANGE)
-                                                .clamp(-12, 14),
-                                            (self.selected_timezone + TZ_RANGE)
-                                                .clamp(-12, 14),
-                                        )}
+                                        {self.selected_timezone}
                                     </Tag>
                                 </div>
-                                <Slider<i32>
+                                <Slider<i64>
                                     class=classes!("timezone-slider")
                                     selected=self.selected_timezone
-                                    values=(-12..=14)
+                                    values=(-43_200..=50_400)
+                                        .step_by(3600)
                                         .map(|x| match x {
-                                            -6 => (x, Some(String::from("North America"))),
-                                            -4 => (x, Some(String::from("South America"))),
-                                            1 => (x, Some(String::from("Europe/Africa"))),
-                                            7 => (x, Some(String::from("Asia"))),
-                                            9 => (x, Some(String::from("Australia"))),
+                                            -21_600 => (x, Some(String::from("North America"))),
+                                            -14400 => (x, Some(String::from("South America"))),
+                                            3600 => (x, Some(String::from("Europe/Africa"))),
+                                            25_200 => (x, Some(String::from("Asia"))),
+                                            32_400 => (x, Some(String::from("Australia"))),
                                             _ => (x, None),
                                         })
-                                        .collect::<Vec<(i32, Option<String>)>>()
+                                        .collect::<Vec<(i64, Option<String>)>>()
                                     onchange=self.link.callback(|x| Msg::SelectTimezone(x))
                                 />
                             </Collapse>
