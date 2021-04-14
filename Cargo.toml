@@ -16,7 +16,7 @@ yew = { git = "https://github.com/yewstack/yew.git", rev = "db3170f629f" }
 yew-router = { git = "https://github.com/yewstack/yew.git", rev = "db3170f629f" }
 yewprint = { git = "https://github.com/cecton/yewprint.git", branch = "main" }
 itertools = "0.10.0"
-chrono = "0.4"
+chrono = { version = "0.4", features = ["wasmbind"] }
 chrono-tz = "0.5"
 yozhgoor = { path = "examples/yozhgoor" }
 candidate = { path = "candidate" }

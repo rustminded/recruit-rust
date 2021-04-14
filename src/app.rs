@@ -3,28 +3,30 @@ use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use candidate::{Availability, Candidate};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
 use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Tag};
 use yewprint::{Text, H1, H2, H3};
+use chrono::{Duration, Utc, TimeZone};
+use chrono_tz::OffsetComponents;
+
+pub const TZ_RANGE: i64 = 3;
 
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
     link: ComponentLink<Self>,
     entries: Rc<TechSet>,
     searched_value: String,
-    selected_timezone: i64,
+    selected_timezone: Duration,
     collapsed: bool,
 }
-
-pub const TZ_RANGE: i64 = 3;
 
 pub enum Msg {
     AddEntry,
     UpdateSearch(String),
-    SelectTimezone(i64),
+    SelectTimezone(Duration),
     ToggleCollapse,
     Noop,
 }
@@ -34,6 +36,7 @@ pub struct CandidateInfo {
     candidate: &'static Candidate,
     techs: TechSet,
     url: &'static str,
+    tz_offsets: HashSet<Duration>,
 }
 
 impl CandidateInfo {
@@ -67,10 +70,22 @@ impl CandidateInfo {
             techs.extend(s.iter().map(|x| Tech::from(*x).with_pub()));
         }
 
+        let tz_offsets = candidate.timezones
+            .iter()
+            .map(|tz| vec![
+                tz.offset_from_utc_datetime(&Utc::now().naive_utc())
+                    .base_utc_offset(),
+                tz.offset_from_utc_datetime(&Utc::now().naive_utc())
+                    .dst_offset(),
+            ])
+            .flatten()
+            .collect::<HashSet<Duration>>();
+
         CandidateInfo {
             candidate,
             techs,
             url,
+            tz_offsets,
         }
     }
 }
@@ -82,7 +97,7 @@ impl Component for App {
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
         let entries = TechSet::new();
         let searched_value = String::new();
-        let selected_timezone = Default::default();
+        let selected_timezone = Duration::hours(1);
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
         let candidate_2_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor2");
@@ -136,6 +151,8 @@ impl Component for App {
     fn view(&self) -> Html {
         let candidates = Rc::clone(&self.candidates);
         let entries = Rc::clone(&self.entries);
+        let selected_timezone = self.selected_timezone.clone();
+        let tz_range = Duration::hours(TZ_RANGE);
 
         html! {
             <div class="app-root bp3-dark">
@@ -201,25 +218,25 @@ impl Component for App {
                                         {
                                             format!(
                                                 "UTC {} to {}",
-                                                (self.selected_timezone - TZ_RANGE).clamp(-12, 14),
-                                                (self.selected_timezone + TZ_RANGE).clamp(-12, 14),
+                                                (self.selected_timezone - tz_range),
+                                                (self.selected_timezone + tz_range),
                                             )
                                         }
                                     </Tag>
                                 </div>
-                                <Slider<i64>
+                                <Slider<Duration>
                                     class=classes!("timezone-slider")
                                     selected=self.selected_timezone
-                                    values=(-12..=14)
+                                    values=(-12_i64..=14_i64)
                                         .map(|x| match x {
-                                            -6 => (x, Some(String::from("North America"))),
-                                            -4 => (x, Some(String::from("South America"))),
-                                            1 => (x, Some(String::from("Europe/Africa"))),
-                                            7 => (x, Some(String::from("Asia"))),
-                                            9 => (x, Some(String::from("Australia"))),
-                                            _ => (x, None),
+                                            -6 => (Duration::hours(x), Some(String::from("North America"))),
+                                            -4 => (Duration::hours(x), Some(String::from("South America"))),
+                                            1 => (Duration::hours(x), Some(String::from("Europe/Africa"))),
+                                            7 => (Duration::hours(x), Some(String::from("Asia"))),
+                                            9 => (Duration::hours(x), Some(String::from("Australia"))),
+                                            _ => (Duration::hours(x), None),
                                         })
-                                        .collect::<Vec<(i64, Option<String>)>>()
+                                        .collect::<Vec<_>>()
                                     onchange=self.link.callback(|x| Msg::SelectTimezone(x))
                                 />
                             </Collapse>
@@ -236,6 +253,11 @@ impl Component for App {
                                             )
                                             .filter(|x|
                                                 x.candidate.availability != Availability::NotAvailable
+                                            )
+                                            .filter(|x|
+                                                x.tz_offsets
+                                                    .iter()
+                                                    .any(|tz| *tz == selected_timezone)
                                             )
                                             .map(|x| {
                                                 html! {
