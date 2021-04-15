@@ -19,6 +19,10 @@ itertools = "0.10.0"
 chrono = { version = "0.4", features = ["wasmbind"] }
 chrono-tz = "0.5"
 yozhgoor = { path = "examples/yozhgoor" }
+asia_yozhgoor = { path = "examples/asia_yozhgoor" }
+australia_yozhgoor = { path = "examples/australia_yozhgoor" }
+n_america_yozhgoor = { path = "examples/n_america_yozhgoor" }
+s_america_yozhgoor = { path = "examples/s_america_yozhgoor" }
 candidate = { path = "candidate" }
 
 # The `console_error_panic_hook` crate provides better debugging of panics by

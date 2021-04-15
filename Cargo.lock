@@ -109,6 +109,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "23b62fc65de8e4e7f52534fb52b0f3ed04746ae267519eef2a83941e8085068b"
 
 [[package]]
+name = "asia_yozhgoor"
+version = "0.1.0"
+dependencies = [
+ "candidate",
+ "chrono-tz",
+]
+
+[[package]]
 name = "async-channel"
 version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -326,6 +334,14 @@ dependencies = [
  "hermit-abi",
  "libc",
  "winapi 0.3.9",
+]
+
+[[package]]
+name = "australia_yozhgoor"
+version = "0.1.0"
+dependencies = [
+ "candidate",
+ "chrono-tz",
 ]
 
 [[package]]
@@ -1607,6 +1623,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "n_america_yozhgoor"
+version = "0.1.0"
+dependencies = [
+ "candidate",
+ "chrono-tz",
+]
+
+[[package]]
 name = "nb-connect"
 version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1971,11 +1995,15 @@ dependencies = [
 name = "recruit-rust"
 version = "0.1.0"
 dependencies = [
+ "asia_yozhgoor",
+ "australia_yozhgoor",
  "candidate",
  "chrono",
  "chrono-tz",
  "console_error_panic_hook",
  "itertools",
+ "n_america_yozhgoor",
+ "s_america_yozhgoor",
  "structopt",
  "wasm-bindgen",
  "wasm-bindgen-test",
@@ -2082,6 +2110,14 @@ name = "ryu"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "71d301d4193d031abdd79ff7e3dd721168a9572ef3fe51a1517aba235bd8f86e"
+
+[[package]]
+name = "s_america_yozhgoor"
+version = "0.1.0"
+dependencies = [
+ "candidate",
+ "chrono-tz",
+]
 
 [[package]]
 name = "safemem"

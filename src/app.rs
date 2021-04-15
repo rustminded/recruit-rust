@@ -104,9 +104,21 @@ impl Component for App {
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
         let candidate_2_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor2");
+        let candidate_3_info =
+            CandidateInfo::from_candidate(asia_yozhgoor::candidate(), "asia-yozhgoor");
+        let candidate_4_info =
+            CandidateInfo::from_candidate(australia_yozhgoor::candidate(), "australia-yozhgoor");
+        let candidate_5_info =
+            CandidateInfo::from_candidate(n_america_yozhgoor::candidate(), "n-america-yozhgoor");
+        let candidate_6_info =
+            CandidateInfo::from_candidate(s_america_yozhgoor::candidate(), "s-america-yozhgoor");
 
         candidates.insert(candidate_1_info.url, candidate_1_info);
         candidates.insert(candidate_2_info.url, candidate_2_info);
+        candidates.insert(candidate_3_info.url, candidate_3_info);
+        candidates.insert(candidate_4_info.url, candidate_4_info);
+        candidates.insert(candidate_5_info.url, candidate_5_info);
+        candidates.insert(candidate_6_info.url, candidate_6_info);
         let candidates = Rc::new(candidates);
         let entries = Rc::new(entries);
 
