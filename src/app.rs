@@ -3,14 +3,14 @@ use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use candidate::{Availability, Candidate};
+use chrono::{Duration, TimeZone, Utc};
+use chrono_tz::OffsetComponents;
 use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
 use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Tag};
 use yewprint::{Text, H1, H2, H3};
-use chrono::{Duration, Utc, TimeZone};
-use chrono_tz::OffsetComponents;
 
 pub const TZ_RANGE: i64 = 3;
 
@@ -70,14 +70,17 @@ impl CandidateInfo {
             techs.extend(s.iter().map(|x| Tech::from(*x).with_pub()));
         }
 
-        let tz_offsets = candidate.timezones
+        let tz_offsets = candidate
+            .timezones
             .iter()
-            .map(|tz| vec![
-                tz.offset_from_utc_datetime(&Utc::now().naive_utc())
-                    .base_utc_offset(),
-                tz.offset_from_utc_datetime(&Utc::now().naive_utc())
-                    .dst_offset(),
-            ])
+            .map(|tz| {
+                vec![
+                    tz.offset_from_utc_datetime(&Utc::now().naive_utc())
+                        .base_utc_offset(),
+                    tz.offset_from_utc_datetime(&Utc::now().naive_utc())
+                        .dst_offset(),
+                ]
+            })
             .flatten()
             .collect::<HashSet<Duration>>();
 
@@ -218,8 +221,10 @@ impl Component for App {
                                         {
                                             format!(
                                                 "UTC {} to {}",
-                                                (self.selected_timezone - tz_range),
-                                                (self.selected_timezone + tz_range),
+                                                (self.selected_timezone - tz_range)
+                                                    .num_hours(),
+                                                (self.selected_timezone + tz_range)
+                                                    .num_hours(),
                                             )
                                         }
                                     </Tag>
@@ -229,11 +234,23 @@ impl Component for App {
                                     selected=self.selected_timezone
                                     values=(-12_i64..=14_i64)
                                         .map(|x| match x {
-                                            -6 => (Duration::hours(x), Some(String::from("North America"))),
-                                            -4 => (Duration::hours(x), Some(String::from("South America"))),
-                                            1 => (Duration::hours(x), Some(String::from("Europe/Africa"))),
+                                            -6 => (
+                                                Duration::hours(x),
+                                                Some(String::from("North America")),
+                                            ),
+                                            -4 => (
+                                                Duration::hours(x),
+                                                Some(String::from("South America")),
+                                            ),
+                                            1 => (
+                                                Duration::hours(x),
+                                                Some(String::from("Europe/Africa")),
+                                            ),
                                             7 => (Duration::hours(x), Some(String::from("Asia"))),
-                                            9 => (Duration::hours(x), Some(String::from("Australia"))),
+                                            9 => (
+                                                Duration::hours(x),
+                                                Some(String::from("Australia"))
+                                            ),
                                             _ => (Duration::hours(x), None),
                                         })
                                         .collect::<Vec<_>>()
@@ -257,7 +274,9 @@ impl Component for App {
                                             .filter(|x|
                                                 x.tz_offsets
                                                     .iter()
-                                                    .any(|tz| *tz == selected_timezone)
+                                                    .any(|tz|
+                                                        selected_timezone >= *tz - tz_range || selected_timezone <= *tz + tz_range
+                                                    )
                                             )
                                             .map(|x| {
                                                 html! {
