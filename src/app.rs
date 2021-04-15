@@ -264,22 +264,46 @@ impl Component for App {
                             <Router<AppRoute, ()>
                                 render=Router::render(move |switch: AppRoute| {
                                     match switch {
-                                        AppRoute::Home => candidates
-                                            .values()
-                                            .filter(|x|
-                                                entries.is_empty() || !x.techs.is_disjoint(&entries)
-                                            )
-                                            .filter(|x|
-                                                x.candidate.availability != Availability::NotAvailable
-                                            )
-                                            .filter(|x|
-                                                collapsed || x.tz_offsets
+                                        AppRoute::Home => {
+                                            let mut sorted_vec = candidates
+                                                .values()
+                                                .filter(|x|
+                                                    entries.is_empty() ||
+                                                    !x.techs.is_disjoint(&entries)
+                                                )
+                                                .filter(|x|
+                                                    x.candidate.availability !=
+                                                    Availability::NotAvailable
+                                                )
+                                                .filter(|x|
+                                                    collapsed || x.tz_offsets
+                                                        .iter()
+                                                        .any(|tz|
+                                                            selected_timezone >= *tz - tz_range &&
+                                                            selected_timezone <= *tz + tz_range
+                                                        )
+                                                )
+                                                .collect::<Vec<&CandidateInfo>>();
+                                            sorted_vec.sort_by(|a, b|
+                                                (a.tz_offsets
                                                     .iter()
-                                                    .any(|tz|
-                                                        selected_timezone >= *tz - tz_range && selected_timezone <= *tz + tz_range
+                                                    .map(|x|
+                                                        (x.num_seconds() -
+                                                        selected_timezone.num_seconds())
+                                                        .abs()
+                                                    ).min().expect("todo")
+                                                ).cmp(
+                                                    &b.tz_offsets
+                                                    .iter()
+                                                    .map(|x|
+                                                        (x.num_seconds() -
+                                                        selected_timezone.num_seconds())
+                                                        .abs()
                                                     )
-                                            )
-                                            .map(|x| {
+                                                    .min()
+                                                    .expect("todo")
+                                                ));
+                                            sorted_vec.iter().map(|x| {
                                                 html! {
                                                     <ProfileListItem
                                                         candidate={x.candidate}
@@ -288,7 +312,8 @@ impl Component for App {
                                                     />
                                                 }
                                             })
-                                            .collect::<Html>(),
+                                            .collect::<Html>()
+                                        },
                                         AppRoute::Profile(slug) => if let Some(candidate) =
                                             candidates.get(&slug.as_str())
                                         {
