@@ -222,9 +222,9 @@ impl Component for App {
                                             format!(
                                                 "UTC {} to {}",
                                                 (self.selected_timezone - tz_range)
-                                                    .num_hours(),
+                                                    .num_hours().clamp(-12, 14),
                                                 (self.selected_timezone + tz_range)
-                                                    .num_hours(),
+                                                    .num_hours().clamp(-12, 14),
                                             )
                                         }
                                     </Tag>
@@ -275,7 +275,7 @@ impl Component for App {
                                                 x.tz_offsets
                                                     .iter()
                                                     .any(|tz|
-                                                        selected_timezone >= *tz - tz_range || selected_timezone <= *tz + tz_range
+                                                        selected_timezone >= *tz - tz_range && selected_timezone <= *tz + tz_range
                                                     )
                                             )
                                             .map(|x| {
