@@ -12,7 +12,7 @@ use yew_router::{router::Router, Switch};
 use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Tag};
 use yewprint::{Text, H1, H2, H3};
 
-pub const TZ_RANGE: i64 = 3;
+pub const TZ_RANGE: i64 = 2;
 
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
@@ -100,7 +100,7 @@ impl Component for App {
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
         let entries = TechSet::new();
         let searched_value = String::new();
-        let selected_timezone = Duration::hours(6);
+        let selected_timezone = Duration::hours(0);
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
         let candidate_2_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor2");
