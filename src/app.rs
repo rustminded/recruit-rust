@@ -100,7 +100,7 @@ impl Component for App {
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
         let entries = TechSet::new();
         let searched_value = String::new();
-        let selected_timezone = Duration::hours(1);
+        let selected_timezone = Duration::hours(6);
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
         let candidate_2_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor2");
@@ -156,6 +156,7 @@ impl Component for App {
         let entries = Rc::clone(&self.entries);
         let selected_timezone = self.selected_timezone.clone();
         let tz_range = Duration::hours(TZ_RANGE);
+        let collapsed = self.collapsed.clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -272,7 +273,7 @@ impl Component for App {
                                                 x.candidate.availability != Availability::NotAvailable
                                             )
                                             .filter(|x|
-                                                x.tz_offsets
+                                                collapsed || x.tz_offsets
                                                     .iter()
                                                     .any(|tz|
                                                         selected_timezone >= *tz - tz_range && selected_timezone <= *tz + tz_range
