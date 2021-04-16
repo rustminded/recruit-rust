@@ -277,7 +277,7 @@ impl Component for App {
                                 render=Router::render(move |switch: AppRoute| {
                                     match switch {
                                         AppRoute::Home => {
-                                            let mut sorted_vec = candidates
+                                            candidates
                                                 .values()
                                                 .filter(|x|
                                                     entries.is_empty() ||
@@ -291,31 +291,10 @@ impl Component for App {
                                                     collapsed || x.tz_offsets
                                                         .iter()
                                                         .any(|tz|
-                                                            selected_timezone >= *tz - tz_range &&
-                                                            selected_timezone <= *tz + tz_range
+                                                            ((selected_timezone - tz_range)..=(selected_timezone + tz_range)).contains(tz)
                                                         )
                                                 )
-                                                .collect::<Vec<&CandidateInfo>>();
-                                            sorted_vec.sort_by(|a, b|
-                                                (a.tz_offsets
-                                                    .iter()
-                                                    .map(|x|
-                                                        (x.num_seconds() -
-                                                        selected_timezone.num_seconds())
-                                                        .abs()
-                                                    ).min().expect("todo")
-                                                ).cmp(
-                                                    &b.tz_offsets
-                                                    .iter()
-                                                    .map(|x|
-                                                        (x.num_seconds() -
-                                                        selected_timezone.num_seconds())
-                                                        .abs()
-                                                    )
-                                                    .min()
-                                                    .expect("todo")
-                                                ));
-                                            sorted_vec.iter().map(|x| {
+                                            .map(|x| {
                                                 html! {
                                                     <ProfileListItem
                                                         candidate={x.candidate}
