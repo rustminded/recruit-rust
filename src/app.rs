@@ -277,7 +277,7 @@ impl Component for App {
                                 render=Router::render(move |switch: AppRoute| {
                                     match switch {
                                         AppRoute::Home => {
-                                            candidates
+                                            let mut sorted_vec = candidates
                                                 .values()
                                                 .filter(|x|
                                                     entries.is_empty() ||
@@ -291,19 +291,41 @@ impl Component for App {
                                                     collapsed || x.tz_offsets
                                                         .iter()
                                                         .any(|tz|
-                                                            ((selected_timezone - tz_range)..=(selected_timezone + tz_range)).contains(tz)
+                                                            ((selected_timezone - tz_range)..=
+                                                            (selected_timezone + tz_range)).contains
+                                                            (tz)
                                                         )
                                                 )
-                                            .map(|x| {
-                                                html! {
-                                                    <ProfileListItem
-                                                        candidate={x.candidate}
-                                                        techs={&x.techs}
-                                                        url={x.url}
-                                                    />
-                                                }
-                                            })
-                                            .collect::<Html>()
+                                                .collect::<Vec<_>>();
+                                                sorted_vec.sort_by(|a, b|
+                                                    (a.tz_offsets
+                                                        .iter()
+                                                        .map(|x|
+                                                            (x.num_seconds() -
+                                                            selected_timezone.num_seconds())
+                                                            .abs()
+                                                        ).min().expect("todo")
+                                                    ).cmp(
+                                                        &b.tz_offsets
+                                                        .iter()
+                                                        .map(|x|
+                                                            (x.num_seconds() -
+                                                            selected_timezone.num_seconds())
+                                                            .abs()
+                                                        )
+                                                        .min()
+                                                        .expect("todo")
+                                                    ));
+                                                sorted_vec.iter().map(|x| {
+                                                    html! {
+                                                        <ProfileListItem
+                                                            candidate={x.candidate}
+                                                            techs={&x.techs}
+                                                            url={x.url}
+                                                        />
+                                                    }
+                                                })
+                                                .collect()
                                         },
                                         AppRoute::Profile(slug) => if let Some(candidate) =
                                             candidates.get(&slug.as_str())
