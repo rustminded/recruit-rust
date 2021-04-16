@@ -2,7 +2,7 @@ use crate::profile::Profile;
 use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
-use crate::timezone_set::TimeZoneSet;
+use crate::utc_offset_set::UtcOffsetSet;
 use candidate::{Availability, Candidate};
 use chrono::Duration;
 use std::collections::HashMap;
@@ -36,7 +36,7 @@ pub struct CandidateInfo {
     candidate: &'static Candidate,
     techs: TechSet,
     url: &'static str,
-    tz_offsets: TimeZoneSet,
+    tz_offsets: UtcOffsetSet,
 }
 
 impl CandidateInfo {
@@ -70,7 +70,7 @@ impl CandidateInfo {
             techs.extend(s.iter().map(|x| Tech::from(*x).with_pub()));
         }
 
-        let tz_offsets = TimeZoneSet::from(candidate.timezones);
+        let tz_offsets = candidate.timezones.into();
 
         CandidateInfo {
             candidate,

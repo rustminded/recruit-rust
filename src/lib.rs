@@ -8,7 +8,7 @@ mod profile_list_item;
 mod profile_not_found;
 mod tech_tag;
 mod techs;
-mod timezone_set;
+mod utc_offset_set;
 
 pub use app::*;
 use wasm_bindgen::prelude::*;

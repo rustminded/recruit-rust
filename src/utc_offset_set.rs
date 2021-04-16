@@ -3,11 +3,11 @@ use chrono_tz::{OffsetComponents, Tz};
 use std::collections::HashSet;
 
 #[derive(Debug, Clone)]
-pub struct TimeZoneSet(HashSet<Duration>);
+pub struct UtcOffsetSet(HashSet<Duration>);
 
-impl TimeZoneSet {
-    pub fn new() -> TimeZoneSet {
-        TimeZoneSet(HashSet::new())
+impl UtcOffsetSet {
+    pub fn new() -> UtcOffsetSet {
+        UtcOffsetSet(HashSet::new())
     }
 
     pub fn iter(&self) -> std::collections::hash_set::Iter<Duration> {
@@ -15,15 +15,15 @@ impl TimeZoneSet {
     }
 }
 
-impl Eq for TimeZoneSet {}
+impl Eq for UtcOffsetSet {}
 
-impl PartialEq for TimeZoneSet {
+impl PartialEq for UtcOffsetSet {
     fn eq(&self, other: &Self) -> bool {
         self.0.eq(&other.0)
     }
 }
 
-impl Extend<Duration> for TimeZoneSet {
+impl Extend<Duration> for UtcOffsetSet {
     fn extend<I: IntoIterator<Item = Duration>>(&mut self, iter: I) {
         for elem in iter {
             if let Some(v) = self.0.take(&elem) {
@@ -35,15 +35,15 @@ impl Extend<Duration> for TimeZoneSet {
     }
 }
 
-impl std::iter::FromIterator<Duration> for TimeZoneSet {
+impl std::iter::FromIterator<Duration> for UtcOffsetSet {
     fn from_iter<I: IntoIterator<Item = Duration>>(iter: I) -> Self {
-        let mut timezone_set = TimeZoneSet::new();
+        let mut timezone_set = UtcOffsetSet::new();
         timezone_set.extend(iter);
         timezone_set
     }
 }
 
-impl From<&'static [Tz]> for TimeZoneSet {
+impl From<&'static [Tz]> for UtcOffsetSet {
     fn from(tz_vec: &'static [Tz]) -> Self {
         tz_vec
             .iter()
@@ -57,6 +57,6 @@ impl From<&'static [Tz]> for TimeZoneSet {
                 vec![utc_offset, utc_offset + dst_offset]
             })
             .flatten()
-            .collect::<TimeZoneSet>()
+            .collect::<UtcOffsetSet>()
     }
 }
