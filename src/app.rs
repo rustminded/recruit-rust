@@ -2,10 +2,11 @@ use crate::profile::Profile;
 use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
+use crate::timezone_set::TimezoneSet;
 use candidate::{Availability, Candidate};
 use chrono::{Duration, TimeZone, Utc};
 use chrono_tz::OffsetComponents;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
@@ -36,7 +37,7 @@ pub struct CandidateInfo {
     candidate: &'static Candidate,
     techs: TechSet,
     url: &'static str,
-    tz_offsets: HashSet<Duration>,
+    tz_offsets: TimezoneSet,
 }
 
 impl CandidateInfo {
@@ -83,7 +84,7 @@ impl CandidateInfo {
                 vec![utc_offset, utc_offset + dst_offset]
             })
             .flatten()
-            .collect::<HashSet<Duration>>();
+            .collect::<TimezoneSet>();
 
         CandidateInfo {
             candidate,
