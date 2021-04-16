@@ -74,12 +74,13 @@ impl CandidateInfo {
             .timezones
             .iter()
             .map(|tz| {
-                vec![
-                    tz.offset_from_utc_datetime(&Utc::now().naive_utc())
-                        .base_utc_offset(),
-                    tz.offset_from_utc_datetime(&Utc::now().naive_utc())
-                        .dst_offset(),
-                ]
+                let utc_offset = tz
+                    .offset_from_utc_datetime(&Utc::now().naive_utc())
+                    .base_utc_offset();
+                let dst_offset = tz
+                    .offset_from_utc_datetime(&Utc::now().naive_utc())
+                    .dst_offset();
+                vec![utc_offset, utc_offset + dst_offset]
             })
             .flatten()
             .collect::<HashSet<Duration>>();
@@ -292,8 +293,8 @@ impl Component for App {
                                                         .iter()
                                                         .any(|tz|
                                                             ((selected_timezone - tz_range)..=
-                                                            (selected_timezone + tz_range)).contains
-                                                            (tz)
+                                                            (selected_timezone + tz_range))
+                                                            .contains(tz)
                                                         )
                                                 )
                                                 .collect::<Vec<_>>();
@@ -312,9 +313,7 @@ impl Component for App {
                                                             (x.num_seconds() -
                                                             selected_timezone.num_seconds())
                                                             .abs()
-                                                        )
-                                                        .min()
-                                                        .expect("todo")
+                                                        ).min().expect("todo")
                                                     ));
                                                 sorted_vec.iter().map(|x| {
                                                     html! {
