@@ -13,6 +13,13 @@ impl UtcOffsetSet {
     pub fn iter(&self) -> std::collections::hash_set::Iter<Duration> {
         self.0.iter()
     }
+
+    pub fn gap(&self, tz: Duration) -> i64 {
+        self.iter()
+            .map(|x| (x.num_seconds() - tz.num_seconds()).abs())
+            .min()
+            .expect("todo")
+    }
 }
 
 impl Eq for UtcOffsetSet {}

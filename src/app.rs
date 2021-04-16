@@ -286,22 +286,9 @@ impl Component for App {
                                                 )
                                                 .collect::<Vec<_>>();
                                                 sorted_vec.sort_by(|a, b|
-                                                    (a.tz_offsets
-                                                        .iter()
-                                                        .map(|x|
-                                                            (x.num_seconds() -
-                                                            selected_timezone.num_seconds())
-                                                            .abs()
-                                                        ).min().expect("todo")
-                                                    ).cmp(
-                                                        &b.tz_offsets
-                                                        .iter()
-                                                        .map(|x|
-                                                            (x.num_seconds() -
-                                                            selected_timezone.num_seconds())
-                                                            .abs()
-                                                        ).min().expect("todo")
-                                                    ));
+                                                    (a.tz_offsets.gap(selected_timezone))
+                                                        .cmp(&b.tz_offsets.gap(selected_timezone))
+                                                );
                                                 sorted_vec.iter().map(|x| {
                                                     html! {
                                                         <ProfileListItem
