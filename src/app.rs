@@ -2,10 +2,9 @@ use crate::profile::Profile;
 use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
-use crate::timezone_set::TimezoneSet;
+use crate::timezone_set::TimeZoneSet;
 use candidate::{Availability, Candidate};
-use chrono::{Duration, TimeZone, Utc};
-use chrono_tz::OffsetComponents;
+use chrono::Duration;
 use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
@@ -27,7 +26,7 @@ pub struct App {
 pub enum Msg {
     AddEntry,
     UpdateSearch(String),
-    SelectTimezone(Duration),
+    SelectTimeZone(Duration),
     ToggleCollapse,
     Noop,
 }
@@ -37,7 +36,7 @@ pub struct CandidateInfo {
     candidate: &'static Candidate,
     techs: TechSet,
     url: &'static str,
-    tz_offsets: TimezoneSet,
+    tz_offsets: TimeZoneSet,
 }
 
 impl CandidateInfo {
@@ -71,20 +70,7 @@ impl CandidateInfo {
             techs.extend(s.iter().map(|x| Tech::from(*x).with_pub()));
         }
 
-        let tz_offsets = candidate
-            .timezones
-            .iter()
-            .map(|tz| {
-                let utc_offset = tz
-                    .offset_from_utc_datetime(&Utc::now().naive_utc())
-                    .base_utc_offset();
-                let dst_offset = tz
-                    .offset_from_utc_datetime(&Utc::now().naive_utc())
-                    .dst_offset();
-                vec![utc_offset, utc_offset + dst_offset]
-            })
-            .flatten()
-            .collect::<TimezoneSet>();
+        let tz_offsets = TimeZoneSet::from(candidate.timezones);
 
         CandidateInfo {
             candidate,
@@ -149,7 +135,7 @@ impl Component for App {
                 self.searched_value = val;
                 true
             }
-            Msg::SelectTimezone(tz) => {
+            Msg::SelectTimeZone(tz) => {
                 self.selected_timezone = tz;
                 true
             }
@@ -269,7 +255,7 @@ impl Component for App {
                                             _ => (Duration::hours(x), None),
                                         })
                                         .collect::<Vec<_>>()
-                                    onchange=self.link.callback(|x| Msg::SelectTimezone(x))
+                                    onchange=self.link.callback(|x| Msg::SelectTimeZone(x))
                                 />
                             </Collapse>
                         </div>
