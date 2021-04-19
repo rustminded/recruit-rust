@@ -14,11 +14,10 @@ impl UtcOffsetSet {
         self.0.iter()
     }
 
-    pub fn gap(&self, tz: Duration) -> i64 {
+    pub fn gap(&self, tz: Duration) -> Option<i64> {
         self.iter()
             .map(|x| (x.num_seconds() - tz.num_seconds()).abs())
             .min()
-            .expect("todo")
     }
 }
 

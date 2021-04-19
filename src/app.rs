@@ -289,6 +289,8 @@ impl Component for App {
                                                     (a.tz_offsets.gap(selected_timezone))
                                                         .cmp(&b.tz_offsets.gap(selected_timezone))
                                                 );
+                                                let debug = sorted_vec.iter().map(|x| x.tz_offsets.clone()).collect::<Vec<_>>();
+                                                crate::log!("{:?}", debug);
                                                 sorted_vec.iter().map(|x| {
                                                     html! {
                                                         <ProfileListItem
