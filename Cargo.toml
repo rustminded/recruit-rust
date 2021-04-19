@@ -23,6 +23,7 @@ asia_yozhgoor = { path = "examples/asia_yozhgoor" }
 australia_yozhgoor = { path = "examples/australia_yozhgoor" }
 n_america_yozhgoor = { path = "examples/n_america_yozhgoor" }
 s_america_yozhgoor = { path = "examples/s_america_yozhgoor" }
+relocate_yozhgoor = { path = "examples/relocate_yozhgoor" }
 candidate = { path = "candidate" }
 
 # The `console_error_panic_hook` crate provides better debugging of panics by

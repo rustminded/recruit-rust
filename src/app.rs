@@ -100,6 +100,8 @@ impl Component for App {
             CandidateInfo::from_candidate(n_america_yozhgoor::candidate(), "n-america-yozhgoor");
         let candidate_6_info =
             CandidateInfo::from_candidate(s_america_yozhgoor::candidate(), "s-america-yozhgoor");
+        let candidate_7_info =
+            CandidateInfo::from_candidate(relocate_yozhgoor::candidate(), "relocate-yozhgoor")
 
         candidates.insert(candidate_1_info.url, candidate_1_info);
         candidates.insert(candidate_2_info.url, candidate_2_info);

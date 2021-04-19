@@ -1,10 +1,9 @@
 use candidate::*;
-use chrono_tz::Asia;
 
 pub fn candidate() -> &'static Candidate {
     &Candidate {
-        slug: "AS yozhgoor",
-        name: "AS Yohan Boogaert",
+        slug: "RELOC yozhgoor",
+        name: "RELOC Yohan Boogaert",
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
@@ -16,7 +15,7 @@ pub fn candidate() -> &'static Candidate {
             ("StackOverflow", "https://stackoverflow.com/users/14050514"),
             ("Reddit", "https://www.reddit.com/user/yozhgoor"),
         ],
-        timezones: &[Asia::Hong_Kong],
+        timezones: &[],
         jobs: &[Job {
             company: "RustMinded",
             website: "https://github.com/rustminded",

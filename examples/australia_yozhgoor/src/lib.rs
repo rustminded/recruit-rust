@@ -16,7 +16,7 @@ pub fn candidate() -> &'static Candidate {
             ("StackOverflow", "https://stackoverflow.com/users/14050514"),
             ("Reddit", "https://www.reddit.com/user/yozhgoor"),
         ],
-        timezones: &[],
+        timezones: &[Australia::Melbourne],
         jobs: &[Job {
             company: "RustMinded",
             website: "https://github.com/rustminded",
