@@ -279,21 +279,20 @@ impl Component for App {
                                                     Availability::NotAvailable
                                                 )
                                                 .filter(|x|
-                                                    collapsed ||
+                                                    collapsed || x.tz_offsets.is_empty() ||
                                                         x.tz_offsets
                                                             .iter()
                                                             .any(|x|
                                                                 ((selected_timezone - tz_range)..=
                                                                     (selected_timezone + tz_range)
-                                                                ).contains(x)) ||
-                                                            x.tz_offsets.is_empty()
+                                                                ).contains(x))
                                                 )
                                                 .collect::<Vec<_>>();
                                                 sorted_vec.sort_by(|a, b|
                                                     a.tz_offsets.gap(selected_timezone)
-                                                        .cmp(
-                                                            &b.tz_offsets.gap(selected_timezone)
-                                                        )
+                                                    .cmp(
+                                                        &b.tz_offsets.gap(selected_timezone)
+                                                    )
                                                 );
                                                 sorted_vec.iter().map(|x| {
                                                     html! {
