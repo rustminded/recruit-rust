@@ -20,9 +20,8 @@ impl UtcOffsetSet {
             .min()
     }
 
-    pub fn within_range(&self, first: Duration, second: Duration) -> bool {
-        self.iter()
-            .any(|x| ((first - second)..=(first + second)).contains(x))
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
     }
 }
 

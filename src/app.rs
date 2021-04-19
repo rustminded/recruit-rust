@@ -279,8 +279,14 @@ impl Component for App {
                                                     Availability::NotAvailable
                                                 )
                                                 .filter(|x|
-                                                    collapsed || x.tz_offsets
-                                                        .within_range(selected_timezone, tz_range)
+                                                    collapsed ||
+                                                        x.tz_offsets
+                                                            .iter()
+                                                            .any(|x|
+                                                                ((selected_timezone - tz_range)..=
+                                                                    (selected_timezone + tz_range)
+                                                                ).contains(x)) ||
+                                                            x.tz_offsets.is_empty()
                                                 )
                                                 .collect::<Vec<_>>();
                                                 sorted_vec.sort_by(|a, b|
