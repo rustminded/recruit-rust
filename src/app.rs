@@ -276,9 +276,12 @@ impl Component for App {
                                                     Availability::NotAvailable
                                                 )
                                                 .filter(|x|
-                                                    collapsed || x.tz_offsets.within_range(
-                                                        (selected_timezone - tz_range)..=
-                                                            (selected_timezone + tz_range)
+                                                    collapsed || x.tz_offsets
+                                                        .iter()
+                                                        .any(|tz|
+                                                            ((selected_timezone - tz_range)..=
+                                                                (selected_timezone + tz_range)
+                                                            ).contains(tz)
                                                         )
                                                 )
                                                 .collect::<Vec<_>>();

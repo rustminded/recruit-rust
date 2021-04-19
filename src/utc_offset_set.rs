@@ -1,7 +1,6 @@
 use chrono::{Duration, TimeZone, Utc};
 use chrono_tz::{OffsetComponents, Tz};
 use std::collections::HashSet;
-use std::ops::RangeInclusive;
 
 #[derive(Debug, Clone)]
 pub struct UtcOffsetSet(HashSet<Duration>);
@@ -19,10 +18,6 @@ impl UtcOffsetSet {
         self.iter()
             .map(|x| (x.num_seconds() - tz.num_seconds()).abs())
             .min()
-    }
-
-    pub fn within_range(&self, range: RangeInclusive<Duration>) -> bool {
-        self.iter().any(|x| range.contains(x))
     }
 }
 
