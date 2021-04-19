@@ -2003,6 +2003,7 @@ dependencies = [
  "console_error_panic_hook",
  "itertools",
  "n_america_yozhgoor",
+ "relocate_yozhgoor",
  "s_america_yozhgoor",
  "structopt",
  "wasm-bindgen",
@@ -2056,6 +2057,14 @@ name = "regex-syntax"
 version = "0.6.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b5eb417147ba9860a96cfe72a0b93bf88fee1744b5636ec99ab20c1aa9376581"
+
+[[package]]
+name = "relocate_yozhgoor"
+version = "0.1.0"
+dependencies = [
+ "candidate",
+ "chrono-tz",
+]
 
 [[package]]
 name = "remove_dir_all"

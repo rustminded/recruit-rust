@@ -101,7 +101,7 @@ impl Component for App {
         let candidate_6_info =
             CandidateInfo::from_candidate(s_america_yozhgoor::candidate(), "s-america-yozhgoor");
         let candidate_7_info =
-            CandidateInfo::from_candidate(relocate_yozhgoor::candidate(), "relocate-yozhgoor")
+            CandidateInfo::from_candidate(relocate_yozhgoor::candidate(), "relocate-yozhgoor");
 
         candidates.insert(candidate_1_info.url, candidate_1_info);
         candidates.insert(candidate_2_info.url, candidate_2_info);
@@ -109,6 +109,7 @@ impl Component for App {
         candidates.insert(candidate_4_info.url, candidate_4_info);
         candidates.insert(candidate_5_info.url, candidate_5_info);
         candidates.insert(candidate_6_info.url, candidate_6_info);
+        candidates.insert(candidate_7_info.url, candidate_7_info);
         let candidates = Rc::new(candidates);
         let entries = Rc::new(entries);
 
@@ -279,12 +280,7 @@ impl Component for App {
                                                 )
                                                 .filter(|x|
                                                     collapsed || x.tz_offsets
-                                                        .iter()
-                                                        .any(|tz|
-                                                            ((selected_timezone - tz_range)..=
-                                                                (selected_timezone + tz_range)
-                                                            ).contains(tz)
-                                                        )
+                                                        .within_range(selected_timezone, tz_range)
                                                 )
                                                 .collect::<Vec<_>>();
                                                 sorted_vec.sort_by(|a, b|

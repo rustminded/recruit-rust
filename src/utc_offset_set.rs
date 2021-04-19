@@ -19,6 +19,11 @@ impl UtcOffsetSet {
             .map(|x| (x.num_seconds() - tz.num_seconds()).abs())
             .min()
     }
+
+    pub fn within_range(&self, first: Duration, second: Duration) -> bool {
+        self.iter()
+            .any(|x| ((first - second)..=(first + second)).contains(x))
+    }
 }
 
 impl Eq for UtcOffsetSet {}
