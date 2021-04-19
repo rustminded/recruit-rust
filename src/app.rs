@@ -276,21 +276,18 @@ impl Component for App {
                                                     Availability::NotAvailable
                                                 )
                                                 .filter(|x|
-                                                    collapsed || x.tz_offsets
-                                                        .iter()
-                                                        .any(|tz|
-                                                            ((selected_timezone - tz_range)..=
-                                                            (selected_timezone + tz_range))
-                                                            .contains(tz)
+                                                    collapsed || x.tz_offsets.within_range(
+                                                        (selected_timezone - tz_range)..=
+                                                            (selected_timezone + tz_range)
                                                         )
                                                 )
                                                 .collect::<Vec<_>>();
                                                 sorted_vec.sort_by(|a, b|
-                                                    (a.tz_offsets.gap(selected_timezone))
-                                                        .cmp(&b.tz_offsets.gap(selected_timezone))
+                                                    a.tz_offsets.gap(selected_timezone)
+                                                        .cmp(
+                                                            &b.tz_offsets.gap(selected_timezone)
+                                                        )
                                                 );
-                                                let debug = sorted_vec.iter().map(|x| x.tz_offsets.clone()).collect::<Vec<_>>();
-                                                crate::log!("{:?}", debug);
                                                 sorted_vec.iter().map(|x| {
                                                     html! {
                                                         <ProfileListItem
