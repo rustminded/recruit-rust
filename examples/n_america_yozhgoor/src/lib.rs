@@ -6,11 +6,7 @@ pub fn candidate() -> &'static Candidate {
         slug: "north america",
         name: "North America",
         pronouns: &["he", "him"],
-        birth_date: BirthDate {
-            day: 09,
-            month: 09,
-            year: 1981,
-        },
+        birth_date: ("1981-09-09", "%Y-%m-%d"),
         timezones: &[America::Los_Angeles],
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",

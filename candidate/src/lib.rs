@@ -5,7 +5,7 @@ pub struct Candidate {
     pub slug: &'static str,
     pub name: &'static str,
     pub pronouns: &'static [&'static str],
-    pub birth_date: BirthDate,
+    pub birth_date: (&'static str, &'static str),
     pub bio: &'static str,
     pub email: &'static str,
     pub asked_techs: &'static [&'static str],
@@ -48,11 +48,4 @@ pub enum Availability {
     FullTime,
     PartTime,
     NotAvailable,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct BirthDate {
-    pub day: u32,
-    pub month: u32,
-    pub year: i32,
 }
