@@ -1,9 +1,10 @@
 use crate::contributions::Contributions;
 use crate::jobs::Jobs;
 use candidate::{Availability, Candidate, ContractType};
+use chrono::{NaiveDate, Utc};
 use itertools::Itertools;
 use yew::prelude::*;
-use yewprint::{Card, Intent, Tag, Text, H1, H2};
+use yewprint::{Card, Intent, Tag, Text, H1, H2, H3};
 
 pub struct Profile {
     props: ProfileProps,
@@ -157,6 +158,17 @@ impl Component for Profile {
             })
             .collect::<Html>();
 
+        let age = Utc::now()
+            .naive_utc()
+            .date()
+            .signed_duration_since(NaiveDate::from_ymd(
+                self.props.candidate.birth_date.year,
+                self.props.candidate.birth_date.month,
+                self.props.candidate.birth_date.day,
+            ))
+            .num_weeks()
+            / 52;
+
         html! {
             <Card
                 class=classes!("candidate")
@@ -167,7 +179,7 @@ impl Component for Profile {
                     </div>
                     <Text class=classes!("candidate-bio")>{self.props.candidate.bio}</Text>
                 </div>
-                <div class="candidate-header-bottom">
+                <div class="candidate-header-center">
                     <div class="candidate-name">
                         <H1>{self.props.candidate.name}</H1>
                         <Text class=classes!("candidate-pronouns")>{"("}{pronouns}{")"}</Text>
@@ -176,9 +188,17 @@ impl Component for Profile {
                         {urls}
                     </div>
                 </div>
-                <Text>{contract}</Text>
-                <Text>{availability}</Text>
-                {certifications}
+                <div class="candidate-header-bottom">
+                    <div class="candidate-other">
+                        <Text>{format!("{} years old", age)}</Text>
+                        <Text>{contract}</Text>
+                        <Text>{availability}</Text>
+                    </div>
+                    <div class ="candidate-certifications">
+                        <H3>{"Certifications"}</H3>
+                        {certifications}
+                    </div>
+                </div>
                 <div class="candidate-jobs">
                     <H2>{"Jobs"}</H2>
                     {jobs_list}

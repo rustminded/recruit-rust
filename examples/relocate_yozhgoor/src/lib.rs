@@ -7,7 +7,7 @@ pub fn candidate() -> &'static Candidate {
         birth_date: BirthDate {
             day: 01,
             month: 01,
-            year: 1991,
+            year: 1971,
         },
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
@@ -73,6 +73,6 @@ pub fn candidate() -> &'static Candidate {
         ],
         contract_type: ContractType::Contractor,
         availability: Availability::PartTime,
-        certifications: &[],
+        certifications: &["Master in Computer Science", "Bachelor in Computer Science"],
     }
 }

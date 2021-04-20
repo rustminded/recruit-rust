@@ -68,7 +68,9 @@ impl Component for ProfileListItem {
             .iter()
             .map(|x| {
                 html! {
-                    <Text>{x}</Text>
+                    <Text class=classes!("profile-certifications")>
+                        {x}
+                    </Text>
                 }
             })
             .collect::<Html>();
@@ -81,10 +83,11 @@ impl Component for ProfileListItem {
                     </a>
                     <Text>{availability}</Text>
                     <Text>{contract}</Text>
-                    {certifications}
+
                 </div>
                 <div class="profile-list-footer">
                     {candidate_tech}
+                    {certifications}
                 </div>
             </Card>
         }

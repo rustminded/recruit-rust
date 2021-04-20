@@ -52,7 +52,7 @@ pub enum Availability {
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct BirthDate {
-    pub day: u8,
-    pub month: u8,
-    pub year: u16,
+    pub day: u32,
+    pub month: u32,
+    pub year: i32,
 }
