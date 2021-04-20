@@ -2,8 +2,13 @@ use candidate::*;
 
 pub fn candidate() -> &'static Candidate {
     &Candidate {
-        slug: "RELOC yozhgoor",
-        name: "RELOC Yohan Boogaert",
+        slug: "relocate",
+        name: "Relocate",
+        birth_date: &[BirthDate {
+            day: 01,
+            month: 01,
+            year: 1991,
+        }],
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",

@@ -4,9 +4,10 @@ use chrono_tz::Tz;
 pub struct Candidate {
     pub slug: &'static str,
     pub name: &'static str,
+    pub pronouns: &'static [&'static str],
+    pub birth_date: &'static [BirthDate],
     pub bio: &'static str,
     pub email: &'static str,
-    pub pronouns: &'static [&'static str],
     pub asked_techs: &'static [&'static str],
     pub urls: &'static [(&'static str, &'static str)],
     pub jobs: &'static [Job],
@@ -47,4 +48,11 @@ pub enum Availability {
     FullTime,
     PartTime,
     NotAvailable,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct BirthDate {
+    pub day: u8,
+    pub month: u8,
+    pub year: u16,
 }

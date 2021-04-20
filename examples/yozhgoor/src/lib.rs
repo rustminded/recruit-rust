@@ -5,10 +5,15 @@ pub fn candidate() -> &'static Candidate {
     &Candidate {
         slug: "yozhgoor",
         name: "Yohan Boogaert",
+        pronouns: &["he", "him"],
+        birth_date: &[BirthDate {
+            day: 06,
+            month: 12,
+            year: 1995,
+        }],
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
-        pronouns: &["he", "him"],
         asked_techs: &["Rust", "WASM", "PWA"],
         urls: &[
             ("GitHub", "https://github.com/Yozhgoor"),
