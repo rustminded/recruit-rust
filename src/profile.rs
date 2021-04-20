@@ -75,7 +75,6 @@ impl Component for Profile {
                 }
             })
             .collect::<Html>();
-
         let pronouns = self.props.candidate.pronouns.iter().join("/");
         let urls = self
             .props

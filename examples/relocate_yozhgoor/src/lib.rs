@@ -4,11 +4,11 @@ pub fn candidate() -> &'static Candidate {
     &Candidate {
         slug: "relocate",
         name: "Relocate",
-        birth_date: &[BirthDate {
+        birth_date: BirthDate {
             day: 01,
             month: 01,
             year: 1991,
-        }],
+        },
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",

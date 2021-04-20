@@ -5,11 +5,11 @@ pub fn candidate() -> &'static Candidate {
     &Candidate {
         slug: "south america",
         name: "South America",
-        birth_date: &[BirthDate {
+        birth_date: BirthDate {
             day: 27,
             month: 12,
             year: 1949,
-        }],
+        },
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
