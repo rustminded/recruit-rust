@@ -159,7 +159,7 @@ impl Component for Profile {
             .collect::<Html>();
         let age = {
             let (y, m, d) = self.props.candidate.birthday_ymd;
-            let birth_date = NaiveDate::from_ymd(*y, *m, *d);
+            let birth_date = NaiveDate::from_ymd(y, m, d);
             let now = Utc::now().naive_utc().date();
             let age = now.year() - birth_date.year();
 

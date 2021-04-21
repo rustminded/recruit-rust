@@ -5,7 +5,7 @@ pub struct Candidate {
     pub slug: &'static str,
     pub name: &'static str,
     pub pronouns: &'static [&'static str],
-    pub birthday_ymd: &'static (i32, u32, u32),
+    pub birthday_ymd: (i32, u32, u32),
     pub bio: &'static str,
     pub email: &'static str,
     pub asked_techs: &'static [&'static str],

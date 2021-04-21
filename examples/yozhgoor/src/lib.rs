@@ -6,7 +6,7 @@ pub fn candidate() -> &'static Candidate {
         slug: "yozhgoor",
         name: "Yohan Boogaert",
         pronouns: &["he", "him"],
-        birthday_ymd: &(1995, 12, 6),
+        birthday_ymd: (1995, 12, 6),
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
