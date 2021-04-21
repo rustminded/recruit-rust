@@ -1,7 +1,7 @@
 use crate::contributions::Contributions;
 use crate::jobs::Jobs;
 use candidate::{Availability, Candidate, ContractType};
-use chrono::{NaiveDate, Utc};
+use chrono::{Datelike, NaiveDate, Utc};
 use itertools::Itertools;
 use yew::prelude::*;
 use yewprint::{Card, Intent, Tag, Text, H1, H2, H3};
@@ -157,17 +157,18 @@ impl Component for Profile {
                 }
             })
             .collect::<Html>();
+        let age = {
+            let (y, m, d) = self.props.candidate.birthday_ymd;
+            let birth_date = NaiveDate::from_ymd(*y, *m, *d);
+            let now = Utc::now().naive_utc().date();
+            let age = now.year() - birth_date.year();
 
-        let age = Utc::now()
-            .naive_utc()
-            .date()
-            .signed_duration_since(NaiveDate::from_ymd(
-                self.props.candidate.birth_date.year,
-                self.props.candidate.birth_date.month,
-                self.props.candidate.birth_date.day,
-            ))
-            .num_weeks()
-            / 52;
+            if (now.month(), now.day()) < (birth_date.month(), birth_date.day()) {
+                age - 1
+            } else {
+                age
+            }
+        };
 
         html! {
             <Card
@@ -190,7 +191,7 @@ impl Component for Profile {
                 </div>
                 <div class="candidate-header-bottom">
                     <div class="candidate-other">
-                        <Text>{format!("{} years old", age)}</Text>
+                        <Text>{format!("{:?} years old", age)}</Text>
                         <Text>{contract}</Text>
                         <Text>{availability}</Text>
                     </div>
