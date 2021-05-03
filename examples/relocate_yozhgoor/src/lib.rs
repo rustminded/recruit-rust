@@ -2,12 +2,13 @@ use candidate::*;
 
 pub fn candidate() -> &'static Candidate {
     &Candidate {
-        slug: "RELOC yozhgoor",
-        name: "RELOC Yohan Boogaert",
+        slug: "relocate",
+        name: "Relocate",
+        pronouns: &["he", "him"],
+        birthday_ymd: (1971, 3, 12),
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
-        pronouns: &["he", "him"],
         asked_techs: &["Rust", "WASM", "PWA"],
         urls: &[
             ("GitHub", "https://github.com/Yozhgoor"),
@@ -68,6 +69,6 @@ pub fn candidate() -> &'static Candidate {
         ],
         contract_type: ContractType::Contractor,
         availability: Availability::PartTime,
-        certifications: &[],
+        certifications: &["Master in Computer Science", "Bachelor in Computer Science"],
     }
 }

@@ -4,9 +4,10 @@ use chrono_tz::Tz;
 pub struct Candidate {
     pub slug: &'static str,
     pub name: &'static str,
+    pub pronouns: &'static [&'static str],
+    pub birthday_ymd: (i32, u32, u32),
     pub bio: &'static str,
     pub email: &'static str,
-    pub pronouns: &'static [&'static str],
     pub asked_techs: &'static [&'static str],
     pub urls: &'static [(&'static str, &'static str)],
     pub jobs: &'static [Job],

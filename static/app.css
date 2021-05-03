@@ -45,6 +45,11 @@ body{
     justify-content: space-between;
 }
 
+.candidate-header-center{
+    display: flex;
+    justify-content: space-between;
+}
+
 .candidate-header-bottom{
     display: flex;
     justify-content: space-between;
@@ -113,6 +118,12 @@ body{
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+}
+
+.profile-certifications{
+    margin-top: 5px;
+    display:flex;
+    justify-content: flex-end;
 }
 
 .pro-tag{

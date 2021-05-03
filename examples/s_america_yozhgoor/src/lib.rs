@@ -3,12 +3,13 @@ use chrono_tz::America;
 
 pub fn candidate() -> &'static Candidate {
     &Candidate {
-        slug: "SA yozhgoor",
-        name: "SA Yohan Boogaert",
+        slug: "south america",
+        name: "South America",
+        pronouns: &["he", "him"],
+        birthday_ymd: (1949, 12, 27),
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
-        pronouns: &["he", "him"],
         asked_techs: &["Rust", "WASM", "PWA"],
         urls: &[
             ("GitHub", "https://github.com/Yozhgoor"),

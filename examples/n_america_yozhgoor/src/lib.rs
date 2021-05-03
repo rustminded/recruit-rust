@@ -3,12 +3,15 @@ use chrono_tz::America;
 
 pub fn candidate() -> &'static Candidate {
     &Candidate {
-        slug: "NA yozhgoor",
-        name: "NA Yohan Boogaert",
+        slug: "north america",
+        name: "North America",
+        pronouns: &["he", "him"],
+        birthday_ymd: (1981, 9, 9),
+        timezones: &[America::Los_Angeles],
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
-        pronouns: &["he", "him"],
+
         asked_techs: &["Rust", "WASM", "PWA"],
         urls: &[
             ("GitHub", "https://github.com/Yozhgoor"),
@@ -16,7 +19,6 @@ pub fn candidate() -> &'static Candidate {
             ("StackOverflow", "https://stackoverflow.com/users/14050514"),
             ("Reddit", "https://www.reddit.com/user/yozhgoor"),
         ],
-        timezones: &[America::Los_Angeles],
         jobs: &[Job {
             company: "RustMinded",
             website: "https://github.com/rustminded",
