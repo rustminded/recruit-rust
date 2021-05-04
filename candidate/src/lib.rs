@@ -9,6 +9,7 @@ pub struct Candidate {
     pub bio: &'static str,
     pub email: &'static str,
     pub asked_techs: &'static [&'static str],
+    pub not_wanted_techs: &'static [&'static str],
     pub urls: &'static [(&'static str, &'static str)],
     pub jobs: &'static [Job],
     pub contributions: &'static [Contribution],
