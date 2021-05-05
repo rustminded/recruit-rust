@@ -86,7 +86,6 @@ impl Component for App {
     type Properties = ();
 
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let searched_value = String::new();
         let selected_timezone = Duration::hours(0);
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
@@ -109,13 +108,19 @@ impl Component for App {
         candidates.insert(candidate_5_info.url, candidate_5_info);
         candidates.insert(candidate_6_info.url, candidate_6_info);
         candidates.insert(candidate_7_info.url, candidate_7_info);
+
+        for candidate in crate::mock::mock_candidates() {
+            let info = CandidateInfo::from_candidate(candidate, candidate.slug);
+            candidates.insert(info.url, info);
+        }
+
         let candidates = Rc::new(candidates);
 
         App {
             candidates,
             link,
             entries: Default::default(),
-            searched_value,
+            searched_value: Default::default(),
             selected_timezone,
             collapsed: true,
         }
