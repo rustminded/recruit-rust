@@ -86,7 +86,6 @@ impl Component for App {
     type Properties = ();
 
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let entries = TechSet::new();
         let searched_value = String::new();
         let selected_timezone = Duration::hours(0);
         let mut candidates = HashMap::new();
@@ -111,12 +110,11 @@ impl Component for App {
         candidates.insert(candidate_6_info.url, candidate_6_info);
         candidates.insert(candidate_7_info.url, candidate_7_info);
         let candidates = Rc::new(candidates);
-        let entries = Rc::new(entries);
 
         App {
             candidates,
             link,
-            entries,
+            entries: Default::default(),
             searched_value,
             selected_timezone,
             collapsed: true,

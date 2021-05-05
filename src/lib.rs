@@ -3,6 +3,7 @@
 mod app;
 mod contributions;
 mod jobs;
+mod mock;
 mod profile;
 mod profile_list_item;
 mod profile_not_found;
