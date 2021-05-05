@@ -8,11 +8,17 @@ pub struct Tech {
     pub is_professional: bool,
     pub is_public: bool,
     pub is_asked: bool,
+    pub is_not_wanted: bool,
 }
 
 impl Tech {
     pub fn with_asked(mut self) -> Self {
         self.is_asked = true;
+        self
+    }
+
+    pub fn with_not_wanted(mut self) -> Self {
+        self.is_not_wanted = true;
         self
     }
 
@@ -46,6 +52,7 @@ impl From<&'static str> for Tech {
         Tech {
             value: Cow::Borrowed(s),
             is_asked: false,
+            is_not_wanted: false,
             is_professional: false,
             is_public: false,
         }
@@ -57,6 +64,7 @@ impl From<String> for Tech {
         Tech {
             value: Cow::Owned(s),
             is_asked: false,
+            is_not_wanted: false,
             is_professional: false,
             is_public: false,
         }

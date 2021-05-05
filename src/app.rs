@@ -55,6 +55,13 @@ impl CandidateInfo {
                 .map(|x| Tech::from(*x).with_asked()),
         );
 
+        techs.extend(
+            candidate
+                .not_wanted_techs
+                .iter()
+                .map(|x| Tech::from(*x).with_not_wanted()),
+        );
+
         let jobs_techs = candidate.jobs.iter().map(|x| x.techs);
         for s in jobs_techs {
             techs.extend(s.iter().map(|x| Tech::from(*x).with_pro()));
