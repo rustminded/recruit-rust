@@ -31,6 +31,62 @@ impl Tech {
         self.is_public = true;
         self
     }
+
+    pub fn is_pro(&self) -> bool {
+        if self.is_professional == true {
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn is_pub(&self) -> bool {
+        if self.is_public == true {
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn is_ask(&self) -> bool {
+        if self.is_asked == true {
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn is_pub_and_ask(&self) -> bool {
+        if self.is_public == true && self.is_asked == true {
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn is_pro_and_ask(&self) -> bool {
+        if self.is_professional == true && self.is_asked == true {
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn is_pro_and_pub(&self) -> bool {
+        if self.is_professional == true && self.is_public == true {
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn is_all(&self) -> bool {
+        if self.is_professional == true && self.is_public == true && self.is_asked == true {
+            true
+        } else {
+            false
+        }
+    }
 }
 
 impl Hash for Tech {

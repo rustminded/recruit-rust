@@ -38,33 +38,30 @@ impl Component for TechTag {
         let tech = &self.props.tech;
         let value = tech.value.clone();
 
-        let (intent_value, icon_value) = if tech.is_professional == true
-            && tech.is_public == false
-            && tech.is_asked == false
-        {
-            (Some(Intent::Warning), None)
-        } else if tech.is_professional == false && tech.is_public == true && tech.is_asked == false
-        {
-            (Some(Intent::Success), None)
-        } else if tech.is_professional == false && tech.is_public == false && tech.is_asked == true
-        {
-            (Some(Intent::Primary), None)
-        } else if tech.is_professional == true && tech.is_public == false && tech.is_asked == true {
-            (Some(Intent::Primary), Some(IconName::Code))
-        } else if tech.is_professional == false && tech.is_public == true && tech.is_asked == true {
-            (Some(Intent::Primary), Some(IconName::People))
-        } else if tech.is_professional == true && tech.is_public == true && tech.is_asked == true {
-            (Some(Intent::Warning), Some(IconName::Star))
-        } else if tech.is_professional == true && tech.is_public == true && tech.is_asked == false {
-            (Some(Intent::Warning), Some(IconName::People))
-        } else {
-            (None, None)
+        let (intent_value, icon_value): (Option<Intent>, Option<IconName>) = {
+            if tech.is_all() {
+                (Some(Intent::Warning), Some(IconName::Star))
+            } else if tech.is_pro_and_pub() {
+                (Some(Intent::Warning), Some(IconName::People))
+            } else if tech.is_pro_and_ask() {
+                (Some(Intent::Primary), Some(IconName::Code))
+            } else if tech.is_pub_and_ask() {
+                (Some(Intent::Primary), Some(IconName::People))
+            } else if tech.is_pro() {
+                (Some(Intent::Warning), None)
+            } else if tech.is_pub() {
+                (Some(Intent::Success), None)
+            } else if tech.is_ask() {
+                (Some(Intent::Primary), None)
+            } else {
+                (None, None)
+            }
         };
 
         html! {
             <a href=format!("{}#{}", url, value)>
                 <Tag
-                    class=classes!("pro-tag")
+                    class=classes!("tech-tag")
                     interactive=true
                     intent=intent_value
                     right_icon=icon_value
