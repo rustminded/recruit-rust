@@ -39,19 +39,19 @@ impl Component for TechTag {
         let value = tech.value.clone();
 
         let (intent_value, icon_value): (Option<Intent>, Option<IconName>) = {
-            if tech.is_all() {
+            if tech.is_professional && tech.is_public && tech.is_asked {
                 (Some(Intent::Warning), Some(IconName::Star))
-            } else if tech.is_pro_and_pub() {
+            } else if tech.is_professional && tech.is_public {
                 (Some(Intent::Warning), Some(IconName::People))
-            } else if tech.is_pro_and_ask() {
+            } else if tech.is_professional && tech.is_asked {
                 (Some(Intent::Primary), Some(IconName::Code))
-            } else if tech.is_pub_and_ask() {
+            } else if tech.is_public && tech.is_asked {
                 (Some(Intent::Primary), Some(IconName::People))
-            } else if tech.is_pro() {
+            } else if tech.is_professional {
                 (Some(Intent::Warning), None)
-            } else if tech.is_pub() {
+            } else if tech.is_public {
                 (Some(Intent::Success), None)
-            } else if tech.is_ask() {
+            } else if tech.is_asked {
                 (Some(Intent::Primary), None)
             } else {
                 (None, None)
