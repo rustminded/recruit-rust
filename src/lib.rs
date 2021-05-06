@@ -3,6 +3,7 @@
 mod app;
 mod contributions;
 mod jobs;
+#[cfg(feature = "mock")]
 mod mock;
 mod profile;
 mod profile_list_item;

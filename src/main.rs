@@ -18,7 +18,7 @@ fn pre_build(_args: &DefaultBuildArgs, profile: BuildProfile, command: &mut Comm
             command.args(&["--features", "wee_alloc"]);
         }
         BuildProfile::Dev => {
-            command.args(&["--features", "console_error_panic_hook"]);
+            command.args(&["--features", "console_error_panic_hook,mock"]);
         }
     }
 

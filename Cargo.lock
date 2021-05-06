@@ -1425,6 +1425,15 @@ dependencies = [
 
 [[package]]
 name = "itertools"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "284f18f85651fe11e8a991b2adb42cb078325c996ed026d994719efcfca1d54b"
+dependencies = [
+ "either",
+]
+
+[[package]]
+name = "itertools"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "37d572918e350e82412fe766d24b15e6682fb2ed2bbe018280caa810397cb319"
@@ -1513,6 +1522,16 @@ dependencies = [
  "libc",
  "pkg-config",
  "vcpkg",
+]
+
+[[package]]
+name = "lipsum"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "27bdfcb80998b71ab4141f3725b990c923bccebbba596d053a66c083c04f8b9c"
+dependencies = [
+ "rand 0.7.3",
+ "rand_chacha 0.2.2",
 ]
 
 [[package]]
@@ -1620,6 +1639,18 @@ dependencies = [
  "net2",
  "winapi 0.2.8",
  "ws2_32-sys",
+]
+
+[[package]]
+name = "mock-proc-macro"
+version = "0.1.0"
+dependencies = [
+ "heck",
+ "lipsum",
+ "petname",
+ "proc-macro2",
+ "quote",
+ "rand 0.8.3",
 ]
 
 [[package]]
@@ -1774,6 +1805,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "10f4872ae94d7b90ae48754df22fd42ad52ce740b8f370b03da4835417403e53"
 dependencies = [
  "ucd-trie",
+]
+
+[[package]]
+name = "petname"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d9ed8e1c7b7cdd47819f76bbec141b4d4b59bb8ffd26c372cc236c90cd90becc"
+dependencies = [
+ "clap",
+ "itertools 0.9.0",
+ "rand 0.8.3",
 ]
 
 [[package]]
@@ -2001,7 +2043,8 @@ dependencies = [
  "chrono",
  "chrono-tz",
  "console_error_panic_hook",
- "itertools",
+ "itertools 0.10.0",
+ "mock-proc-macro",
  "n_america_yozhgoor",
  "relocate_yozhgoor",
  "s_america_yozhgoor",
