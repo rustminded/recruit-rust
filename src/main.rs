@@ -34,21 +34,17 @@ impl BuildArgs for BuildCommand {
 }
 
 fn pre_build(args: &BuildCommand, profile: BuildProfile, command: &mut Command) -> Result<()> {
-    let features = args
-        .features
-        .as_ref()
-        .map(|x| format!(",{}", x))
-        .unwrap_or_default();
-
     match profile {
         BuildProfile::Profiling | BuildProfile::Release => {
-            command.arg("--features");
-            command.arg(format!("wee_alloc{}", features));
+            command.args(&["--features", "wee_alloc"]);
         }
         BuildProfile::Dev => {
-            command.arg("--features");
-            command.arg(format!("console_error_panic_hook,mock{}", features));
+            command.args(&["--features", "console_error_panic_hook,mock"]);
         }
+    }
+
+    if let Some(features) = args.features.as_ref() {
+        command.args(&["--features", features]);
     }
 
     Ok(())
