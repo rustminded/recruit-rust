@@ -225,6 +225,8 @@ fn make_one_candidate(
 
     let asked_techs = choose_multiple(rng, 5..=10, TECHS, |x| quote! { #x, });
 
+    let not_wanted_techs = choose_multiple(rng, 1..=5, TECHS, |x| quote! { #x, });
+
     let all_urls = vec![
         ("GitHub", format!("https://github.com/{}", slug)),
         ("Twitter", format!("https://twitter.com/{}", slug)),
@@ -300,6 +302,7 @@ fn make_one_candidate(
             bio: #bio,
             email: #email,
             asked_techs: &[#asked_techs],
+            not_wanted_techs: &[#not_wanted_techs]
             urls: &[#urls],
             jobs: &[#jobs],
             contributions: &[#contributions],
