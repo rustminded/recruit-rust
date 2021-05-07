@@ -302,7 +302,7 @@ fn make_one_candidate(
             bio: #bio,
             email: #email,
             asked_techs: &[#asked_techs],
-            not_wanted_techs: &[#not_wanted_techs]
+            not_wanted_techs: &[#not_wanted_techs],
             urls: &[#urls],
             jobs: &[#jobs],
             contributions: &[#contributions],

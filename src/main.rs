@@ -7,20 +7,22 @@ use structopt::StructOpt;
 use wasm_run::prelude::*;
 
 #[wasm_run::main(
+    "app",
     pre_build = pre_build,
     serve = serve,
     build_args = BuildCommand,
+    serve_args = ServeCommand,
 )]
 #[derive(StructOpt, Debug)]
 enum Cli {}
 
 #[derive(StructOpt, Debug)]
-struct BuildCommand {
+pub struct BuildCommand {
     #[structopt(flatten)]
-    base: DefaultBuildArgs,
+    pub base: DefaultBuildArgs,
 
     #[structopt(long)]
-    features: Option<String>,
+    pub features: Option<String>,
 }
 
 impl BuildArgs for BuildCommand {
@@ -30,6 +32,39 @@ impl BuildArgs for BuildCommand {
 
     fn profiling(&self) -> bool {
         self.base.profiling()
+    }
+}
+
+#[derive(StructOpt, Debug)]
+pub struct ServeCommand {
+    #[structopt(long)]
+    pub log: bool,
+
+    #[structopt(long, short = "h", default_value = "127.0.0.1")]
+    pub ip: String,
+
+    #[structopt(long, short = "p", default_value = "3000")]
+    pub port: u16,
+
+    #[structopt(flatten)]
+    pub build_args: BuildCommand,
+}
+
+impl ServeArgs for ServeCommand {
+    fn log(&self) -> bool {
+        self.log
+    }
+
+    fn ip(&self) -> &str {
+        &self.ip
+    }
+
+    fn port(&self) -> u16 {
+        self.port
+    }
+
+    fn build_args(&self) -> &dyn BuildArgs {
+        &self.build_args
     }
 }
 
@@ -50,7 +85,7 @@ fn pre_build(args: &BuildCommand, profile: BuildProfile, command: &mut Command) 
     Ok(())
 }
 
-fn serve(args: &DefaultServeArgs, server: &mut Server<()>) -> Result<()> {
+fn serve(args: &ServeCommand, server: &mut Server<()>) -> Result<()> {
     use tide::{Body, Request, Response};
 
     let build_path = args.build_args().build_path().to_owned();
