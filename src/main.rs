@@ -10,7 +10,6 @@ use wasm_run::prelude::*;
     pre_build = pre_build,
     serve = serve,
     build_args = BuildCommand,
-    serve_args = DefaultServeArgs,
 )]
 #[derive(StructOpt, Debug)]
 enum Cli {}
