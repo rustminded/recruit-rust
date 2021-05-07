@@ -168,7 +168,7 @@ pub fn make_mock_candidates(_item: proc_macro::TokenStream) -> proc_macro::Token
 
     let availabilities = &[quote! { Availability::PartTime }];
 
-    let candidates: TokenStream = (0..100)
+    let candidates: TokenStream = (0..50)
         .map(|_| {
             let candidate = make_one_candidate(
                 rng,
