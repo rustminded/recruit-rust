@@ -85,6 +85,14 @@ impl Component for Profile {
                 html! {
                     <Tag
                         class=classes!("not-wanted-tag")
+                        intent={
+                            self
+                            .props
+                            .highlighted_tech
+                            .as_ref()
+                            .filter(|tech| &tech.as_str() == x)
+                            .map(|_| Intent::Danger)
+                        }
                         interactive=true
                         onclick=self.link.callback(move |_| Msg::Highlight(x.to_string()))
                     >
