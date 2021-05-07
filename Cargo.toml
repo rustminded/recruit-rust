@@ -14,8 +14,23 @@ path = "app/src/lib.rs"
 mock = ["mock-proc-macro"]
 
 [dependencies]
-mock-proc-macro = { path = "mock-proc-macro", optional = true }
 app = { path = "app" }
+wasm-bindgen = "0.2"
+web-sys = "0.3"
+yew = { git = "https://github.com/yewstack/yew.git", rev = "db3170f629f" }
+yew-router = { git = "https://github.com/yewstack/yew.git", rev = "db3170f629f" }
+yewprint = { git = "https://github.com/cecton/yewprint.git", branch = "main" }
+itertools = "0.10.0"
+chrono = { version = "0.4", features = ["wasmbind"] }
+chrono-tz = "0.5"
+yozhgoor = { path = "examples/yozhgoor" }
+asia_yozhgoor = { path = "examples/asia_yozhgoor" }
+australia_yozhgoor = { path = "examples/australia_yozhgoor" }
+n_america_yozhgoor = { path = "examples/n_america_yozhgoor" }
+s_america_yozhgoor = { path = "examples/s_america_yozhgoor" }
+relocate_yozhgoor = { path = "examples/relocate_yozhgoor" }
+candidate = { path = "candidate" }
+mock-proc-macro = { path = "mock-proc-macro", optional = true }
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires

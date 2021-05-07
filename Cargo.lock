@@ -106,6 +106,7 @@ dependencies = [
  "chrono",
  "chrono-tz",
  "itertools 0.10.0",
+ "mock-proc-macro",
  "n_america_yozhgoor",
  "relocate_yozhgoor",
  "s_america_yozhgoor",
@@ -2059,12 +2060,27 @@ name = "recruit-rust"
 version = "0.1.0"
 dependencies = [
  "app",
+ "asia_yozhgoor",
+ "australia_yozhgoor",
+ "candidate",
+ "chrono",
+ "chrono-tz",
  "console_error_panic_hook",
+ "itertools 0.10.0",
  "mock-proc-macro",
+ "n_america_yozhgoor",
+ "relocate_yozhgoor",
+ "s_america_yozhgoor",
  "structopt",
+ "wasm-bindgen",
  "wasm-bindgen-test",
  "wasm-run",
+ "web-sys",
  "wee_alloc",
+ "yew",
+ "yew-router",
+ "yewprint",
+ "yozhgoor",
 ]
 
 [[package]]

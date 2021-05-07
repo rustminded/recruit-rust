@@ -4,6 +4,9 @@ version = "0.1.0"
 authors = ["Yozhgoor <yozhgoor@outlook.com>"]
 edition = "2018"
 
+[features]
+mock = ["mock-proc-macro"]
+
 [dependencies]
 wasm-bindgen = "0.2"
 web-sys = "0.3"
@@ -20,3 +23,4 @@ n_america_yozhgoor = { path = "../examples/n_america_yozhgoor" }
 s_america_yozhgoor = { path = "../examples/s_america_yozhgoor" }
 relocate_yozhgoor = { path = "../examples/relocate_yozhgoor" }
 candidate = { path = "../candidate" }
+mock-proc-macro = { path = "../mock-proc-macro", optional = true }
