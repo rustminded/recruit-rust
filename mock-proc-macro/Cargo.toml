@@ -1,0 +1,16 @@
+[package]
+name = "mock-proc-macro"
+version = "0.1.0"
+authors = ["Cecile Tonglet <cecile.tonglet@cecton.com>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+heck = "0.3"
+lipsum = "0.7"
+petname = "1"
+proc-macro2 = "1"
+quote = "1"
+rand = "0.8"

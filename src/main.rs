@@ -1,6 +1,7 @@
 #![allow(clippy::unnecessary_wraps)]
 
 use anyhow::Result;
+use std::path::PathBuf;
 use std::process::Command;
 use structopt::StructOpt;
 use wasm_run::prelude::*;
@@ -8,18 +9,42 @@ use wasm_run::prelude::*;
 #[wasm_run::main(
     pre_build = pre_build,
     serve = serve,
+    build_args = BuildCommand,
 )]
 #[derive(StructOpt, Debug)]
 enum Cli {}
 
-fn pre_build(_args: &DefaultBuildArgs, profile: BuildProfile, command: &mut Command) -> Result<()> {
+#[derive(StructOpt, Debug)]
+struct BuildCommand {
+    #[structopt(flatten)]
+    base: DefaultBuildArgs,
+
+    #[structopt(long)]
+    features: Option<String>,
+}
+
+impl BuildArgs for BuildCommand {
+    fn build_path(&self) -> &PathBuf {
+        self.base.build_path()
+    }
+
+    fn profiling(&self) -> bool {
+        self.base.profiling()
+    }
+}
+
+fn pre_build(args: &BuildCommand, profile: BuildProfile, command: &mut Command) -> Result<()> {
     match profile {
         BuildProfile::Profiling | BuildProfile::Release => {
             command.args(&["--features", "wee_alloc"]);
         }
         BuildProfile::Dev => {
-            command.args(&["--features", "console_error_panic_hook"]);
+            command.args(&["--features", "console_error_panic_hook,mock"]);
         }
+    }
+
+    if let Some(features) = args.features.as_ref() {
+        command.args(&["--features", features]);
     }
 
     Ok(())

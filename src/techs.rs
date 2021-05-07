@@ -122,3 +122,9 @@ impl std::iter::FromIterator<Tech> for TechSet {
         tech_set
     }
 }
+
+impl Default for TechSet {
+    fn default() -> Self {
+        Self::new()
+    }
+}

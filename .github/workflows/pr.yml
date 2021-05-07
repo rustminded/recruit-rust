@@ -22,8 +22,12 @@ jobs:
           command: test
           args: --workspace
 
-      - name: Build (Release)
-        run: "cargo run -- build"
+      - name: cargo build
+        uses: actions-rs/cargo@v1
+        with:
+          command: run
+          args: -- build --features mock
+
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.1.13
         with:
