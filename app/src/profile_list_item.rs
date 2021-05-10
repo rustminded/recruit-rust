@@ -53,7 +53,7 @@ impl Component for ProfileListItem {
         let contract = match self.props.candidate.contract_type {
             ContractType::Contractor => "Contractor",
             ContractType::Employee => "Employee",
-            ContractType::Relocate => "Relocate",
+            ContractType::Relocate => "Employee",
             ContractType::Any => "Any",
         };
 

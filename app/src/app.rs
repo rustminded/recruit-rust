@@ -3,13 +3,13 @@ use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use crate::utc_offset_set::UtcOffsetSet;
-use candidate::{Availability, Candidate, ContractType};
+use candidate::{Availability, Candidate};
 use chrono::Duration;
 use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
-use yew_router::{router::Router, Switch};
-use yewprint::{Button, Collapse, HtmlSelect, IconName, InputGroup, Slider, Tag};
+use yew_router::{router::Router, Switch as RouteurSwitch};
+use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Switch, Tag};
 use yewprint::{Text, H1, H2, H3};
 
 pub const TZ_RANGE: i64 = 2;
@@ -20,7 +20,7 @@ pub struct App {
     entries: Rc<TechSet>,
     searched_value: String,
     selected_timezone: Duration,
-    selected_contract_type: ContractType,
+    selected_contract_type: ContractSwitch,
     collapsed: bool,
 }
 
@@ -28,7 +28,8 @@ pub enum Msg {
     AddEntry,
     UpdateSearch(String),
     SelectTimeZone(Duration),
-    SelectContractType(ContractType),
+    ToggleEmployee,
+    ToggleContractor,
     ToggleCollapse,
     Noop,
 }
@@ -90,12 +91,22 @@ impl CandidateInfo {
     }
 }
 
+#[derive(Debug, Clone)]
+pub struct ContractSwitch {
+    contractor: bool,
+    employee: bool,
+}
+
 impl Component for App {
     type Message = Msg;
     type Properties = ();
 
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
         let selected_timezone = Duration::hours(0);
+        let selected_contract_type = ContractSwitch {
+            contractor: false,
+            employee: false,
+        };
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
         candidates.insert(candidate_1_info.url, candidate_1_info);
@@ -114,7 +125,7 @@ impl Component for App {
             entries: Default::default(),
             searched_value: Default::default(),
             selected_timezone,
-            selected_contract_type: ContractType::Any,
+            selected_contract_type,
             collapsed: true,
         }
     }
@@ -134,16 +145,20 @@ impl Component for App {
                 self.searched_value = val;
                 true
             }
+            Msg::ToggleCollapse => {
+                self.collapsed ^= true;
+                true
+            }
             Msg::SelectTimeZone(tz) => {
                 self.selected_timezone = tz;
                 true
             }
-            Msg::SelectContractType(contract_type) => {
-                self.selected_contract_type = contract_type;
+            Msg::ToggleContractor => {
+                self.selected_contract_type.contractor = true;
                 true
             }
-            Msg::ToggleCollapse => {
-                self.collapsed ^= true;
+            Msg::ToggleEmployee => {
+                self.selected_contract_type.employee = true;
                 true
             }
             Msg::Noop => false,
@@ -158,7 +173,6 @@ impl Component for App {
         let candidates = Rc::clone(&self.candidates);
         let entries = Rc::clone(&self.entries);
         let selected_timezone = self.selected_timezone.clone();
-        let selected_contract_type = self.selected_contract_type.clone();
         let tz_range = Duration::hours(TZ_RANGE);
         let collapsed = self.collapsed.clone();
 
@@ -261,19 +275,14 @@ impl Component for App {
                                         .collect::<Vec<_>>()
                                     onchange=self.link.callback(|x| Msg::SelectTimeZone(x))
                                 />
-                                // This will change to a checkbox group to allow the recruiter
-                                // to select multiple contract type.
-                                // See the yewprint checkbox:
-                                // https://github.com/cecton/yewprint/issues/78
-                                <HtmlSelect<ContractType>
-                                    options={vec![
-                                        (ContractType::Any, "Any".to_string()),
-                                        (ContractType::Contractor, "Contractor".to_string()),
-                                        (ContractType::Employee, "Employee".to_string()),
-                                        (ContractType::Relocate, "Relocate".to_string()),
-                                    ]}
-                                    value=Some(selected_contract_type.clone())
-                                    onchange=self.link.callback(|x| Msg::SelectContractType(x))
+                                <Switch
+                                    label=html!("Contractor")
+                                    onclick=self.link.callback(|_| Msg::ToggleContractor)
+                                />
+                                <Switch
+                                    label=html!("Employee")
+                                    onclick=self.link.callback(|_| Msg::ToggleEmployee)
+
                                 />
                             </Collapse>
                         </div>
@@ -292,16 +301,6 @@ impl Component for App {
                                                 .filter(|x|
                                                     x.candidate.availability !=
                                                     Availability::NotAvailable
-                                                )
-                                                .filter(|x|
-                                                    collapsed ||
-                                                        if x.candidate.contract_type ==
-                                                            ContractType::Any {
-                                                                true
-                                                            } else {
-                                                                x.candidate.contract_type ==
-                                                                    selected_contract_type
-                                                            }
                                                 )
                                                 .filter(|x|
                                                     collapsed || x.tz_offsets.is_empty() ||
@@ -368,7 +367,7 @@ impl Component for App {
     }
 }
 
-#[derive(Switch, Debug, Clone)]
+#[derive(RouteurSwitch, Debug, Clone)]
 pub enum AppRoute {
     #[to = "/{slug}#{hl_tech}"]
     ProfileHl(String, String),
