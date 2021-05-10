@@ -1,5 +1,3 @@
-#![cfg(target_arch = "wasm32")]
-
 mod app;
 mod contributions;
 mod jobs;
@@ -12,7 +10,7 @@ mod tech_tag;
 mod techs;
 mod utc_offset_set;
 
-pub use app::*;
+pub use crate::app::*;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global

@@ -11,8 +11,8 @@ pub fn candidate() -> &'static Candidate {
         bio: "Former ambulance driver, \
             I'm learning programming with Rust",
         email: "yozhgoor@outlook.com",
-
         asked_techs: &["Rust", "WASM", "PWA"],
+        not_wanted_techs: &["Blockchain"],
         urls: &[
             ("GitHub", "https://github.com/Yozhgoor"),
             ("Twitter", "https://twitter.com/yozhgoor"),

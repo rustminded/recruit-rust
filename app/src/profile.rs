@@ -53,7 +53,7 @@ impl Component for Profile {
     }
 
     fn view(&self) -> Html {
-        let tags = self
+        let asked_tags = self
             .props
             .candidate
             .asked_techs
@@ -69,6 +69,31 @@ impl Component for Profile {
                                 _ => Intent::Primary,
                             }
                         }
+                        onclick=self.link.callback(move |_| Msg::Highlight(x.to_string()))
+                    >
+                        {x}
+                    </Tag>
+                }
+            })
+            .collect::<Html>();
+        let not_wanted_tags = self
+            .props
+            .candidate
+            .not_wanted_techs
+            .iter()
+            .map(|x| {
+                html! {
+                    <Tag
+                        class=classes!("not-wanted-tag")
+                        intent={
+                            self
+                            .props
+                            .highlighted_tech
+                            .as_ref()
+                            .filter(|tech| &tech.as_str() == x)
+                            .map(|_| Intent::Danger)
+                        }
+                        interactive=true
                         onclick=self.link.callback(move |_| Msg::Highlight(x.to_string()))
                     >
                         {x}
@@ -176,7 +201,8 @@ impl Component for Profile {
             >
                 <div class="candidate-header-top">
                     <div class="candidate-tag">
-                        {tags}
+                        {asked_tags}
+                        {not_wanted_tags}
                     </div>
                     <Text class=classes!("candidate-bio")>{self.props.candidate.bio}</Text>
                 </div>
