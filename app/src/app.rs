@@ -261,6 +261,10 @@ impl Component for App {
                                         .collect::<Vec<_>>()
                                     onchange=self.link.callback(|x| Msg::SelectTimeZone(x))
                                 />
+                                // This will change to a checkbox group to allow the recruiter
+                                // to select multiple contract type.
+                                // See the yewprint checkbox:
+                                // https://github.com/cecton/yewprint/issues/78
                                 <HtmlSelect<ContractType>
                                     options={vec![
                                         (ContractType::Any, "Any".to_string()),
@@ -290,8 +294,14 @@ impl Component for App {
                                                     Availability::NotAvailable
                                                 )
                                                 .filter(|x|
-                                                    collapsed || x.candidate.contract_type ==
-                                                        selected_contract_type
+                                                    collapsed ||
+                                                        if x.candidate.contract_type ==
+                                                            ContractType::Any {
+                                                                true
+                                                            } else {
+                                                                x.candidate.contract_type ==
+                                                                    selected_contract_type
+                                                            }
                                                 )
                                                 .filter(|x|
                                                     collapsed || x.tz_offsets.is_empty() ||

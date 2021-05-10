@@ -164,7 +164,7 @@ pub fn make_mock_candidates(_item: proc_macro::TokenStream) -> proc_macro::Token
         })
         .collect();
 
-    let contract_types = &[quote! { ContractType::Contractor }];
+    let contract_types = &[quote! { ContractType::Any }];
 
     let availabilities = &[quote! { Availability::PartTime }];
 
