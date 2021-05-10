@@ -69,7 +69,7 @@ pub fn candidate() -> &'static Candidate {
                     as an introduction to Rust",
             },
         ],
-        contract_type: ContractType::Contractor,
+        contract_type: ContractType::Employee,
         availability: Availability::PartTime,
         certifications: &[],
     }

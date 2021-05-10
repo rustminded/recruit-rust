@@ -3,7 +3,7 @@ use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use crate::utc_offset_set::UtcOffsetSet;
-use candidate::{Availability, Candidate};
+use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -20,7 +20,8 @@ pub struct App {
     entries: Rc<TechSet>,
     searched_value: String,
     selected_timezone: Duration,
-    selected_contract_type: ContractSwitch,
+    show_contractor: bool,
+    show_employee: bool,
     collapsed: bool,
 }
 
@@ -91,22 +92,12 @@ impl CandidateInfo {
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct ContractSwitch {
-    contractor: bool,
-    employee: bool,
-}
-
 impl Component for App {
     type Message = Msg;
     type Properties = ();
 
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
         let selected_timezone = Duration::hours(0);
-        let selected_contract_type = ContractSwitch {
-            contractor: false,
-            employee: false,
-        };
         let mut candidates = HashMap::new();
         let candidate_1_info = CandidateInfo::from_candidate(yozhgoor::candidate(), "yozhgoor");
         candidates.insert(candidate_1_info.url, candidate_1_info);
@@ -125,7 +116,8 @@ impl Component for App {
             entries: Default::default(),
             searched_value: Default::default(),
             selected_timezone,
-            selected_contract_type,
+            show_contractor: false,
+            show_employee: false,
             collapsed: true,
         }
     }
@@ -154,11 +146,11 @@ impl Component for App {
                 true
             }
             Msg::ToggleContractor => {
-                self.selected_contract_type.contractor = true;
+                self.show_contractor ^= true;
                 true
             }
             Msg::ToggleEmployee => {
-                self.selected_contract_type.employee = true;
+                self.show_employee ^= true;
                 true
             }
             Msg::Noop => false,
@@ -175,6 +167,8 @@ impl Component for App {
         let selected_timezone = self.selected_timezone.clone();
         let tz_range = Duration::hours(TZ_RANGE);
         let collapsed = self.collapsed.clone();
+        let show_contractor = self.show_contractor.clone();
+        let show_employee = self.show_employee.clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -278,11 +272,12 @@ impl Component for App {
                                 <Switch
                                     label=html!("Contractor")
                                     onclick=self.link.callback(|_| Msg::ToggleContractor)
+                                    checked=show_contractor
                                 />
                                 <Switch
                                     label=html!("Employee")
                                     onclick=self.link.callback(|_| Msg::ToggleEmployee)
-
+                                    checked=show_employee
                                 />
                             </Collapse>
                         </div>
@@ -301,6 +296,23 @@ impl Component for App {
                                                 .filter(|x|
                                                     x.candidate.availability !=
                                                     Availability::NotAvailable
+                                                )
+                                                .filter(|x|
+                                                    collapsed || match x.candidate.contract_type {
+                                                        ContractType::Employee => {
+                                                            show_employee
+                                                        }
+                                                        ContractType::Relocate => {
+                                                            show_employee
+                                                        }
+                                                        ContractType::Contractor => {
+                                                            show_contractor
+                                                        }
+                                                        ContractType::Any => {
+                                                            show_employee &&
+                                                                show_contractor
+                                                        }
+                                                    }
                                                 )
                                                 .filter(|x|
                                                     collapsed || x.tz_offsets.is_empty() ||
