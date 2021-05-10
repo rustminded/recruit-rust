@@ -3,13 +3,13 @@ use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use crate::utc_offset_set::UtcOffsetSet;
-use candidate::{Availability, Candidate};
+use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::{router::Router, Switch};
-use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Tag};
+use yewprint::{Button, Collapse, HtmlSelect, IconName, InputGroup, Slider, Tag};
 use yewprint::{Text, H1, H2, H3};
 
 pub const TZ_RANGE: i64 = 2;
@@ -20,6 +20,7 @@ pub struct App {
     entries: Rc<TechSet>,
     searched_value: String,
     selected_timezone: Duration,
+    selected_contract_type: ContractType,
     collapsed: bool,
 }
 
@@ -27,6 +28,7 @@ pub enum Msg {
     AddEntry,
     UpdateSearch(String),
     SelectTimeZone(Duration),
+    SelectContractType(ContractType),
     ToggleCollapse,
     Noop,
 }
@@ -112,6 +114,7 @@ impl Component for App {
             entries: Default::default(),
             searched_value: Default::default(),
             selected_timezone,
+            selected_contract_type: ContractType::Any,
             collapsed: true,
         }
     }
@@ -135,6 +138,10 @@ impl Component for App {
                 self.selected_timezone = tz;
                 true
             }
+            Msg::SelectContractType(contract_type) => {
+                self.selected_contract_type = contract_type;
+                true
+            }
             Msg::ToggleCollapse => {
                 self.collapsed ^= true;
                 true
@@ -151,6 +158,7 @@ impl Component for App {
         let candidates = Rc::clone(&self.candidates);
         let entries = Rc::clone(&self.entries);
         let selected_timezone = self.selected_timezone.clone();
+        let selected_contract_type = self.selected_contract_type.clone();
         let tz_range = Duration::hours(TZ_RANGE);
         let collapsed = self.collapsed.clone();
 
@@ -253,6 +261,16 @@ impl Component for App {
                                         .collect::<Vec<_>>()
                                     onchange=self.link.callback(|x| Msg::SelectTimeZone(x))
                                 />
+                                <HtmlSelect<ContractType>
+                                    options={vec![
+                                        (ContractType::Any, "Any".to_string()),
+                                        (ContractType::Contractor, "Contractor".to_string()),
+                                        (ContractType::Employee, "Employee".to_string()),
+                                        (ContractType::Relocate, "Relocate".to_string()),
+                                    ]}
+                                    value=Some(selected_contract_type.clone())
+                                    onchange=self.link.callback(|x| Msg::SelectContractType(x))
+                                />
                             </Collapse>
                         </div>
                         <H3>{"Profiles:"}</H3>
@@ -270,6 +288,10 @@ impl Component for App {
                                                 .filter(|x|
                                                     x.candidate.availability !=
                                                     Availability::NotAvailable
+                                                )
+                                                .filter(|x|
+                                                    collapsed || x.candidate.contract_type ==
+                                                        selected_contract_type
                                                 )
                                                 .filter(|x|
                                                     collapsed || x.tz_offsets.is_empty() ||

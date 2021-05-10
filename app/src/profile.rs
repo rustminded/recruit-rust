@@ -119,6 +119,7 @@ impl Component for Profile {
         let contract = match self.props.candidate.contract_type {
             ContractType::Contractor => "Contractor",
             ContractType::Employee => "Employee",
+            ContractType::Relocate => "Relocate",
             ContractType::Any => "Any",
         };
         let availability = match self.props.candidate.availability {
