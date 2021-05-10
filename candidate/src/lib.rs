@@ -37,10 +37,11 @@ pub struct Contribution {
     pub description: &'static str,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Hash)]
 pub enum ContractType {
     Contractor,
     Employee,
+    Relocate,
     Any,
 }
 

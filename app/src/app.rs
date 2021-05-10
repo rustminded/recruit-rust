@@ -3,13 +3,13 @@ use crate::profile_list_item::ProfileListItem;
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use crate::utc_offset_set::UtcOffsetSet;
-use candidate::{Availability, Candidate};
+use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
-use yew_router::{router::Router, Switch};
-use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Tag};
+use yew_router::{router::Router, Switch as RouteurSwitch};
+use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Switch, Tag};
 use yewprint::{Text, H1, H2, H3};
 
 pub const TZ_RANGE: i64 = 2;
@@ -20,6 +20,8 @@ pub struct App {
     entries: Rc<TechSet>,
     searched_value: String,
     selected_timezone: Duration,
+    show_contractor: bool,
+    show_employee: bool,
     collapsed: bool,
 }
 
@@ -27,6 +29,8 @@ pub enum Msg {
     AddEntry,
     UpdateSearch(String),
     SelectTimeZone(Duration),
+    ToggleEmployee,
+    ToggleContractor,
     ToggleCollapse,
     Noop,
 }
@@ -112,6 +116,8 @@ impl Component for App {
             entries: Default::default(),
             searched_value: Default::default(),
             selected_timezone,
+            show_contractor: false,
+            show_employee: false,
             collapsed: true,
         }
     }
@@ -131,12 +137,20 @@ impl Component for App {
                 self.searched_value = val;
                 true
             }
+            Msg::ToggleCollapse => {
+                self.collapsed ^= true;
+                true
+            }
             Msg::SelectTimeZone(tz) => {
                 self.selected_timezone = tz;
                 true
             }
-            Msg::ToggleCollapse => {
-                self.collapsed ^= true;
+            Msg::ToggleContractor => {
+                self.show_contractor ^= true;
+                true
+            }
+            Msg::ToggleEmployee => {
+                self.show_employee ^= true;
                 true
             }
             Msg::Noop => false,
@@ -153,6 +167,8 @@ impl Component for App {
         let selected_timezone = self.selected_timezone.clone();
         let tz_range = Duration::hours(TZ_RANGE);
         let collapsed = self.collapsed.clone();
+        let show_contractor = self.show_contractor.clone();
+        let show_employee = self.show_employee.clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -253,6 +269,16 @@ impl Component for App {
                                         .collect::<Vec<_>>()
                                     onchange=self.link.callback(|x| Msg::SelectTimeZone(x))
                                 />
+                                <Switch
+                                    label=html!("Contractor")
+                                    onclick=self.link.callback(|_| Msg::ToggleContractor)
+                                    checked=show_contractor
+                                />
+                                <Switch
+                                    label=html!("Employee")
+                                    onclick=self.link.callback(|_| Msg::ToggleEmployee)
+                                    checked=show_employee
+                                />
                             </Collapse>
                         </div>
                         <H3>{"Profiles:"}</H3>
@@ -270,6 +296,15 @@ impl Component for App {
                                                 .filter(|x|
                                                     x.candidate.availability !=
                                                     Availability::NotAvailable
+                                                )
+                                                .filter(|x|
+                                                    collapsed || match x.candidate.contract_type {
+                                                        ContractType::Employee => show_employee,
+                                                        ContractType::Relocate => show_employee,
+                                                        ContractType::Contractor => show_contractor,
+                                                        ContractType::Any =>
+                                                            show_employee || show_contractor,
+                                                    }
                                                 )
                                                 .filter(|x|
                                                     collapsed || x.tz_offsets.is_empty() ||
@@ -336,7 +371,7 @@ impl Component for App {
     }
 }
 
-#[derive(Switch, Debug, Clone)]
+#[derive(RouteurSwitch, Debug, Clone)]
 pub enum AppRoute {
     #[to = "/{slug}#{hl_tech}"]
     ProfileHl(String, String),
