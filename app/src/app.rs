@@ -302,8 +302,8 @@ impl Component for App {
                                                         ContractType::Employee => show_employee,
                                                         ContractType::Relocate => show_employee,
                                                         ContractType::Contractor => show_contractor,
-                                                        ContractType::Any => show_employee ||
-                                                            show_contractor,
+                                                        ContractType::Any =>
+                                                            show_employee || show_contractor,
                                                     }
                                                 )
                                                 .filter(|x|
