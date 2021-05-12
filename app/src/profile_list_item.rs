@@ -37,7 +37,7 @@ impl Component for ProfileListItem {
     }
 
     fn view(&self) -> Html {
-        let candidate_tech = self
+        let candidate_techs = self
             .props
             .techs
             .iter()
@@ -87,7 +87,7 @@ impl Component for ProfileListItem {
 
                 </div>
                 <div class="profile-list-footer">
-                    {candidate_tech}
+                    {candidate_techs}
                     {certifications}
                 </div>
             </Card>

@@ -1,8 +1,8 @@
+use indexmap::IndexSet;
 use std::borrow::Cow;
-use std::collections::HashSet;
 use std::hash::{Hash, Hasher};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialOrd, Ord)]
 pub struct Tech {
     pub value: Cow<'static, str>,
     pub is_professional: bool,
@@ -72,14 +72,14 @@ impl From<String> for Tech {
 }
 
 #[derive(Debug, Clone)]
-pub struct TechSet(HashSet<Tech>);
+pub struct TechSet(IndexSet<Tech>);
 
 impl TechSet {
     pub fn new() -> TechSet {
-        TechSet(HashSet::new())
+        TechSet(IndexSet::new())
     }
 
-    pub fn iter(&self) -> std::collections::hash_set::Iter<Tech> {
+    pub fn iter(&self) -> indexmap::set::Iter<Tech> {
         self.0.iter()
     }
 
@@ -89,6 +89,11 @@ impl TechSet {
 
     pub fn is_empty(&self) -> bool {
         self.0.is_empty()
+    }
+
+    pub fn sort(&mut self) {
+        self.0
+            .sort_by(|a, b| a.value.to_lowercase().cmp(&b.value.to_lowercase()))
     }
 }
 

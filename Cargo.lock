@@ -98,6 +98,7 @@ dependencies = [
  "chrono",
  "chrono-tz",
  "console_error_panic_hook",
+ "indexmap",
  "itertools 0.10.0",
  "mock-proc-macro",
  "wasm-bindgen",

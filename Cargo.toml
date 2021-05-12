@@ -5,8 +5,8 @@ authors = ["yozhgoor <yozhgoor@outlook.com>"]
 edition = "2018"
 
 [dependencies]
-wasm-run = { version = "0.8.0" }
 structopt = "0.3"
+wasm-run = { version = "0.8.0" }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
