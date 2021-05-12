@@ -81,6 +81,8 @@ impl CandidateInfo {
             techs.extend(s.iter().map(|x| Tech::from(*x).with_pub()));
         }
 
+        techs.sort();
+
         let tz_offsets = candidate.timezones.into();
 
         CandidateInfo {
