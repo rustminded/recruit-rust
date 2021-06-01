@@ -13,6 +13,7 @@ pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
     pub techs: TechSet,
     pub url: &'static str,
+    pub status: CandidateStatus,
 }
 
 impl Component for ProfileListItem {
@@ -102,4 +103,11 @@ impl Component for ProfileListItem {
             </Card>
         }
     }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum CandidateStatus {
+    Pending,
+    Select,
+    Unselect,
 }
