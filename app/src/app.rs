@@ -23,6 +23,7 @@ pub struct App {
     show_contractor: bool,
     show_employee: bool,
     collapsed: bool,
+    candidate_status: Vec<String>,
 }
 
 pub enum Msg {
@@ -32,6 +33,7 @@ pub enum Msg {
     ToggleEmployee,
     ToggleContractor,
     ToggleCollapse,
+    SelectCandidateStatus(Vec<String>),
     Noop,
 }
 
@@ -121,6 +123,7 @@ impl Component for App {
             show_contractor: false,
             show_employee: false,
             collapsed: true,
+            candidate_status: Default::default(),      
         }
     }
 
@@ -153,6 +156,10 @@ impl Component for App {
             }
             Msg::ToggleEmployee => {
                 self.show_employee ^= true;
+                true
+            }
+            Msg::SelectCandidateStatus(status) => {
+                self.candidate_status = status;
                 true
             }
             Msg::Noop => false,

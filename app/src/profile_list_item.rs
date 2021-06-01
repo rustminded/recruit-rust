@@ -2,7 +2,7 @@ use crate::tech_tag::TechTag;
 use crate::techs::TechSet;
 use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
-use yewprint::{Card, Text};
+use yewprint::{Card, Text, ButtonGroup, Button};
 
 pub struct ProfileListItem {
     props: ProfileListItemProps,
@@ -89,6 +89,15 @@ impl Component for ProfileListItem {
                 <div class="profile-list-footer">
                     {candidate_techs}
                     {certifications}
+                </div>
+                <div class="candidate-selection-status">
+                    <ButtonGroup
+                        vertical=true
+                    >
+                        <Button>{"Pending"}</Button>
+                        <Button>{"Select"}</Button>
+                        <Button>{"Unselect"}</Button>
+                    </ButtonGroup>
                 </div>
             </Card>
         }
