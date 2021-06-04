@@ -23,7 +23,7 @@ pub struct App {
     show_contractor: bool,
     show_employee: bool,
     collapsed: bool,
-    candidates_status: Vec<CandidateStatus>
+    candidates_status: HashMap<&'static str, CandidateStatus>,
 }
 
 pub enum Msg {
@@ -117,7 +117,7 @@ impl Component for App {
         }
 
         let candidates = Rc::new(candidates);
-        let candidates_status = Vec::new();
+        let candidates_status = HashMap::new();
 
         App {
             candidates,
