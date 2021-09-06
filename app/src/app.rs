@@ -23,6 +23,7 @@ pub struct App {
     show_contractor: bool,
     show_employee: bool,
     collapsed: bool,
+    candidates_status: HashMap<&'static str, CandidateStatus>,
 }
 
 pub enum Msg {
@@ -121,6 +122,7 @@ impl Component for App {
             show_contractor: false,
             show_employee: false,
             collapsed: true,
+            candidates_status: HashMap::new(),
         }
     }
 
