@@ -100,22 +100,25 @@ impl Component for ProfileListItem {
                     {certifications}
                 </div>
                 <div class="candidate-selection-status">
-                    <Text>{format!("Candidate status: {:?}", self.props.status)}</Text>
                     <ButtonGroup
                         vertical=true
                     >
                         <Button
                             onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Pending))
+                            active={self.props.status == CandidateStatus::Pending}
                         >
                             {"Pending"}
                         </Button>
                         <Button
                             onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Select))
+                            active={self.props.status == CandidateStatus::Select}
+
                         >
                             {"Select"}
                         </Button>
                         <Button
                             onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Unselect))
+                            active={self.props.status == CandidateStatus::Unselect}
                         >
                             {"Unselect"}
                         </Button>
