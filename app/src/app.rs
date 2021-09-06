@@ -41,7 +41,6 @@ pub struct CandidateInfo {
     techs: TechSet,
     url: &'static str,
     tz_offsets: UtcOffsetSet,
-    status: CandidateStatus,
 }
 
 impl CandidateInfo {
@@ -86,14 +85,11 @@ impl CandidateInfo {
 
         let tz_offsets = candidate.timezones.into();
 
-        let status = CandidateStatus::Pending;
-
         CandidateInfo {
             candidate,
             techs,
             url,
             tz_offsets,
-            status,
         }
     }
 }
@@ -335,7 +331,7 @@ impl Component for App {
                                                             candidate={x.candidate}
                                                             techs={&x.techs}
                                                             url={x.url}
-                                                            status={x.status}
+                                                            status={CandidateStatus::Pending}
                                                         />
                                                     }
                                                 })
