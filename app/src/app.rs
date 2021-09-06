@@ -1,5 +1,5 @@
 use crate::profile::Profile;
-use crate::profile_list_item::{ProfileListItem, CandidateStatus};
+use crate::profile_list_item::{CandidateStatus, ProfileListItem};
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use crate::utc_offset_set::UtcOffsetSet;
@@ -23,7 +23,6 @@ pub struct App {
     show_contractor: bool,
     show_employee: bool,
     collapsed: bool,
-    candidates_status: HashMap<&'static str, CandidateStatus>,
 }
 
 pub enum Msg {
@@ -33,7 +32,6 @@ pub enum Msg {
     ToggleEmployee,
     ToggleContractor,
     ToggleCollapse,
-    SelectCandidateStatus(CandidateStatus),
     Noop,
 }
 
@@ -117,7 +115,6 @@ impl Component for App {
         }
 
         let candidates = Rc::new(candidates);
-        let candidates_status = HashMap::new();
 
         App {
             candidates,
@@ -128,7 +125,6 @@ impl Component for App {
             show_contractor: false,
             show_employee: false,
             collapsed: true,
-            candidates_status,
         }
     }
 
@@ -162,10 +158,6 @@ impl Component for App {
             Msg::ToggleEmployee => {
                 self.show_employee ^= true;
                 true
-            }
-            Msg::SelectCandidateStatus(status) => {
-                todo!();
-                false
             }
             Msg::Noop => false,
         }
@@ -311,6 +303,7 @@ impl Component for App {
                                                     x.candidate.availability !=
                                                     Availability::NotAvailable
                                                 )
+                                                // .filter(|x| x.status != CandidateStatus::Unselect)
                                                 .filter(|x|
                                                     collapsed || match x.candidate.contract_type {
                                                         ContractType::Employee => show_employee,
