@@ -2,7 +2,7 @@ use crate::tech_tag::TechTag;
 use crate::techs::TechSet;
 use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
-use yewprint::{Button, ButtonGroup, Card, Text};
+use yewprint::{Button, ButtonGroup, Card, Intent, Text};
 
 pub struct ProfileListItem {
     link: ComponentLink<Self>,
@@ -105,20 +105,32 @@ impl Component for ProfileListItem {
                     >
                         <Button
                             onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Pending))
-                            active={self.props.status == CandidateStatus::Pending}
+                            intent={if self.props.status == CandidateStatus::Pending {
+                                Some(Intent::Primary)
+                            } else {
+                                None
+                            }}
                         >
                             {"Pending"}
                         </Button>
                         <Button
                             onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Select))
-                            active={self.props.status == CandidateStatus::Select}
+                            intent={if self.props.status == CandidateStatus::Select {
+                                Some(Intent::Success)
+                            } else {
+                                None
+                            }}
 
                         >
                             {"Select"}
                         </Button>
                         <Button
                             onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Unselect))
-                            active={self.props.status == CandidateStatus::Unselect}
+                            intent={if self.props.status == CandidateStatus::Unselect {
+                                Some(Intent::Warning)
+                            } else {
+                                None
+                            }}
                         >
                             {"Unselect"}
                         </Button>
