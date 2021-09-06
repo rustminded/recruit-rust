@@ -2,9 +2,10 @@ use crate::tech_tag::TechTag;
 use crate::techs::TechSet;
 use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
-use yewprint::{Card, Text, ButtonGroup, Button};
+use yewprint::{Button, ButtonGroup, Card, Text};
 
 pub struct ProfileListItem {
+    link: ComponentLink<Self>,
     props: ProfileListItemProps,
 }
 
@@ -16,15 +17,22 @@ pub struct ProfileListItemProps {
     pub status: CandidateStatus,
 }
 
+pub enum Msg {
+    CandidateSelectionStatus(CandidateStatus),
+}
+
 impl Component for ProfileListItem {
-    type Message = ();
+    type Message = Msg;
     type Properties = ProfileListItemProps;
 
-    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        ProfileListItem { props }
+    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        ProfileListItem { link, props }
     }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        match msg {
+            Msg::CandidateSelectionStatus(status) => self.props.status = status,
+        }
         true
     }
 
@@ -92,12 +100,25 @@ impl Component for ProfileListItem {
                     {certifications}
                 </div>
                 <div class="candidate-selection-status">
+                    <Text>{format!("Candidate status: {:?}", self.props.status)}</Text>
                     <ButtonGroup
                         vertical=true
                     >
-                        <Button>{"Pending"}</Button>
-                        <Button>{"Select"}</Button>
-                        <Button>{"Unselect"}</Button>
+                        <Button
+                            onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Pending))
+                        >
+                            {"Pending"}
+                        </Button>
+                        <Button
+                            onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Select))
+                        >
+                            {"Select"}
+                        </Button>
+                        <Button
+                            onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Unselect))
+                        >
+                            {"Unselect"}
+                        </Button>
                     </ButtonGroup>
                 </div>
             </Card>
