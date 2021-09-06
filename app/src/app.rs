@@ -208,6 +208,14 @@ impl Component for App {
                         {"reddit post"}
                     </a>
                 </Text>
+                <Text class=classes!("rust-jobs-link")>
+                    {"You can also check the Rust-Jobs "}
+                    <a
+                        href="https://rustjobs.dev/"
+                    >
+                        {"website"}
+                    </a>
+                </Text>
                 <div class="app-content" role="main">
                     <div class="profile-list-component">
                         <H2>{"Discover the community"}</H2>
