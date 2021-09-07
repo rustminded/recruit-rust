@@ -37,7 +37,11 @@ impl Component for ProfileListItem {
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::CandidateSelectionStatus(status) => match status {
-                CandidateStatus::Pending => self.status = status,
+                CandidateStatus::Pending => {
+                    self.status = status;
+                    let slug = self.props.candidate.slug.clone();
+                    self.props.collect_status.emit((slug, status.clone()));
+                }
                 CandidateStatus::Select => {
                     self.status = status;
                     let slug = self.props.candidate.slug.clone();

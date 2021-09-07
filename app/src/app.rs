@@ -184,7 +184,7 @@ impl Component for App {
         let collapsed = self.collapsed.clone();
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
-        let candidates_status = self.candidates_status.clone();
+        let link = self.link.clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -297,6 +297,9 @@ impl Component for App {
                                 />
                             </Collapse>
                         </div>
+                        <div>
+                            <Text>{format!("{:?}", self.candidates_status)}</Text>
+                        </div>
                         <H3>{"Profiles:"}</H3>
                         <div>
                             <Router<AppRoute, ()>
@@ -345,7 +348,7 @@ impl Component for App {
                                                             candidate={x.candidate}
                                                             techs={&x.techs}
                                                             url={x.url}
-                                                            collect_status=self.link.callback(|x| Msg::CollectStatus(x))
+                                                            collect_status=link.callback(|x| Msg::CollectStatus(x))
                                                         />
                                                     }
                                                 })
