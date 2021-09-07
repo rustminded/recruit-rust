@@ -165,7 +165,7 @@ impl Component for App {
                 true
             }
             Msg::CollectStatus((slug, status)) => {
-                self.candidates_status.insert(slug, status);
+                self.candidates_status.insert(slug.clone(), status.clone());
                 true
             }
             Msg::Noop => false,
@@ -177,6 +177,7 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
+        let link = self.link.clone();
         let candidates = Rc::clone(&self.candidates);
         let entries = Rc::clone(&self.entries);
         let selected_timezone = self.selected_timezone.clone();
@@ -184,6 +185,7 @@ impl Component for App {
         let collapsed = self.collapsed.clone();
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
+        let candidates_status = self.candidates_status.clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -344,7 +346,7 @@ impl Component for App {
                                                             candidate={x.candidate}
                                                             techs={&x.techs}
                                                             url={x.url}
-                                                            candidates_status=self.link.callback(|x| Msg::CollectStatus(x))
+                                                            collect_status=link.callback(|x| Msg::CollectStatus(x))
                                                         />
                                                     }
                                                 })
