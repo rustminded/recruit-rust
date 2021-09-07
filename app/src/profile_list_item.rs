@@ -7,6 +7,7 @@ use yewprint::{Button, ButtonGroup, Card, Intent, Text};
 pub struct ProfileListItem {
     link: ComponentLink<Self>,
     props: ProfileListItemProps,
+    status: CandidateStatus,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
@@ -105,7 +106,7 @@ impl Component for ProfileListItem {
                     >
                         <Button
                             onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Pending))
-                            intent={if self.props.status == CandidateStatus::Pending {
+                            intent={if self.status == CandidateStatus::Pending {
                                 Some(Intent::Primary)
                             } else {
                                 None
@@ -115,7 +116,7 @@ impl Component for ProfileListItem {
                         </Button>
                         <Button
                             onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Select))
-                            intent={if self.props.status == CandidateStatus::Select {
+                            intent={if self.status == CandidateStatus::Select {
                                 Some(Intent::Success)
                             } else {
                                 None
@@ -126,7 +127,7 @@ impl Component for ProfileListItem {
                         </Button>
                         <Button
                             onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Unselect))
-                            intent={if self.props.status == CandidateStatus::Unselect {
+                            intent={if self.status == CandidateStatus::Unselect {
                                 Some(Intent::Warning)
                             } else {
                                 None
