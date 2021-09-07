@@ -40,16 +40,15 @@ impl Component for ProfileListItem {
                 Pending => self.status = status,
                 Select => {
                     self.status = status;
-                    let slug = self.props.candidate.slug.clone();
                     self.props
                         .candidates_status
-                        .emit((self.props.candidate.slug.clone(), status.clone()));
+                        .emit((self.props.candidate.slug, status));
                 }
                 Unselect => {
                     self.status = status;
                     self.props
                         .candidates_status
-                        .emit((self.props.candidate.slug.clone(), status.clone()));
+                        .emit((self.props.candidate.slug, status));
                 }
             },
         }
