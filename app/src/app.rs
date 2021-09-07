@@ -8,6 +8,7 @@ use chrono::Duration;
 use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
+use yew::services::storage::{Area, StorageService};
 use yew_router::{router::Router, Switch as RouteurSwitch};
 use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Switch, Tag};
 use yewprint::{Text, H1, H2, H3};
@@ -24,6 +25,7 @@ pub struct App {
     show_employee: bool,
     collapsed: bool,
     candidates_status: HashMap<&'static str, CandidateStatus>,
+    local_storage: StorageService,
 }
 
 pub enum Msg {
@@ -113,6 +115,8 @@ impl Component for App {
 
         let candidates = Rc::new(candidates);
 
+        let local_storage = StorageService::new(Area::Local).expect("Cannot access local storage");
+
         App {
             candidates,
             link,
@@ -123,6 +127,8 @@ impl Component for App {
             show_employee: false,
             collapsed: true,
             candidates_status: HashMap::new(),
+            local_storage: StorageService::new(Area::Local)
+                .expect("Cannot access to local storage"),
         }
     }
 
