@@ -15,7 +15,7 @@ pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
     pub techs: TechSet,
     pub url: &'static str,
-    pub status: CandidateStatus,
+    pub candidates_status: Callback<(&'static str, CandidateStatus)>,
 }
 
 pub enum Msg {
@@ -27,12 +27,28 @@ impl Component for ProfileListItem {
     type Properties = ProfileListItemProps;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        ProfileListItem { link, props }
+        ProfileListItem {
+            link,
+            props,
+            status: CandidateStatus::Pending,
+        }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
-            Msg::CandidateSelectionStatus(status) => self.props.status = status,
+            Msg::CandidateSelectionStatus(status) => match status {
+                Pending => self.status = status,
+                Select => {
+                    self.status = status;
+                    let slug = self.props.candidate.slug.clone();
+                    self.props.candidates_status.emit((slug, status.clone()));
+                }
+                Unselect => {
+                    self.status = status;
+                    let slug = self.props.candidate.slug.clone();
+                    self.props.candidates_status.emit((slug, status.clone()));
+                }
+            },
         }
         true
     }

@@ -35,6 +35,7 @@ pub enum Msg {
     ToggleEmployee,
     ToggleContractor,
     ToggleCollapse,
+    CollectStatus(HashMap<&'static str, CandidateStatus>),
     Noop,
 }
 
@@ -161,6 +162,10 @@ impl Component for App {
             }
             Msg::ToggleEmployee => {
                 self.show_employee ^= true;
+                true
+            }
+            Msg::CollectStatus(candidates_status) => {
+                self.candidates_status = candidates_status;
                 true
             }
             Msg::Noop => false,
@@ -339,7 +344,7 @@ impl Component for App {
                                                             candidate={x.candidate}
                                                             techs={&x.techs}
                                                             url={x.url}
-                                                            status={CandidateStatus::Pending}
+                                                            candidates_status=self.link.callback(|x| Msg::CollectStatus(x))
                                                         />
                                                     }
                                                 })
