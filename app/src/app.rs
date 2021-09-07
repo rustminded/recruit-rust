@@ -1,5 +1,5 @@
 use crate::profile::Profile;
-use crate::profile_list_item::ProfileListItem;
+use crate::profile_list_item::{CandidateStatus, ProfileListItem};
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use crate::utc_offset_set::UtcOffsetSet;
@@ -23,6 +23,7 @@ pub struct App {
     show_contractor: bool,
     show_employee: bool,
     collapsed: bool,
+    candidates_status: HashMap<&'static str, CandidateStatus>,
 }
 
 pub enum Msg {
@@ -32,6 +33,7 @@ pub enum Msg {
     ToggleEmployee,
     ToggleContractor,
     ToggleCollapse,
+    CollectStatus((&'static str, CandidateStatus)),
     Noop,
 }
 
@@ -121,6 +123,7 @@ impl Component for App {
             show_contractor: false,
             show_employee: false,
             collapsed: true,
+            candidates_status: HashMap::new(),
         }
     }
 
@@ -155,6 +158,10 @@ impl Component for App {
                 self.show_employee ^= true;
                 true
             }
+            Msg::CollectStatus((slug, status)) => {
+                self.candidates_status.insert(slug.clone(), status.clone());
+                true
+            }
             Msg::Noop => false,
         }
     }
@@ -171,6 +178,7 @@ impl Component for App {
         let collapsed = self.collapsed.clone();
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
+        let link = self.link.clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -291,6 +299,9 @@ impl Component for App {
                                 />
                             </Collapse>
                         </div>
+                        <div>
+                            <Text>{format!("{:?}", self.candidates_status)}</Text>
+                        </div>
                         <H3>{"Profiles:"}</H3>
                         <div>
                             <Router<AppRoute, ()>
@@ -307,6 +318,7 @@ impl Component for App {
                                                     x.candidate.availability !=
                                                     Availability::NotAvailable
                                                 )
+                                                // .filter(|x| x.status != CandidateStatus::Unselect)
                                                 .filter(|x|
                                                     collapsed || match x.candidate.contract_type {
                                                         ContractType::Employee => show_employee,
@@ -338,6 +350,7 @@ impl Component for App {
                                                             candidate={x.candidate}
                                                             techs={&x.techs}
                                                             url={x.url}
+                                                            collect_status=link.callback(|x| Msg::CollectStatus(x))
                                                         />
                                                     }
                                                 })

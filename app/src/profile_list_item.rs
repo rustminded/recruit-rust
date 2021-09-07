@@ -2,10 +2,12 @@ use crate::tech_tag::TechTag;
 use crate::techs::TechSet;
 use candidate::{Availability, Candidate, ContractType};
 use yew::prelude::*;
-use yewprint::{Card, Text};
+use yewprint::{Button, ButtonGroup, Card, Intent, Text};
 
 pub struct ProfileListItem {
+    link: ComponentLink<Self>,
     props: ProfileListItemProps,
+    status: CandidateStatus,
 }
 
 #[derive(Debug, Properties, PartialEq, Clone)]
@@ -13,18 +15,34 @@ pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
     pub techs: TechSet,
     pub url: &'static str,
+    pub collect_status: Callback<(&'static str, CandidateStatus)>,
+}
+
+pub enum Msg {
+    CandidateSelectionStatus(CandidateStatus),
 }
 
 impl Component for ProfileListItem {
-    type Message = ();
+    type Message = Msg;
     type Properties = ProfileListItemProps;
 
-    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        ProfileListItem { props }
+    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        ProfileListItem {
+            link,
+            props,
+            status: CandidateStatus::Pending,
+        }
     }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
-        true
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        match msg {
+            Msg::CandidateSelectionStatus(status) => {
+                self.status = status;
+                let slug = self.props.candidate.slug.clone();
+                self.props.collect_status.emit((slug, status.clone()));
+                true
+            }
+        }
     }
 
     fn change(&mut self, props: Self::Properties) -> ShouldRender {
@@ -90,7 +108,51 @@ impl Component for ProfileListItem {
                     {candidate_techs}
                     {certifications}
                 </div>
+                <div class="candidate-selection-status">
+                    <ButtonGroup
+                        vertical=true
+                    >
+                        <Button
+                            onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Pending))
+                            intent={if self.status == CandidateStatus::Pending {
+                                Some(Intent::Primary)
+                            } else {
+                                None
+                            }}
+                        >
+                            {"Pending"}
+                        </Button>
+                        <Button
+                            onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Select))
+                            intent={if self.status == CandidateStatus::Select {
+                                Some(Intent::Success)
+                            } else {
+                                None
+                            }}
+
+                        >
+                            {"Select"}
+                        </Button>
+                        <Button
+                            onclick=self.link.callback(|_| Msg::CandidateSelectionStatus(CandidateStatus::Unselect))
+                            intent={if self.status == CandidateStatus::Unselect {
+                                Some(Intent::Warning)
+                            } else {
+                                None
+                            }}
+                        >
+                            {"Unselect"}
+                        </Button>
+                    </ButtonGroup>
+                </div>
             </Card>
         }
     }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum CandidateStatus {
+    Pending,
+    Select,
+    Unselect,
 }
