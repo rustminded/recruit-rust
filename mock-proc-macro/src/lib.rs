@@ -223,9 +223,9 @@ fn make_one_candidate(
 
     let bio = lipsum::lipsum(rng.gen_range(10..=350));
 
-    let asked_techs = choose_multiple(rng, 0..=1, TECHS, |x| quote! { #x, });
+    let asked_techs = choose_multiple(rng, 5..=10, TECHS, |x| quote! { #x, });
 
-    let not_wanted_techs = choose_multiple(rng, 0..=1, TECHS, |x| quote! { #x, });
+    let not_wanted_techs = choose_multiple(rng, 1..=5, TECHS, |x| quote! { #x, });
 
     let all_urls = vec![
         ("GitHub", format!("https://github.com/{}", slug)),
@@ -253,7 +253,7 @@ fn make_one_candidate(
             let n = rng.gen_range(1..2);
             let company = petname.generate(rng, n, "-");
             let website = format!("https://{}.com", company.to_kebab_case());
-            let techs = choose_multiple(rng, 0..=1, TECHS, |x| quote! { #x, });
+            let techs = choose_multiple(rng, 2..=6, TECHS, |x| quote! { #x, });
             let description = lipsum::lipsum(rng.gen_range(10..=350));
             let period = format!(
                 "{}-{}",
@@ -318,7 +318,7 @@ fn generate_contribution(rng: &mut impl Rng, petname: &Petnames) -> TokenStream 
     let n = rng.gen_range(1..2);
     let project = petname.generate(rng, n, "-");
     let website = format!("https://{}.com", project.to_kebab_case());
-    let techs = choose_multiple(rng, 0..=1, TECHS, |x| quote! { #x, });
+    let techs = choose_multiple(rng, 2..=6, TECHS, |x| quote! { #x, });
     let description = lipsum::lipsum(rng.gen_range(10..=350));
 
     quote! {
