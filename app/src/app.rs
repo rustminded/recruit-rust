@@ -35,7 +35,7 @@ pub enum Msg {
     ToggleEmployee,
     ToggleContractor,
     ToggleCollapse,
-    CollectStatus(Vec<&'static str, CandidateStatus>),
+    CollectStatus((&'static str, CandidateStatus)),
     Noop,
 }
 
@@ -164,8 +164,8 @@ impl Component for App {
                 self.show_employee ^= true;
                 true
             }
-            Msg::CollectStatus((a, b)) => {
-                self.candidates_status.insert(a, b);
+            Msg::CollectStatus((slug, status)) => {
+                self.candidates_status.insert(slug, status);
                 true
             }
             Msg::Noop => false,
