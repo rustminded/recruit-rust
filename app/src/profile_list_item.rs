@@ -41,12 +41,15 @@ impl Component for ProfileListItem {
                 Select => {
                     self.status = status;
                     let slug = self.props.candidate.slug.clone();
-                    self.props.candidates_status.emit((slug, status.clone()));
+                    self.props
+                        .candidates_status
+                        .emit(vec![self.props.candidate.slug, status].clone());
                 }
                 Unselect => {
                     self.status = status;
-                    let slug = self.props.candidate.slug.clone();
-                    self.props.candidates_status.emit((slug, status.clone()));
+                    self.props
+                        .candidates_status
+                        .emit(vec![self.props.candidate.slug, status].clone());
                 }
             },
         }
