@@ -177,7 +177,6 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
-        let link = self.link.clone();
         let candidates = Rc::clone(&self.candidates);
         let entries = Rc::clone(&self.entries);
         let selected_timezone = self.selected_timezone.clone();
@@ -346,7 +345,7 @@ impl Component for App {
                                                             candidate={x.candidate}
                                                             techs={&x.techs}
                                                             url={x.url}
-                                                            collect_status=link.callback(|x| Msg::CollectStatus(x))
+                                                            collect_status=self.link.callback(|x| Msg::CollectStatus(x))
                                                         />
                                                     }
                                                 })
