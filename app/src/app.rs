@@ -167,7 +167,7 @@ impl Component for App {
                 self.candidates_status.insert(slug.clone(), status.clone());
                 let json = serde_json::to_string(&self.candidates_status)
                     .expect("Cannot parse selection into json");
-                self.local_storage.store("candidate-selection", json);
+                self.local_storage.store("candidate-selection", Ok(json));
                 true
             }
             Msg::Noop => false,
