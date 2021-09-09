@@ -187,6 +187,14 @@ impl Component for App {
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
         let link = self.link.clone();
+        let stored = serde_json::from_str::<HashMap<&str, CandidateStatus>>(
+            self.local_storage
+                .restore::<Result<_, _>>("candidate-selection")
+                .unwrap_or(String::from(""))
+                .as_str(),
+        )
+        .unwrap()
+        .clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -308,7 +316,12 @@ impl Component for App {
                             </Collapse>
                         </div>
                         <div>
-                            <Text>{format!("{:?}", self.candidates_status)}</Text>
+                            <Text>
+                                {
+                                    format!("{}", String::from("test"))
+
+                                }
+                            </Text>
                         </div>
                         <H3>{"Profiles:"}</H3>
                         <div>
