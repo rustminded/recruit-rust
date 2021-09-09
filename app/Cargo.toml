@@ -11,6 +11,7 @@ crate-type = ["cdylib"]
 mock = ["mock-proc-macro"]
 
 [dependencies]
+anyhow = "1.0"
 candidate = { path = "../candidate" }
 chrono = { version = "0.4", features = ["wasmbind"] }
 chrono-tz = "0.5"

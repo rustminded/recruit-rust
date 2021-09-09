@@ -3,6 +3,7 @@ use crate::profile_list_item::{CandidateStatus, ProfileListItem};
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use crate::utc_offset_set::UtcOffsetSet;
+use anyhow::Context;
 use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
@@ -171,7 +172,17 @@ impl Component for App {
             Msg::CollectStatus((slug, status)) => {
                 self.candidates_selection
                     .insert(slug.clone(), status.clone());
-                crate::log!("Collected selection: {:?}", self.candidates_selection);
+
+                if !self.candidates_selection.is_empty() {
+                    if let Some(storage) = &mut self.local_storage {
+                        storage.store(
+                            "candidates-selection",
+                            serde_json::to_string(&self.candidates_selection)
+                                .context("Cannot parse collected selection to json"),
+                        );
+                        crate::log!("Selection stored: {:?}", &self.candidates_selection)
+                    }
+                }
                 true
             }
             Msg::Noop => false,

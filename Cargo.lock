@@ -96,6 +96,7 @@ checksum = "33954243bd79057c2de7338850b85983a44588021f8a5fee574a8888c6de4344"
 name = "app"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "candidate",
  "chrono",
  "chrono-tz",
