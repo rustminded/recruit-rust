@@ -3,7 +3,7 @@ use crate::profile_list_item::{CandidateStatus, ProfileListItem};
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use crate::utc_offset_set::UtcOffsetSet;
-use anyhow::Context;
+use anyhow::{Context, Error};
 use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
@@ -117,12 +117,30 @@ impl Component for App {
 
         let candidates = Rc::new(candidates);
 
-        let local_storage = if StorageService::new(Area::Local).is_ok() {
-            Some(StorageService::new(Area::Local).unwrap())
-        } else {
-            crate::log!("Cannot access local storage");
-            None
+        let local_storage = match StorageService::new(Area::Local) {
+            Ok(storage) => Some(storage),
+            Err(e) => {
+                crate::log!("Local storage not supported: {:?}", e);
+                None
+            }
         };
+
+        let candidates_selection = local_storage
+            .as_ref()
+            .and_then(|storage| {
+                match storage
+                    .restore::<Result<String, anyhow::Error>>("candidates-selection")
+                    .and_then(|x| {
+                        serde_json::from_str::<HashMap<_, _>>(&x).context("could not deserialize")
+                    }) {
+                    Ok(map) => Some(map),
+                    Err(err) => {
+                        crate::log!("Cannot restore data from local storage: {:?}", err);
+                        None
+                    }
+                }
+            })
+            .unwrap_or_default();
 
         App {
             candidates,
@@ -133,7 +151,7 @@ impl Component for App {
             show_contractor: false,
             show_employee: false,
             collapsed: true,
-            candidates_selection: HashMap::new(),
+            candidates_selection,
             local_storage,
         }
     }
