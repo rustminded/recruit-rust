@@ -1,6 +1,7 @@
 use crate::tech_tag::TechTag;
 use crate::techs::TechSet;
 use candidate::{Availability, Candidate, ContractType};
+use serde::{Deserialize, Serialize};
 use yew::prelude::*;
 use yewprint::{Button, ButtonGroup, Card, Intent, Text};
 
@@ -150,7 +151,7 @@ impl Component for ProfileListItem {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub enum CandidateStatus {
     Pending,
     Select,
