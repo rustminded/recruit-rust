@@ -187,14 +187,13 @@ impl Component for App {
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
         let link = self.link.clone();
-        let stored = serde_json::from_str::<HashMap<&str, CandidateStatus>>(
-            self.local_storage
-                .restore::<Result<_, _>>("candidate-selection")
-                .unwrap_or(String::from(""))
-                .as_str(),
-        )
-        .unwrap()
-        .clone();
+        let stored = move || match self
+            .local_storage
+            .restore::<Result<_, _>>("candidate-selection")
+        {
+            Ok(value) => value,
+            Err(_) => String::from("{}"),
+        };
 
         html! {
             <div class="app-root bp3-dark">
@@ -318,7 +317,7 @@ impl Component for App {
                         <div>
                             <Text>
                                 {
-                                    format!("{}", String::from("test"))
+                                    format!("{:?}", serde_json::from_str::<HashMap<&str, CandidateStatus>>(&stored()))
 
                                 }
                             </Text>
