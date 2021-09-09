@@ -25,7 +25,7 @@ pub struct App {
     show_contractor: bool,
     show_employee: bool,
     collapsed: bool,
-    candidates_selection: HashMap<&'static str, CandidateStatus>,
+    candidates_selection: HashMap<String, CandidateStatus>,
     local_storage: Option<StorageService>,
 }
 
@@ -131,7 +131,8 @@ impl Component for App {
                 match storage
                     .restore::<Result<String, anyhow::Error>>("candidates-selection")
                     .and_then(|x| {
-                        serde_json::from_str::<HashMap<_, _>>(&x).context("could not deserialize")
+                        serde_json::from_str::<HashMap<String, CandidateStatus>>(&x)
+                            .context("could not deserialize")
                     }) {
                     Ok(map) => Some(map),
                     Err(err) => {
@@ -141,6 +142,8 @@ impl Component for App {
                 }
             })
             .unwrap_or_default();
+
+        crate::log!("Local storage: {:?}", candidates_selection);
 
         App {
             candidates,
@@ -189,7 +192,7 @@ impl Component for App {
             }
             Msg::CollectStatus((slug, status)) => {
                 self.candidates_selection
-                    .insert(slug.clone(), status.clone());
+                    .insert(slug.to_string().clone(), status.clone());
 
                 if !self.candidates_selection.is_empty() {
                     if let Some(storage) = &mut self.local_storage {
