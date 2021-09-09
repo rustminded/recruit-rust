@@ -399,12 +399,18 @@ impl Component for App {
                                                     )
                                                 );
                                                 sorted_vec.iter().map(|x| {
+                                                    let stored_status = if let Some(status) = candidates_selection.get(x.candidate.slug) {
+                                                        Some(*status)
+                                                    } else {
+                                                        None
+                                                    };
+
                                                     html! {
                                                         <ProfileListItem
                                                             candidate={x.candidate}
                                                             techs={&x.techs}
                                                             url={x.url}
-                                                            candidates_selection=candidates_selection
+                                                            stored_status={stored_status}
                                                             collect_status=link.callback(|x| Msg::CollectStatus(x))
                                                         />
                                                     }
