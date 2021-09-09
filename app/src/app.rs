@@ -3,7 +3,7 @@ use crate::profile_list_item::{CandidateStatus, ProfileListItem};
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use crate::utc_offset_set::UtcOffsetSet;
-use anyhow::{Context, Error};
+use anyhow::Context;
 use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
@@ -235,6 +235,7 @@ impl Component for App {
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
         let link = self.link.clone();
+        let candidates_selection = self.candidates_selection.clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -403,6 +404,7 @@ impl Component for App {
                                                             candidate={x.candidate}
                                                             techs={&x.techs}
                                                             url={x.url}
+                                                            candidates_selection=candidates_selection
                                                             collect_status=link.callback(|x| Msg::CollectStatus(x))
                                                         />
                                                     }

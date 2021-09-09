@@ -2,6 +2,7 @@ use crate::tech_tag::TechTag;
 use crate::techs::TechSet;
 use candidate::{Availability, Candidate, ContractType};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use yew::prelude::*;
 use yewprint::{Button, ButtonGroup, Card, Intent, Text};
 
@@ -16,6 +17,7 @@ pub struct ProfileListItemProps {
     pub candidate: &'static Candidate,
     pub techs: TechSet,
     pub url: &'static str,
+    pub candidates_selection: HashMap<String, CandidateStatus>,
     pub collect_status: Callback<(&'static str, CandidateStatus)>,
 }
 
@@ -28,10 +30,22 @@ impl Component for ProfileListItem {
     type Properties = ProfileListItemProps;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        let status = if props
+            .candidates_selection
+            .contains_key(props.candidate.slug)
+        {
+            *props
+                .candidates_selection
+                .get(props.candidate.slug)
+                .unwrap()
+        } else {
+            CandidateStatus::Pending
+        };
+
         ProfileListItem {
             link,
             props,
-            status: CandidateStatus::Pending,
+            status,
         }
     }
 
