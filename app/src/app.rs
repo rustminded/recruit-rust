@@ -24,8 +24,8 @@ pub struct App {
     show_contractor: bool,
     show_employee: bool,
     collapsed: bool,
-    candidates_status: HashMap<&'static str, CandidateStatus>,
-    local_storage: StorageService,
+    candidates_selection: HashMap<&'static str, CandidateStatus>,
+    local_storage: Option<StorageService>,
 }
 
 pub enum Msg {
@@ -116,7 +116,12 @@ impl Component for App {
 
         let candidates = Rc::new(candidates);
 
-        let local_storage = StorageService::new(Area::Local).expect("Cannot access local storage");
+        let local_storage = if StorageService::new(Area::Local).is_ok() {
+            Some(StorageService::new(Area::Local).unwrap())
+        } else {
+            crate::log!("Cannot access local storage");
+            None
+        };
 
         App {
             candidates,
@@ -127,7 +132,7 @@ impl Component for App {
             show_contractor: false,
             show_employee: false,
             collapsed: true,
-            candidates_status: HashMap::new(),
+            candidates_selection: HashMap::new(),
             local_storage,
         }
     }
@@ -164,10 +169,9 @@ impl Component for App {
                 true
             }
             Msg::CollectStatus((slug, status)) => {
-                self.candidates_status.insert(slug.clone(), status.clone());
-                let json = serde_json::to_string(&self.candidates_status)
-                    .expect("Cannot parse selection into json");
-                self.local_storage.store("candidate-selection", Ok(json));
+                self.candidates_selection
+                    .insert(slug.clone(), status.clone());
+                crate::log!("Collected selection: {:?}", self.candidates_selection);
                 true
             }
             Msg::Noop => false,
@@ -187,13 +191,6 @@ impl Component for App {
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
         let link = self.link.clone();
-        let stored = move || match self
-            .local_storage
-            .restore::<Result<_, _>>("candidate-selection")
-        {
-            Ok(value) => value,
-            Err(_) => String::from("{}"),
-        };
 
         html! {
             <div class="app-root bp3-dark">
@@ -313,14 +310,6 @@ impl Component for App {
                                     checked=show_employee
                                 />
                             </Collapse>
-                        </div>
-                        <div>
-                            <Text>
-                                {
-                                    format!("{:?}", serde_json::from_str::<HashMap<&str, CandidateStatus>>(&stored()))
-
-                                }
-                            </Text>
                         </div>
                         <H3>{"Profiles:"}</H3>
                         <div>
