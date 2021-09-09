@@ -180,7 +180,19 @@ impl Component for App {
                             serde_json::to_string(&self.candidates_selection)
                                 .context("Cannot parse collected selection to json"),
                         );
-                        crate::log!("Selection stored: {:?}", &self.candidates_selection)
+
+                        match storage.restore::<Result<_, _>>("candidates-selection") {
+                            Ok(x) => {
+                                crate::log!(
+                                    "Local storage: {:?}",
+                                    serde_json::from_str::<HashMap<&str, CandidateStatus>>(&x)
+                                        .unwrap()
+                                )
+                            }
+                            Err(_) => {
+                                crate::log!("Cannot restore data from local storage")
+                            }
+                        }
                     }
                 }
                 true
