@@ -36,6 +36,7 @@ pub enum Msg {
     ToggleContractor,
     ToggleCollapse,
     CollectStatus((&'static str, CandidateStatus)),
+    ClearSelection,
     Noop,
 }
 
@@ -211,6 +212,13 @@ impl Component for App {
                 }
                 true
             }
+            Msg::ClearSelection => {
+                if let Some(storage) = &mut self.local_storage {
+                    storage.remove("candidates-selection");
+                    crate::log!("candidates selection cleared")
+                }
+                true
+            }
             Msg::Noop => false,
         }
     }
@@ -347,6 +355,11 @@ impl Component for App {
                                     onclick=self.link.callback(|_| Msg::ToggleEmployee)
                                     checked=show_employee
                                 />
+                                <Button
+                                    onclick=self.link.callback(|_| Msg::ClearSelection)
+                                >
+                                    {"Clear candidates selection"}
+                                </Button>
                             </Collapse>
                         </div>
                         <H3>{"Profiles:"}</H3>
