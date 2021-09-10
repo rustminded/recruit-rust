@@ -133,16 +133,10 @@ impl Component for App {
                     "candidates-selection",
                 ) {
                     Json(Ok(map)) => Some(map),
-                    Json(Err(err)) => {
-                        crate::log!("Cannot read data from local storage: {:?}", err);
-                        None
-                    }
+                    Json(Err(_)) => None,
                 }
             })
-            .unwrap_or_else(|| {
-                crate::log!("Cannot access local storage");
-                HashMap::new()
-            });
+            .unwrap_or_default();
 
         crate::log!("Local storage: {:?}", candidates_selection);
 
@@ -198,27 +192,14 @@ impl Component for App {
                 if let Some(storage) = &mut self.local_storage {
                     use yew::format::Json;
                     storage.store("candidates-selection", Json(&self.candidates_selection));
-
-                    match storage.restore::<Json<Result<HashMap<String, CandidateStatus>, _>>>(
-                        "candidates-selection",
-                    ) {
-                        Json(Ok(x)) => {
-                            crate::log!("Local storage: {:?}", x)
-                        }
-                        Json(Err(_)) => {
-                            crate::log!("Cannot restore data from local storage")
-                        }
-                    }
                 }
                 true
             }
             Msg::ClearSelection => {
                 if let Some(storage) = &mut self.local_storage {
                     storage.remove("candidates-selection");
-                    crate::log!("local storage cleared")
                 }
                 self.candidates_selection.clear();
-                crate::log!("selection cleared");
                 true
             }
             Msg::Noop => false,
