@@ -194,25 +194,22 @@ impl Component for App {
                 self.candidates_selection
                     .insert(slug.to_string().clone(), status.clone());
 
-                if !self.candidates_selection.is_empty() {
-                    if let Some(storage) = &mut self.local_storage {
-                        storage.store(
-                            "candidates-selection",
-                            serde_json::to_string(&self.candidates_selection)
-                                .context("Cannot parse collected selection to json"),
-                        );
+                if let Some(storage) = &mut self.local_storage {
+                    storage.store(
+                        "candidates-selection",
+                        serde_json::to_string(&self.candidates_selection)
+                            .context("Cannot parse collected selection to json"),
+                    );
 
-                        match storage.restore::<Result<_, _>>("candidates-selection") {
-                            Ok(x) => {
-                                crate::log!(
-                                    "Local storage: {:?}",
-                                    serde_json::from_str::<HashMap<&str, CandidateStatus>>(&x)
-                                        .unwrap()
-                                )
-                            }
-                            Err(_) => {
-                                crate::log!("Cannot restore data from local storage")
-                            }
+                    match storage.restore::<Result<_, _>>("candidates-selection") {
+                        Ok(x) => {
+                            crate::log!(
+                                "Local storage: {:?}",
+                                serde_json::from_str::<HashMap<&str, CandidateStatus>>(&x).unwrap()
+                            )
+                        }
+                        Err(_) => {
+                            crate::log!("Cannot restore data from local storage")
                         }
                     }
                 }
