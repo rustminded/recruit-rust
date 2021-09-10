@@ -105,7 +105,6 @@ dependencies = [
  "itertools 0.10.0",
  "mock-proc-macro",
  "serde",
- "serde_json",
  "wasm-bindgen",
  "web-sys",
  "wee_alloc",

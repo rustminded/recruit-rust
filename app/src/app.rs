@@ -3,7 +3,6 @@ use crate::profile_list_item::{CandidateStatus, ProfileListItem};
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
 use crate::utc_offset_set::UtcOffsetSet;
-use anyhow::Context;
 use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
@@ -128,14 +127,12 @@ impl Component for App {
         let candidates_selection = local_storage
             .as_ref()
             .and_then(|storage| {
-                match storage
-                    .restore::<Result<String, anyhow::Error>>("candidates-selection")
-                    .and_then(|x| {
-                        serde_json::from_str::<HashMap<String, CandidateStatus>>(&x)
-                            .context("could not deserialize")
-                    }) {
-                    Ok(map) => Some(map),
-                    Err(err) => {
+                use yew::format::Json;
+                match storage.restore::<Json<Result<HashMap<String, CandidateStatus>, _>>>(
+                    "candidates-selection",
+                ) {
+                    Json(Ok(map)) => Some(map),
+                    Json(Err(err)) => {
                         crate::log!("Cannot restore data from local storage: {:?}", err);
                         None
                     }
@@ -195,20 +192,16 @@ impl Component for App {
                     .insert(slug.to_string().clone(), status.clone());
 
                 if let Some(storage) = &mut self.local_storage {
-                    storage.store(
-                        "candidates-selection",
-                        serde_json::to_string(&self.candidates_selection)
-                            .context("Cannot parse collected selection to json"),
-                    );
+                    use yew::format::Json;
+                    storage.store("candidates-selection", Json(&self.candidates_selection));
 
-                    match storage.restore::<Result<_, _>>("candidates-selection") {
-                        Ok(x) => {
-                            crate::log!(
-                                "Local storage: {:?}",
-                                serde_json::from_str::<HashMap<&str, CandidateStatus>>(&x).unwrap()
-                            )
+                    match storage.restore::<Json<Result<HashMap<String, CandidateStatus>, _>>>(
+                        "candidates-selection",
+                    ) {
+                        Json(Ok(x)) => {
+                            crate::log!("Local storage: {:?}", x)
                         }
-                        Err(_) => {
+                        Json(Err(_)) => {
                             crate::log!("Cannot restore data from local storage")
                         }
                     }
