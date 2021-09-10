@@ -133,12 +133,15 @@ impl Component for App {
                 ) {
                     Json(Ok(map)) => Some(map),
                     Json(Err(err)) => {
-                        crate::log!("Cannot restore data from local storage: {:?}", err);
+                        crate::log!("Cannot read data from local storage: {:?}", err);
                         None
                     }
                 }
             })
-            .unwrap_or_default();
+            .unwrap_or_else(|| {
+                crate::log!("Cannot access local storage");
+                HashMap::new()
+            });
 
         crate::log!("Local storage: {:?}", candidates_selection);
 
