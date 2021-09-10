@@ -215,8 +215,10 @@ impl Component for App {
             Msg::ClearSelection => {
                 if let Some(storage) = &mut self.local_storage {
                     storage.remove("candidates-selection");
-                    crate::log!("candidates selection cleared")
+                    crate::log!("local storage cleared")
                 }
+                self.candidates_selection.clear();
+                crate::log!("selection cleared");
                 true
             }
             Msg::Noop => false,
