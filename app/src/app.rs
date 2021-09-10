@@ -399,11 +399,7 @@ impl Component for App {
                                                     )
                                                 );
                                                 sorted_vec.iter().map(|x| {
-                                                    let stored_status = if let Some(status) = candidates_selection.get(x.candidate.slug) {
-                                                        Some(*status)
-                                                    } else {
-                                                        None
-                                                    };
+                                                    let stored_status = candidates_selection.get(x.candidate.slug).map(|x| x.clone());
 
                                                     html! {
                                                         <ProfileListItem
