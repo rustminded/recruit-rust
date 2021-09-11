@@ -1,6 +1,7 @@
 use crate::tech_tag::TechTag;
 use crate::techs::TechSet;
 use candidate::{Availability, Candidate, ContractType};
+use serde::{Deserialize, Serialize};
 use yew::prelude::*;
 use yewprint::{Button, ButtonGroup, Card, Intent, Text};
 
@@ -16,6 +17,7 @@ pub struct ProfileListItemProps {
     pub techs: TechSet,
     pub url: &'static str,
     pub collect_status: Callback<(&'static str, CandidateStatus)>,
+    pub stored_status: Option<CandidateStatus>,
 }
 
 pub enum Msg {
@@ -27,10 +29,16 @@ impl Component for ProfileListItem {
     type Properties = ProfileListItemProps;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        let status = if let Some(status) = props.stored_status {
+            status
+        } else {
+            CandidateStatus::Pending
+        };
+
         ProfileListItem {
             link,
             props,
-            status: CandidateStatus::Pending,
+            status,
         }
     }
 
@@ -150,7 +158,7 @@ impl Component for ProfileListItem {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub enum CandidateStatus {
     Pending,
     Select,

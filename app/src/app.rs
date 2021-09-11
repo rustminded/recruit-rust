@@ -8,6 +8,7 @@ use chrono::Duration;
 use std::collections::HashMap;
 use std::rc::Rc;
 use yew::prelude::*;
+use yew::services::storage::{Area, StorageService};
 use yew_router::{router::Router, Switch as RouteurSwitch};
 use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Switch, Tag};
 use yewprint::{Text, H1, H2, H3};
@@ -23,7 +24,8 @@ pub struct App {
     show_contractor: bool,
     show_employee: bool,
     collapsed: bool,
-    candidates_status: HashMap<&'static str, CandidateStatus>,
+    candidates_selection: HashMap<String, CandidateStatus>,
+    local_storage: Option<StorageService>,
 }
 
 pub enum Msg {
@@ -34,6 +36,7 @@ pub enum Msg {
     ToggleContractor,
     ToggleCollapse,
     CollectStatus((&'static str, CandidateStatus)),
+    ClearSelection,
     Noop,
 }
 
@@ -114,6 +117,29 @@ impl Component for App {
 
         let candidates = Rc::new(candidates);
 
+        let local_storage = match StorageService::new(Area::Local) {
+            Ok(storage) => Some(storage),
+            Err(e) => {
+                crate::log!("Local storage not supported: {:?}", e);
+                None
+            }
+        };
+
+        let candidates_selection = local_storage
+            .as_ref()
+            .and_then(|storage| {
+                use yew::format::Json;
+                match storage.restore::<Json<Result<HashMap<String, CandidateStatus>, _>>>(
+                    "candidates-selection",
+                ) {
+                    Json(Ok(map)) => Some(map),
+                    Json(Err(_)) => None,
+                }
+            })
+            .unwrap_or_default();
+
+        crate::log!("Local storage: {:?}", candidates_selection);
+
         App {
             candidates,
             link,
@@ -123,7 +149,8 @@ impl Component for App {
             show_contractor: false,
             show_employee: false,
             collapsed: true,
-            candidates_status: HashMap::new(),
+            candidates_selection,
+            local_storage,
         }
     }
 
@@ -159,7 +186,20 @@ impl Component for App {
                 true
             }
             Msg::CollectStatus((slug, status)) => {
-                self.candidates_status.insert(slug.clone(), status.clone());
+                self.candidates_selection
+                    .insert(slug.to_string().clone(), status.clone());
+
+                if let Some(storage) = &mut self.local_storage {
+                    use yew::format::Json;
+                    storage.store("candidates-selection", Json(&self.candidates_selection));
+                }
+                true
+            }
+            Msg::ClearSelection => {
+                if let Some(storage) = &mut self.local_storage {
+                    storage.remove("candidates-selection");
+                }
+                self.candidates_selection.clear();
                 true
             }
             Msg::Noop => false,
@@ -179,6 +219,7 @@ impl Component for App {
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
         let link = self.link.clone();
+        let candidates_selection = self.candidates_selection.clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -297,10 +338,12 @@ impl Component for App {
                                     onclick=self.link.callback(|_| Msg::ToggleEmployee)
                                     checked=show_employee
                                 />
+                                <Button
+                                    onclick=self.link.callback(|_| Msg::ClearSelection)
+                                >
+                                    {"Clear candidates selection"}
+                                </Button>
                             </Collapse>
-                        </div>
-                        <div>
-                            <Text>{format!("{:?}", self.candidates_status)}</Text>
                         </div>
                         <H3>{"Profiles:"}</H3>
                         <div>
@@ -345,11 +388,14 @@ impl Component for App {
                                                     )
                                                 );
                                                 sorted_vec.iter().map(|x| {
+                                                    let stored_status = candidates_selection.get(x.candidate.slug).map(|x| x.clone());
+
                                                     html! {
                                                         <ProfileListItem
                                                             candidate={x.candidate}
                                                             techs={&x.techs}
                                                             url={x.url}
+                                                            stored_status={stored_status}
                                                             collect_status=link.callback(|x| Msg::CollectStatus(x))
                                                         />
                                                     }
