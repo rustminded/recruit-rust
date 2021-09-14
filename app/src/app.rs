@@ -23,6 +23,9 @@ pub struct App {
     selected_timezone: Duration,
     show_contractor: bool,
     show_employee: bool,
+    show_pending: bool,
+    show_select: bool,
+    show_unselect: bool,
     collapsed: bool,
     candidates_selection: HashMap<String, CandidateStatus>,
     local_storage: Option<StorageService>,
@@ -34,6 +37,9 @@ pub enum Msg {
     SelectTimeZone(Duration),
     ToggleEmployee,
     ToggleContractor,
+    TogglePending,
+    ToggleSelect,
+    ToggleUnselect,
     ToggleCollapse,
     CollectStatus((&'static str, CandidateStatus)),
     ClearSelection,
@@ -148,6 +154,9 @@ impl Component for App {
             selected_timezone,
             show_contractor: false,
             show_employee: false,
+            show_pending: false,
+            show_select: false,
+            show_unselect: false,
             collapsed: true,
             candidates_selection,
             local_storage,
@@ -185,6 +194,18 @@ impl Component for App {
                 self.show_employee ^= true;
                 true
             }
+            Msg::TogglePending => {
+                self.show_pending ^= true;
+                true
+            }
+            Msg::ToggleSelect => {
+                self.show_select ^= true;
+                true
+            }
+            Msg::ToggleUnselect => {
+                self.show_unselect ^= true;
+                true
+            }
             Msg::CollectStatus((slug, status)) => {
                 self.candidates_selection
                     .insert(slug.to_string().clone(), status.clone());
@@ -218,6 +239,9 @@ impl Component for App {
         let collapsed = self.collapsed.clone();
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
+        let show_pending = self.show_pending.clone();
+        let show_select = self.show_select.clone();
+        let show_unselect = self.show_unselect.clone();
         let link = self.link.clone();
         let candidates_selection = self.candidates_selection.clone();
 
@@ -338,6 +362,21 @@ impl Component for App {
                                     onclick=self.link.callback(|_| Msg::ToggleEmployee)
                                     checked=show_employee
                                 />
+                                <Switch
+                                    label=html!("Pending")
+                                    onclick=self.link.callback(|_| Msg::TogglePending)
+                                    checked=show_pending
+                                />
+                                <Switch
+                                    label=html!("Select")
+                                    onclick=self.link.callback(|_| Msg::ToggleSelect)
+                                    checked=show_select
+                                />
+                                <Switch
+                                    label=html!("Unselect")
+                                    onclick=self.link.callback(|_| Msg::ToggleUnselect)
+                                    checked=show_unselect
+                                />
                                 <Button
                                     onclick=self.link.callback(|_| Msg::ClearSelection)
                                 >
@@ -361,7 +400,16 @@ impl Component for App {
                                                     x.candidate.availability !=
                                                     Availability::NotAvailable
                                                 )
-                                                // .filter(|x| x.status != CandidateStatus::Unselect)
+                                                .filter(|x|
+                                                    collapsed || match candidates_selection
+                                                        .get(x.candidate.slug) {
+                                                            Some(CandidateStatus::Select) =>
+                                                            show_select,
+                                                            Some(CandidateStatus::Unselect) =>
+                                                            show_unselect,
+                                                            Some(CandidateStatus::Pending) | None => show_pending,
+                                                        }
+                                                )
                                                 .filter(|x|
                                                     collapsed || match x.candidate.contract_type {
                                                         ContractType::Employee => show_employee,
