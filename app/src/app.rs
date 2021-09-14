@@ -401,17 +401,14 @@ impl Component for App {
                                                     Availability::NotAvailable
                                                 )
                                                 .filter(|x|
-                                                    collapsed || if let Some(status) = candidates_selection.get(x.candidate.slug) {
-                                                        match status {
-                                                            CandidateStatus::Pending => show_pending,
-                                                            CandidateStatus::Select =>
+                                                    collapsed || match candidates_selection
+                                                        .get(x.candidate.slug) {
+                                                            Some(CandidateStatus::Select) =>
                                                             show_select,
-                                                            CandidateStatus::Unselect =>
+                                                            Some(CandidateStatus::Unselect) =>
                                                             show_unselect,
+                                                            Some(CandidateStatus::Pending) | None => show_pending,
                                                         }
-                                                    } else {
-                                                        false
-                                                    }
                                                 )
                                                 .filter(|x|
                                                     collapsed || match x.candidate.contract_type {
