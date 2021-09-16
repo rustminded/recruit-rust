@@ -423,10 +423,33 @@ impl Component for App {
                                                     collapsed || x.tz_offsets.is_empty() ||
                                                         x.tz_offsets
                                                             .iter()
-                                                            .any(|x|
-                                                                ((selected_timezone - tz_range)..=
-                                                                    (selected_timezone + tz_range)
-                                                                ).contains(x))
+                                                            .any(|x| match selected_timezone.num_hours() {
+                                                                -12 => {
+                                                                    -11 == x.num_hours() &&
+                                                                    -12 == x.num_hours() &&
+                                                                    13 == x.num_hours() &&
+                                                                    14 == x.num_hours()
+                                                                },
+                                                                -11 => {
+                                                                    -10 == x.num_hours() &&
+                                                                    -11 == x.num_hours() &&
+                                                                    -12 == x.num_hours() &&
+                                                                    14 == x.num_hours()
+                                                                },
+                                                                13 => {
+                                                                    -12 == x.num_hours() &&
+                                                                    14 == x.num_hours() &&
+                                                                    13 == x.num_hours() &&
+                                                                    12 == x.num_hours()
+                                                                },
+                                                                14 => {
+                                                                    -11 == x.num_hours() &&
+                                                                    -12 == x.num_hours() &&
+                                                                    14 == x.num_hours() &&
+                                                                    13 == x.num_hours()
+                                                                },
+                                                                _ => ((selected_timezone - tz_range)..=(selected_timezone + tz_range)).contains(x),
+                                                            })
                                                 )
                                                 .collect::<Vec<_>>();
                                                 sorted_vec.sort_by(|a, b|
