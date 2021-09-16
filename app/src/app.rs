@@ -321,7 +321,7 @@ impl Component for App {
                                                     .num_hours(),
                                                 (self.selected_timezone + tz_range)
                                                     .num_hours(),
-                                                self.selected_timezone,
+                                                self.selected_timezone.num_hours(),
                                             )
                                         }
                                     </Tag>
@@ -426,27 +426,27 @@ impl Component for App {
                                                             .iter()
                                                             .any(|x| match selected_timezone.num_hours() {
                                                                 -12 => {
-                                                                    -11 == x.num_hours() &&
-                                                                    -12 == x.num_hours() &&
-                                                                    13 == x.num_hours() &&
+                                                                    -11 == x.num_hours() ||
+                                                                    -12 == x.num_hours() ||
+                                                                    13 == x.num_hours() ||
                                                                     14 == x.num_hours()
                                                                 },
                                                                 -11 => {
-                                                                    -10 == x.num_hours() &&
-                                                                    -11 == x.num_hours() &&
-                                                                    -12 == x.num_hours() &&
+                                                                    -10 == x.num_hours() ||
+                                                                    -11 == x.num_hours() ||
+                                                                    -12 == x.num_hours() ||
                                                                     14 == x.num_hours()
                                                                 },
                                                                 13 => {
-                                                                    -12 == x.num_hours() &&
-                                                                    14 == x.num_hours() &&
-                                                                    13 == x.num_hours() &&
+                                                                    -12 == x.num_hours() ||
+                                                                    14 == x.num_hours() ||
+                                                                    13 == x.num_hours() ||
                                                                     12 == x.num_hours()
                                                                 },
                                                                 14 => {
-                                                                    -11 == x.num_hours() &&
-                                                                    -12 == x.num_hours() &&
-                                                                    14 == x.num_hours() &&
+                                                                    -11 == x.num_hours() ||
+                                                                    -12 == x.num_hours() ||
+                                                                    14 == x.num_hours() ||
                                                                     13 == x.num_hours()
                                                                 },
                                                                 _ => ((selected_timezone - tz_range)..=(selected_timezone + tz_range)).contains(x),
