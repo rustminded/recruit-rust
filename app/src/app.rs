@@ -152,9 +152,9 @@ impl Component for App {
             entries: Default::default(),
             searched_value: Default::default(),
             selected_timezone,
-            show_contractor: false,
-            show_employee: false,
-            show_pending: false,
+            show_contractor: true,
+            show_employee: true,
+            show_pending: true,
             show_select: false,
             show_unselect: false,
             collapsed: true,
@@ -316,11 +316,12 @@ impl Component for App {
                                     >
                                         {
                                             format!(
-                                                "UTC {} to {}",
+                                                "UTC {} to {} ({})",
                                                 (self.selected_timezone - tz_range)
-                                                    .num_hours().clamp(-12, 14),
+                                                    .num_hours(),
                                                 (self.selected_timezone + tz_range)
-                                                    .num_hours().clamp(-12, 14),
+                                                    .num_hours(),
+                                                self.selected_timezone,
                                             )
                                         }
                                     </Tag>
