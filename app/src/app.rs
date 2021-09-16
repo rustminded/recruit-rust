@@ -425,29 +425,11 @@ impl Component for App {
                                                         x.tz_offsets
                                                             .iter()
                                                             .any(|x| match selected_timezone.num_hours() {
-                                                                -12 => {
+                                                                -12 | -11 | 13 | 14 => {
+                                                                    -12 == x.num_hours() ||
                                                                     -11 == x.num_hours() ||
-                                                                    -12 == x.num_hours() ||
-                                                                    13 == x.num_hours() ||
-                                                                    14 == x.num_hours()
-                                                                },
-                                                                -11 => {
-                                                                    -10 == x.num_hours() ||
-                                                                    -11 == x.num_hours() ||
-                                                                    -12 == x.num_hours() ||
-                                                                    14 == x.num_hours()
-                                                                },
-                                                                13 => {
-                                                                    -12 == x.num_hours() ||
-                                                                    14 == x.num_hours() ||
-                                                                    13 == x.num_hours() ||
-                                                                    12 == x.num_hours()
-                                                                },
-                                                                14 => {
-                                                                    -11 == x.num_hours() ||
-                                                                    -12 == x.num_hours() ||
-                                                                    14 == x.num_hours() ||
-                                                                    13 == x.num_hours()
+                                                                     13 == x.num_hours() ||
+                                                                     14 == x.num_hours()
                                                                 },
                                                                 _ => ((selected_timezone - tz_range)..=(selected_timezone + tz_range)).contains(x),
                                                             })
