@@ -14,7 +14,8 @@ use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Switch, Tag};
 use yewprint::{Text, H1, H2, H3};
 
 pub const TZ_RANGE: i64 = 2;
-
+pub const TZ_MIN: i64 = -12;
+pub const TZ_MAX: i64 = 14;
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
     link: ComponentLink<Self>,
@@ -236,6 +237,8 @@ impl Component for App {
         let entries = Rc::clone(&self.entries);
         let selected_timezone = self.selected_timezone.clone();
         let tz_range = Duration::hours(TZ_RANGE);
+        let tz_min = Duration::hours(TZ_MIN);
+        let tz_max = Duration::hours(TZ_MAX);
         let collapsed = self.collapsed.clone();
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
@@ -424,15 +427,26 @@ impl Component for App {
                                                     collapsed || x.tz_offsets.is_empty() ||
                                                         x.tz_offsets
                                                             .iter()
-                                                            .any(|x| match selected_timezone.num_hours() {
-                                                                -12 | -11 | 13 | 14 => {
-                                                                    -12 == x.num_hours() ||
-                                                                    -11 == x.num_hours() ||
-                                                                     13 == x.num_hours() ||
-                                                                     14 == x.num_hours()
-                                                                },
-                                                                _ => ((selected_timezone - tz_range)..=(selected_timezone + tz_range)).contains(x),
-                                                            })
+                                                            .any(|x|
+                                                                if selected_timezone > tz_max - tz_range {
+                                                                    let right_range = (selected_timezone - tz_range)..=tz_max;
+                                                                    let left_range = tz_min
+                                                                        ..=(tz_range * 2
+                                                                            - (tz_max - (selected_timezone - tz_range) + Duration::hours(1))
+                                                                            + tz_min);
+
+                                                                    (right_range).contains(x) || left_range.contains(x)
+                                                                } else if selected_timezone < tz_min + tz_range {
+                                                                    let left_range = tz_min..=(selected_timezone + tz_range);
+                                                                    let right_range =
+                                                                        (tz_max - tz_range * 2 - (*left_range.start() - *left_range.end()))
+                                                                            ..=tz_max;
+
+                                                                    (right_range).contains(x) || (left_range.contains(x))
+                                                                } else {
+                                                                    ((selected_timezone - tz_range)..=(selected_timezone + tz_range)).contains(x)
+                                                                }
+                                                            )
                                                 )
                                                 .collect::<Vec<_>>();
                                                 sorted_vec.sort_by(|a, b|
