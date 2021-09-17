@@ -318,14 +318,29 @@ impl Component for App {
                                         minimal=true
                                     >
                                         {
-                                            format!(
-                                                "UTC {} to {} ({})",
-                                                (self.selected_timezone - tz_range)
-                                                    .num_hours(),
-                                                (self.selected_timezone + tz_range)
-                                                    .num_hours(),
-                                                self.selected_timezone.num_hours(),
-                                            )
+                                            if selected_timezone > tz_max - tz_range {
+
+                                                format!(
+                                                    "UTC {} to {}",
+                                                    (tz_min + tz_range * 2 - (tz_max - (selected_timezone - tz_range))).num_hours(),
+                                                    (selected_timezone - tz_range).num_hours(),
+
+                                                )
+                                            } else if selected_timezone < tz_min + tz_range {
+                                                format!(
+                                                    "UTC {} to {}",
+                                                    (tz_max - tz_range * 2 - (tz_min - (selected_timezone + tz_range))).num_hours(),
+                                                    (selected_timezone + tz_range).num_hours(),
+                                                )
+                                            } else {
+                                                format!(
+                                                    "UTC {} to {}",
+                                                    (self.selected_timezone - tz_range)
+                                                        .num_hours(),
+                                                    (self.selected_timezone + tz_range)
+                                                        .num_hours(),
+                                                )
+                                            }
                                         }
                                     </Tag>
                                 </div>
