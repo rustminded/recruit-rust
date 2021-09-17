@@ -430,10 +430,7 @@ impl Component for App {
                                                             .any(|x|
                                                                 if selected_timezone > tz_max - tz_range {
                                                                     let right_range = (selected_timezone - tz_range)..=tz_max;
-                                                                    let left_range = tz_min
-                                                                        ..=(tz_range * 2
-                                                                            - (tz_max - (selected_timezone - tz_range) + Duration::hours(1))
-                                                                            + tz_min);
+                                                                    let left_range = tz_min..=(tz_min + tz_range * 2 - (*right_range.end() - *right_range.start()));
 
                                                                     (right_range).contains(x) || left_range.contains(x)
                                                                 } else if selected_timezone < tz_min + tz_range {
