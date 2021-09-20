@@ -16,6 +16,7 @@ use yewprint::{Text, H1, H2, H3};
 pub const TZ_RANGE: i64 = 2;
 pub const TZ_MIN: i64 = -12;
 pub const TZ_MAX: i64 = 14;
+
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
     link: ComponentLink<Self>,
