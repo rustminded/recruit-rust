@@ -2,7 +2,7 @@ use crate::profile::Profile;
 use crate::profile_list_item::{CandidateStatus, ProfileListItem};
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
-use crate::utc_offset_set::UtcOffsetSet;
+use crate::utc_offset_set::{OffsetSetRanges, UtcOffsetSet};
 use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
@@ -248,6 +248,7 @@ impl Component for App {
         let show_unselect = self.show_unselect.clone();
         let link = self.link.clone();
         let candidates_selection = self.candidates_selection.clone();
+        let offset_ranges = OffsetSetRanges::new(selected_timezone, tz_range).clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -445,19 +446,11 @@ impl Component for App {
                                                             .iter()
                                                             .any(|x|
                                                                 if selected_timezone > tz_max - tz_range {
-                                                                    let right_range = (selected_timezone - tz_range)..=tz_max;
-                                                                    let left_range = tz_min..=(tz_min + tz_range * 2 - (*right_range.end() - *right_range.start()));
-
-                                                                    (right_range).contains(x) || left_range.contains(x)
+                                                                    (offset_ranges.primary_positive_cursed).contains(x) || offset_ranges.secondary_positive_cursed.contains(x)
                                                                 } else if selected_timezone < tz_min + tz_range {
-                                                                    let left_range = tz_min..=(selected_timezone + tz_range);
-                                                                    let right_range =
-                                                                        (tz_max - tz_range * 2 - (*left_range.start() - *left_range.end()))
-                                                                            ..=tz_max;
-
-                                                                    (right_range).contains(x) || (left_range.contains(x))
+                                                                    offset_ranges.primary_negative_cursed.contains(x) || offset_ranges.secondary_negative_cursed.contains(x)
                                                                 } else {
-                                                                    ((selected_timezone - tz_range)..=(selected_timezone + tz_range)).contains(x)
+                                                                    offset_ranges.normal.contains(x)
                                                                 }
                                                             )
                                                 )

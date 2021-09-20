@@ -1,6 +1,8 @@
+use crate::{TZ_MAX, TZ_MIN};
 use chrono::{Duration, TimeZone, Utc};
 use chrono_tz::{OffsetComponents, Tz};
 use std::collections::HashSet;
+use std::ops::RangeInclusive;
 
 #[derive(Debug, Clone)]
 pub struct UtcOffsetSet(HashSet<Duration>);
@@ -68,5 +70,42 @@ impl From<&'static [Tz]> for UtcOffsetSet {
             })
             .flatten()
             .collect::<UtcOffsetSet>()
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct OffsetSetRanges {
+    pub normal: RangeInclusive<Duration>,
+    pub primary_negative_cursed: RangeInclusive<Duration>,
+    pub secondary_negative_cursed: RangeInclusive<Duration>,
+    pub primary_positive_cursed: RangeInclusive<Duration>,
+    pub secondary_positive_cursed: RangeInclusive<Duration>,
+}
+
+impl OffsetSetRanges {
+    pub fn new(selected_timezone: Duration, tz_range: Duration) -> Self {
+        let tz_min = Duration::hours(TZ_MIN);
+        let tz_max = Duration::hours(TZ_MAX);
+
+        let normal = (selected_timezone - tz_range)..=(selected_timezone + tz_range);
+
+        let primary_negative_cursed = tz_min..=(selected_timezone + tz_range);
+        let secondary_negative_cursed = (tz_max
+            - tz_range * 2
+            - (*primary_negative_cursed.start() - *primary_negative_cursed.end()))
+            ..=tz_max;
+
+        let primary_positive_cursed = (selected_timezone - tz_range)..=tz_max;
+        let secondary_positive_cursed = tz_min
+            ..=(tz_min + tz_range * 2
+                - (*primary_positive_cursed.end() - *primary_positive_cursed.start()));
+
+        Self {
+            normal,
+            primary_negative_cursed,
+            secondary_negative_cursed,
+            primary_positive_cursed,
+            secondary_positive_cursed,
+        }
     }
 }
