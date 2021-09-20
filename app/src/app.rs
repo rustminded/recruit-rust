@@ -2,7 +2,7 @@ use crate::profile::Profile;
 use crate::profile_list_item::{CandidateStatus, ProfileListItem};
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
-use crate::utc_offset_set::{OffsetSetRanges, UtcOffsetSet};
+use crate::utc_offset::{UtcOffsetBounds, UtcOffsetRanges, UtcOffsetSet};
 use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
@@ -12,10 +12,6 @@ use yew::services::storage::{Area, StorageService};
 use yew_router::{router::Router, Switch as RouteurSwitch};
 use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Switch, Tag};
 use yewprint::{Text, H1, H2, H3};
-
-pub const TZ_RANGE: i64 = 2;
-pub const TZ_MIN: i64 = -12;
-pub const TZ_MAX: i64 = 14;
 
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
@@ -234,21 +230,19 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
+        let link = self.link.clone();
         let candidates = Rc::clone(&self.candidates);
+        let candidates_selection = self.candidates_selection.clone();
         let entries = Rc::clone(&self.entries);
-        let selected_timezone = self.selected_timezone.clone();
-        let tz_range = Duration::hours(TZ_RANGE);
-        let tz_min = Duration::hours(TZ_MIN);
-        let tz_max = Duration::hours(TZ_MAX);
         let collapsed = self.collapsed.clone();
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
         let show_pending = self.show_pending.clone();
         let show_select = self.show_select.clone();
         let show_unselect = self.show_unselect.clone();
-        let link = self.link.clone();
-        let candidates_selection = self.candidates_selection.clone();
-        let offset_ranges = OffsetSetRanges::new(selected_timezone, tz_range).clone();
+        let offset_bounds = UtcOffsetBounds::new(3).clone();
+        let selected_timezone = self.selected_timezone.clone();
+        let offset_ranges = UtcOffsetRanges::new(selected_timezone, offset_bounds.clone()).clone();
 
         html! {
             <div class="app-root bp3-dark">
@@ -320,27 +314,24 @@ impl Component for App {
                                         minimal=true
                                     >
                                         {
-                                            if selected_timezone > tz_max - tz_range {
+                                            if selected_timezone > offset_bounds.max - offset_bounds.main_range {
 
                                                 format!(
                                                     "UTC {} to {}",
-                                                    (tz_min + tz_range * 2 - (tz_max - (selected_timezone - tz_range))).num_hours(),
-                                                    (selected_timezone - tz_range).num_hours(),
-
+                                                    offset_ranges.secondary_negative_cursed.start().num_hours(),
+                                                    offset_ranges.normal.start().num_hours(),
                                                 )
-                                            } else if selected_timezone < tz_min + tz_range {
+                                            } else if selected_timezone < offset_bounds.min + offset_bounds.main_range {
                                                 format!(
                                                     "UTC {} to {}",
-                                                    (tz_max - tz_range * 2 - (tz_min - (selected_timezone + tz_range))).num_hours(),
-                                                    (selected_timezone + tz_range).num_hours(),
+                                                    offset_ranges.secondary_negative_cursed.start().num_hours(),
+                                                    offset_ranges.normal.end().num_hours(),
                                                 )
                                             } else {
                                                 format!(
                                                     "UTC {} to {}",
-                                                    (self.selected_timezone - tz_range)
-                                                        .num_hours(),
-                                                    (self.selected_timezone + tz_range)
-                                                        .num_hours(),
+                                                    offset_ranges.normal.start().num_hours(),
+                                                    offset_ranges.normal.end().num_hours(),
                                                 )
                                             }
                                         }
@@ -445,9 +436,9 @@ impl Component for App {
                                                         x.tz_offsets
                                                             .iter()
                                                             .any(|x|
-                                                                if selected_timezone > tz_max - tz_range {
+                                                                if selected_timezone > offset_bounds.max - offset_bounds.main_range {
                                                                     (offset_ranges.primary_positive_cursed).contains(x) || offset_ranges.secondary_positive_cursed.contains(x)
-                                                                } else if selected_timezone < tz_min + tz_range {
+                                                                } else if selected_timezone < offset_bounds.min + offset_bounds.main_range {
                                                                     offset_ranges.primary_negative_cursed.contains(x) || offset_ranges.secondary_negative_cursed.contains(x)
                                                                 } else {
                                                                     offset_ranges.normal.contains(x)
