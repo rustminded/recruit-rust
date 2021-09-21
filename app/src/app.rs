@@ -2,7 +2,7 @@ use crate::profile::Profile;
 use crate::profile_list_item::{CandidateStatus, ProfileListItem};
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
-use crate::utc_offset::{UtcOffsetBounds, UtcOffsetRanges, UtcOffsetSet};
+use crate::utc_offset::{UtcOffsetRange, UtcOffsetSet};
 use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
@@ -240,9 +240,8 @@ impl Component for App {
         let show_pending = self.show_pending.clone();
         let show_select = self.show_select.clone();
         let show_unselect = self.show_unselect.clone();
-        let offset_bounds = UtcOffsetBounds::new(3).clone();
         let selected_timezone = self.selected_timezone.clone();
-        let offset_ranges = UtcOffsetRanges::new(selected_timezone, offset_bounds.clone()).clone();
+        let offset_range = UtcOffsetRange::new(selected_timezone, 2);
 
         html! {
             <div class="app-root bp3-dark">
@@ -314,24 +313,19 @@ impl Component for App {
                                         minimal=true
                                     >
                                         {
-                                            if selected_timezone > offset_bounds.max - offset_bounds.main_range {
-
+                                            if let Some(secondary_range) = offset_range.secondary {
                                                 format!(
-                                                    "UTC {} to {}",
-                                                    offset_ranges.secondary_negative_cursed.start().num_hours(),
-                                                    offset_ranges.normal.start().num_hours(),
-                                                )
-                                            } else if selected_timezone < offset_bounds.min + offset_bounds.main_range {
-                                                format!(
-                                                    "UTC {} to {}",
-                                                    offset_ranges.secondary_negative_cursed.start().num_hours(),
-                                                    offset_ranges.normal.end().num_hours(),
+                                                    "primary = {}..{} |secondary =  {}..{}",
+                                                    offset_range.primary.start().num_hours(),
+                                                    offset_range.primary.end().num_hours(),
+                                                    secondary_range.start().num_hours(),
+                                                    secondary_range.end().num_hours(),
                                                 )
                                             } else {
                                                 format!(
                                                     "UTC {} to {}",
-                                                    offset_ranges.normal.start().num_hours(),
-                                                    offset_ranges.normal.end().num_hours(),
+                                                    offset_range.primary.start().num_hours(),
+                                                    offset_range.primary.end().num_hours(),
                                                 )
                                             }
                                         }
@@ -436,12 +430,10 @@ impl Component for App {
                                                         x.tz_offsets
                                                             .iter()
                                                             .any(|x|
-                                                                if selected_timezone > offset_bounds.max - offset_bounds.main_range {
-                                                                    (offset_ranges.primary_positive_cursed).contains(x) || offset_ranges.secondary_positive_cursed.contains(x)
-                                                                } else if selected_timezone < offset_bounds.min + offset_bounds.main_range {
-                                                                    offset_ranges.primary_negative_cursed.contains(x) || offset_ranges.secondary_negative_cursed.contains(x)
+                                                                if let Some(secondary_range) = offset_range.secondary {
+                                                                    offset_range.primary.contains(x)  || secondary_range.contains(x)
                                                                 } else {
-                                                                    offset_ranges.normal.contains(x)
+                                                                    offset_range.primary.contains(x)
                                                                 }
                                                             )
                                                 )

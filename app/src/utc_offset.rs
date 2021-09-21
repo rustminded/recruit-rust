@@ -3,52 +3,39 @@ use chrono_tz::{OffsetComponents, Tz};
 use std::collections::HashSet;
 use std::ops::RangeInclusive;
 
-#[derive(Debug, Clone)]
-pub struct UtcOffsetBounds {
-    pub min: Duration,
-    pub max: Duration,
-    pub main_range: Duration,
-}
-
-impl UtcOffsetBounds {
-    pub fn new(range: i64) -> Self {
-        Self {
-            min: Duration::hours(-12),
-            max: Duration::hours(14),
-            main_range: Duration::hours(range),
-        }
-    }
-}
+pub const TZ_MIN: i64 = -12;
+pub const TZ_MAX: i64 = 14;
 
 #[derive(Debug, Clone)]
-pub struct UtcOffsetRanges {
-    pub normal: RangeInclusive<Duration>,
-    pub primary_negative_cursed: RangeInclusive<Duration>,
-    pub secondary_negative_cursed: RangeInclusive<Duration>,
-    pub primary_positive_cursed: RangeInclusive<Duration>,
-    pub secondary_positive_cursed: RangeInclusive<Duration>,
+pub struct UtcOffsetRange {
+    pub primary: RangeInclusive<Duration>,
+    pub secondary: Option<RangeInclusive<Duration>>,
 }
 
-impl UtcOffsetRanges {
-    pub fn new(selected_timezone: Duration, bounds: UtcOffsetBounds) -> Self {
-        let normal =
-            (selected_timezone - bounds.main_range)..=(selected_timezone + bounds.main_range);
+impl UtcOffsetRange {
+    pub fn new(selected_timezone: Duration, range: i64) -> Self {
+        let min = Duration::hours(TZ_MIN);
+        let max = Duration::hours(TZ_MAX);
+        let main_range = Duration::hours(range);
 
-        let primary_negative_cursed = bounds.min..=*normal.end();
-        let secondary_negative_cursed =
-            (bounds.max - bounds.main_range * 2 - (bounds.min - *normal.end()))..=bounds.max;
+        let (primary, secondary) = if selected_timezone > max - main_range {
+            (
+                (selected_timezone - main_range)..=max,
+                Some(min..=(min + main_range * 2 - (max - (selected_timezone - main_range)))),
+            )
+        } else if selected_timezone < min + main_range {
+            (
+                min..=(selected_timezone + main_range),
+                Some((max - main_range * 2 - (min - (selected_timezone + main_range)))..=max),
+            )
+        } else {
+            (
+                (selected_timezone - main_range)..=(selected_timezone + main_range),
+                None,
+            )
+        };
 
-        let primary_positive_cursed = *normal.start()..=bounds.max;
-        let secondary_positive_cursed =
-            bounds.min..=(bounds.min + bounds.main_range * 2 - (bounds.max - *normal.start()));
-
-        Self {
-            normal,
-            primary_negative_cursed,
-            secondary_negative_cursed,
-            primary_positive_cursed,
-            secondary_positive_cursed,
-        }
+        Self { primary, secondary }
     }
 }
 
