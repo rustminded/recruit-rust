@@ -10,32 +10,34 @@ pub const TZ_MAX: i64 = 14;
 pub struct UtcOffsetRange {
     primary: RangeInclusive<Duration>,
     secondary: Option<RangeInclusive<Duration>>,
+    timezone: Duration,
 }
 
 impl UtcOffsetRange {
-    pub fn new(selected_timezone: Duration, range: i64) -> Self {
+    pub fn new(timezone: Duration, range: i64) -> Self {
         let min = Duration::hours(TZ_MIN);
         let max = Duration::hours(TZ_MAX);
         let main_range = Duration::hours(range);
 
-        let (primary, secondary) = if selected_timezone > max - main_range {
+        let (primary, secondary) = if timezone > max - main_range {
             (
-                (selected_timezone - main_range)..=max,
-                Some(min..=(min + main_range * 2 - (max - (selected_timezone - main_range)))),
+                (timezone - main_range)..=max,
+                Some(min..=(min + main_range * 2 - (max - (timezone - main_range)))),
             )
-        } else if selected_timezone < min + main_range {
+        } else if timezone < min + main_range {
             (
-                min..=(selected_timezone + main_range),
-                Some((max - main_range * 2 - (min - (selected_timezone + main_range)))..=max),
+                min..=(timezone + main_range),
+                Some((max - main_range * 2 - (min - (timezone + main_range)))..=max),
             )
         } else {
-            (
-                (selected_timezone - main_range)..=(selected_timezone + main_range),
-                None,
-            )
+            ((timezone - main_range)..=(timezone + main_range), None)
         };
 
-        Self { primary, secondary }
+        Self {
+            timezone,
+            primary,
+            secondary,
+        }
     }
 
     pub fn contains(&self, x: Duration) -> bool {
@@ -46,9 +48,9 @@ impl UtcOffsetRange {
         }
     }
 
-    pub fn start(&self, timezone: Duration) -> &Duration {
+    pub fn start(&self) -> &Duration {
         if self.secondary.is_some() {
-            if timezone.num_hours().is_positive() {
+            if self.timezone.num_hours().is_positive() {
                 self.primary.start()
             } else {
                 self.primary.end()
@@ -58,9 +60,9 @@ impl UtcOffsetRange {
         }
     }
 
-    pub fn end(&self, timezone: Duration) -> &Duration {
+    pub fn end(&self) -> &Duration {
         if self.secondary.is_some() {
-            if timezone.num_hours().is_positive() {
+            if self.timezone.num_hours().is_positive() {
                 self.secondary.as_ref().unwrap().end()
             } else {
                 self.secondary.as_ref().unwrap().start()
@@ -70,11 +72,11 @@ impl UtcOffsetRange {
         }
     }
 
-    pub fn display(&self, timezone: Duration) -> String {
+    pub fn display(&self) -> String {
         format!(
             "UTC {} to {}",
-            self.start(timezone).num_hours(),
-            self.end(timezone).num_hours()
+            self.start().num_hours(),
+            self.end().num_hours()
         )
     }
 }

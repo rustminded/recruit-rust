@@ -315,7 +315,7 @@ impl Component for App {
                                         minimal=true
                                     >
                                         {
-                                            offset_range.display(selected_timezone)
+                                            offset_range.display()
                                         }
                                     </Tag>
                                 </div>
