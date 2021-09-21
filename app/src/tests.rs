@@ -18,7 +18,7 @@ fn normal_offset_range_with_different_main_range() {
 
     let third_range = UtcOffsetRange::new(timezone, 4);
     assert_eq!(third_range.primary.start().num_hours(), 2);
-    assert_eq!(third_range.primary.start().num_hours(), 2);
+    assert_eq!(third_range.primary.end().num_hours(), 10);
     assert!(second_range.secondary.is_none());
 }
 
