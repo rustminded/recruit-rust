@@ -71,7 +71,11 @@ impl UtcOffsetRange {
     }
 
     pub fn display(&self, timezone: Duration) -> String {
-        format!("UTC {} to {}", self.start(timezone), self.end(timezone))
+        format!(
+            "UTC {} to {}",
+            self.start(timezone).num_hours(),
+            self.end(timezone).num_hours()
+        )
     }
 }
 
