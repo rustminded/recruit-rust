@@ -313,27 +313,7 @@ impl Component for App {
                                         minimal=true
                                     >
                                         {
-                                            if let Some(secondary_range) = offset_range.secondary.clone() {
-                                                if selected_timezone.num_hours().is_positive() {
-                                                    format!(
-                                                        "UTC {} to {}",
-                                                        offset_range.primary.start().num_hours(),
-                                                        secondary_range.end().num_hours(),
-                                                    )
-                                                } else {
-                                                    format!(
-                                                        "UTC {} to {}",
-                                                        offset_range.primary.end().num_hours(),
-                                                        secondary_range.start().num_hours(),
-                                                    )
-                                                }
-                                            } else {
-                                                format!(
-                                                    "UTC {} to {}",
-                                                    offset_range.primary.start().num_hours(),
-                                                    offset_range.primary.end().num_hours(),
-                                                )
-                                            }
+                                            offset_range.display(selected_timezone)
                                         }
                                     </Tag>
                                 </div>
@@ -436,11 +416,7 @@ impl Component for App {
                                                         x.tz_offsets
                                                             .iter()
                                                             .any(|x|
-                                                                if let Some(secondary_range) = offset_range.secondary.clone() {
-                                                                    offset_range.primary.contains(x)  || secondary_range.contains(x)
-                                                                } else {
-                                                                    offset_range.primary.contains(x)
-                                                                }
+                                                                offset_range.contains(*x)
                                                             )
                                                 )
                                                 .collect::<Vec<_>>();

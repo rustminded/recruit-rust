@@ -37,6 +37,38 @@ impl UtcOffsetRange {
 
         Self { primary, secondary }
     }
+
+    pub fn contains(&self, x: Duration) -> bool {
+        if let Some(secondary_range) = self.secondary.clone() {
+            self.primary.contains(&x) || secondary_range.contains(&x)
+        } else {
+            self.primary.contains(&x)
+        }
+    }
+
+    pub fn display(&self, timezone: Duration) -> String {
+        if let Some(secondary_range) = self.secondary.clone() {
+            if timezone.num_hours().is_positive() {
+                format!(
+                    "UTC {} to {}",
+                    self.primary.start().num_hours(),
+                    secondary_range.end().num_hours(),
+                )
+            } else {
+                format!(
+                    "UTC {} to {}",
+                    self.primary.end().num_hours(),
+                    secondary_range.start().num_hours(),
+                )
+            }
+        } else {
+            format!(
+                "UTC {} to {}",
+                self.primary.start().num_hours(),
+                self.primary.end().num_hours(),
+            )
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
