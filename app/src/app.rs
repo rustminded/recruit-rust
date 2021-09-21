@@ -13,6 +13,8 @@ use yew_router::{router::Router, Switch as RouteurSwitch};
 use yewprint::{Button, Collapse, IconName, InputGroup, Slider, Switch, Tag};
 use yewprint::{Text, H1, H2, H3};
 
+pub const TZ_RANGE: i64 = 2;
+
 pub struct App {
     candidates: Rc<HashMap<&'static str, CandidateInfo>>,
     link: ComponentLink<Self>,
@@ -241,7 +243,7 @@ impl Component for App {
         let show_select = self.show_select.clone();
         let show_unselect = self.show_unselect.clone();
         let selected_timezone = self.selected_timezone.clone();
-        let offset_range = UtcOffsetRange::new(selected_timezone, 2);
+        let offset_range = UtcOffsetRange::new(selected_timezone, TZ_RANGE);
 
         html! {
             <div class="app-root bp3-dark">
