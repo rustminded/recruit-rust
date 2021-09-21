@@ -8,8 +8,8 @@ pub const TZ_MAX: i64 = 14;
 
 #[derive(Debug, Clone)]
 pub struct UtcOffsetRange {
-    pub primary: RangeInclusive<Duration>,
-    pub secondary: Option<RangeInclusive<Duration>>,
+    primary: RangeInclusive<Duration>,
+    secondary: Option<RangeInclusive<Duration>>,
 }
 
 impl UtcOffsetRange {
@@ -46,28 +46,32 @@ impl UtcOffsetRange {
         }
     }
 
-    pub fn display(&self, timezone: Duration) -> String {
-        if let Some(secondary_range) = self.secondary.clone() {
+    pub fn start(&self, timezone: Duration) -> &Duration {
+        if self.secondary.is_some() {
             if timezone.num_hours().is_positive() {
-                format!(
-                    "UTC {} to {}",
-                    self.primary.start().num_hours(),
-                    secondary_range.end().num_hours(),
-                )
+                self.primary.start()
             } else {
-                format!(
-                    "UTC {} to {}",
-                    self.primary.end().num_hours(),
-                    secondary_range.start().num_hours(),
-                )
+                self.primary.end()
             }
         } else {
-            format!(
-                "UTC {} to {}",
-                self.primary.start().num_hours(),
-                self.primary.end().num_hours(),
-            )
+            self.primary.start()
         }
+    }
+
+    pub fn end(&self, timezone: Duration) -> &Duration {
+        if self.secondary.is_some() {
+            if timezone.num_hours().is_positive() {
+                self.secondary.as_ref().unwrap().end()
+            } else {
+                self.secondary.as_ref().unwrap().start()
+            }
+        } else {
+            self.primary.end()
+        }
+    }
+
+    pub fn display(&self, timezone: Duration) -> String {
+        format!("UTC {} to {}", self.start(timezone), self.end(timezone))
     }
 }
 
