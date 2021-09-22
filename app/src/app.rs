@@ -2,7 +2,7 @@ use crate::profile::Profile;
 use crate::profile_list_item::{CandidateStatus, ProfileListItem};
 use crate::profile_not_found::ProfileNotFound;
 use crate::techs::{Tech, TechSet};
-use crate::utc_offset_set::UtcOffsetSet;
+use crate::utc_offset::{UtcOffsetRange, UtcOffsetSet};
 use candidate::{Availability, Candidate, ContractType};
 use chrono::Duration;
 use std::collections::HashMap;
@@ -152,9 +152,9 @@ impl Component for App {
             entries: Default::default(),
             searched_value: Default::default(),
             selected_timezone,
-            show_contractor: false,
-            show_employee: false,
-            show_pending: false,
+            show_contractor: true,
+            show_employee: true,
+            show_pending: true,
             show_select: false,
             show_unselect: false,
             collapsed: true,
@@ -232,18 +232,18 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
+        let link = self.link.clone();
         let candidates = Rc::clone(&self.candidates);
+        let candidates_selection = self.candidates_selection.clone();
         let entries = Rc::clone(&self.entries);
-        let selected_timezone = self.selected_timezone.clone();
-        let tz_range = Duration::hours(TZ_RANGE);
         let collapsed = self.collapsed.clone();
         let show_contractor = self.show_contractor.clone();
         let show_employee = self.show_employee.clone();
         let show_pending = self.show_pending.clone();
         let show_select = self.show_select.clone();
         let show_unselect = self.show_unselect.clone();
-        let link = self.link.clone();
-        let candidates_selection = self.candidates_selection.clone();
+        let selected_timezone = self.selected_timezone.clone();
+        let offset_range = UtcOffsetRange::new(selected_timezone, TZ_RANGE);
 
         html! {
             <div class="app-root bp3-dark">
@@ -315,13 +315,7 @@ impl Component for App {
                                         minimal=true
                                     >
                                         {
-                                            format!(
-                                                "UTC {} to {}",
-                                                (self.selected_timezone - tz_range)
-                                                    .num_hours().clamp(-12, 14),
-                                                (self.selected_timezone + tz_range)
-                                                    .num_hours().clamp(-12, 14),
-                                            )
+                                            offset_range.display()
                                         }
                                     </Tag>
                                 </div>
@@ -424,9 +418,8 @@ impl Component for App {
                                                         x.tz_offsets
                                                             .iter()
                                                             .any(|x|
-                                                                ((selected_timezone - tz_range)..=
-                                                                    (selected_timezone + tz_range)
-                                                                ).contains(x))
+                                                                offset_range.contains(*x)
+                                                            )
                                                 )
                                                 .collect::<Vec<_>>();
                                                 sorted_vec.sort_by(|a, b|

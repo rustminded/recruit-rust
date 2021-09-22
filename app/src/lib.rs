@@ -8,7 +8,8 @@ mod profile_list_item;
 mod profile_not_found;
 mod tech_tag;
 mod techs;
-mod utc_offset_set;
+mod tests;
+mod utc_offset;
 
 pub use crate::app::*;
 use wasm_bindgen::prelude::*;
