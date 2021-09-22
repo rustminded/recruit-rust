@@ -40,11 +40,11 @@ impl UtcOffsetRange {
         }
     }
 
-    pub fn contains(&self, x: Duration) -> bool {
-        if let Some(secondary_range) = self.secondary.clone() {
-            self.primary.contains(&x) || secondary_range.contains(&x)
+    pub fn contains(&self, item: Duration) -> bool {
+        if let Some(secondary_range) = &self.secondary {
+            self.primary.contains(&item) || secondary_range.contains(&item)
         } else {
-            self.primary.contains(&x)
+            self.primary.contains(&item)
         }
     }
 
