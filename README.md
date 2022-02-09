@@ -1,3 +1,5 @@
+**This project is on hold as we're lacking developers. The scope and goal of the project is also being revisited.**
+
 # recruit-rust
 
 ## Development Server
